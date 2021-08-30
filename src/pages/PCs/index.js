@@ -112,14 +112,15 @@ export default function PCs() {
     setTextPrint(generatedPrintText.join(''));
     setIsPrintModalOpen(true);
   };
+  // Primeiro passo: Replicar modelo da função lidar com os dados e depois mostrar modal
   return (
     <Cont>
       <PrintModal
-        textPrint={textPrint}
         isOpen={isPrintModalOpen}
         handleClose={handleClose}
         pcsData={formattedPCs}
       />
+  // Segundo passo: Componetizar o modal e passar parametros: Variavel is Open (aberto ou fechado), handClose (função responsavel por fechar modal), pcData (Dados da tabela)
       <Container fluid className="justify-content-center">
         {location.state ? (
           <Row>
