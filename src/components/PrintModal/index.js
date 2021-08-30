@@ -22,6 +22,7 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
     navigator.clipboard.writeText(
       generatePrintCode(dataSelectionModel),
     )
+    console.log(dataSelectionModel)
     setShow(!show);
     setTimeout(() => {
       setShow(false)
@@ -45,6 +46,7 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
 
   const handleEditCellChangeCommitted = useCallback(
     ({ id, field, props }) => {
+      // console.log(id, field, props)
       if (field === 'SALDO') {
         const data = props;
         const SALDO = data.value;
@@ -79,16 +81,20 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
                 checkboxSelection
                 disableSelectionOnClick
                 onSelectionModelChange={newSelection => {
+                  // console.log(newSelection.selectionModel)
                   setSelectionModel(newSelection.selectionModel);
+                  // console.log(rows)
                   const newSelectionData = rows.filter(row =>
                     newSelection.selectionModel.includes(row.id),
                   );
                   setDataSelectionModel(newSelectionData);
+                  console.log(newSelectionData)
                 }}
                 selectionModel={selectionModel}
                 onEditCellChangeCommitted={handleEditCellChangeCommitted}
               />
             </div>
+            {/* // Terceiro passo: Configurar Datagrid para gerar a tabela */}
           </div>
         </Modal.Body>
         <Modal.Footer>
