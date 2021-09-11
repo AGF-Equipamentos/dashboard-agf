@@ -9,8 +9,8 @@ export function generatePrintCode(data) {
       ^FO550,85^A0,25^FD ${new Intl.DateTimeFormat('pt-BR').format(
         Date.now(),
       )}^FS
-      ^FO140,145^A0,35^FD ${item.DESCRICAO.slice(0, 30)}^FS
-      ^FO140,185^A0,35^FD ${item.DESCRICAO.slice(30, 60)}^FS
+      ^FO140,145^A0,35^FD ${item.DESCRICAO.slice(0, 29)}^FS
+      ^FO140,185^A0,35^FD ${item.DESCRICAO.slice(30, 59)}^FS
       ^FO140,225^A0,35^FD ${item.DESCRICAO.slice(60, 89)}^FS
   
       ^XZ
