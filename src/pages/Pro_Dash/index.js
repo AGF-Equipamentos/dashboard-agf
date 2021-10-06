@@ -16,7 +16,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { add, format, getMonth, getWeek, getYear, startOfWeek } from 'date-fns';
+import { add, format, getMonth, getWeek, startOfWeek } from 'date-fns';
 import toISODate from '../../utils/toISODate';
 import { Container as Cont } from './styles';
 import { generateSimplePrintCode } from '../../utils/generateSimplePrintCode';
@@ -95,7 +95,7 @@ export default function Pro_Dash() {
   const monthArray = [1,2,3,4,5,6,7,8,9,10,11,12];
   const month2DigArray = ['01','02','03','04','05','06','07','08','09','10','11','12'];
   const currentMonth = getMonth(new Date()) + 1;
-  const currentYear = getYear(new Date());
+  // const currentYear = getYear(new Date());
 
   useEffect(() => {
     const mapEmpenhos = EMPs.map(emp => emp.SALDO);
@@ -807,7 +807,7 @@ export default function Pro_Dash() {
 
                       {weeks.map(weekNumber => {
                         const empWK = EMPs.reduce((acc, value) => {
-                          {/* weekNumber =>  */}
+                          /* weekNumber =>  */
                           if (value.WEEK === weekNumber) {
                             return acc + value.SALDO;
                           }
