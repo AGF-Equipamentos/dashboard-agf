@@ -808,7 +808,7 @@ export default function Pro_Dash() {
                       {weeks.map(weekNumber => {
                         const empWK = EMPs.reduce((acc, value) => {
                           {/* weekNumber =>  */}
-                          if (value.WEEK === weekNumber && value.year === ) {
+                          if (value.WEEK === weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
