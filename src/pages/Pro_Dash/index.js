@@ -83,7 +83,7 @@ export default function Pro_Dash() {
 
   const dates = [
     'ATR',
-    ...Array.from({ length: 20 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
+    ...Array.from({ length: 12 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
   ];
 
   const period = dates.map(date => {
@@ -870,7 +870,7 @@ export default function Pro_Dash() {
 
                       {period.map(period => {
                         const pcWK = PCs.reduce( (acc, value) => {
-                          if ((value.WEEK === period.week) && (value.YEAR === period.year)) {
+                          if ((value.DATE < new Date() && period.week === 'ATR')) {
                             return acc + value.SALDO;
                           }
                           return acc;
