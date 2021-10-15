@@ -83,7 +83,7 @@ export default function Pro_Dash() {
 
   const dates = [
     'ATR',
-    ...Array.from({ length: 12 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
+    ...Array.from({ length: 20 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
   ];
 
   const period = dates.map(date => {
@@ -101,7 +101,7 @@ export default function Pro_Dash() {
 
   const weeks = [
     'ATR',
-    ...Array.from({ length: 12 }, (_, i) => i + currentWeek),
+    ...Array.from({ length: 20 }, (_, i) => i + currentWeek),
   ];
 
   // average consumption
@@ -870,7 +870,7 @@ export default function Pro_Dash() {
 
                       {period.map(period => {
                         const pcWK = PCs.reduce( (acc, value) => {
-                          if ((value.DATE < new Date() && period.week === 'ATR')) {
+                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
                             return acc + value.SALDO;
                           }
                           return acc;
@@ -1009,7 +1009,7 @@ export default function Pro_Dash() {
 
                       {period.map(period => {
                         const scWK = SCs.reduce((acc, value) => {
-                          if ((value.WEEK === period.week) && (value.YEAR === period.year)) {
+                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
                             return acc + value.SALDO;
                           }
                           return acc;
