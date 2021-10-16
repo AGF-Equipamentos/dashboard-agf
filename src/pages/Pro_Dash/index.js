@@ -83,7 +83,7 @@ export default function Pro_Dash() {
 
   const dates = [
     'ATR',
-    ...Array.from({ length: 20 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
+    ...Array.from({ length: 12 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
   ];
 
   const period = dates.map(date => {
@@ -101,7 +101,7 @@ export default function Pro_Dash() {
 
   const weeks = [
     'ATR',
-    ...Array.from({ length: 20 }, (_, i) => i + currentWeek),
+    ...Array.from({ length: 12 }, (_, i) => i + currentWeek),
   ];
 
   // average consumption
