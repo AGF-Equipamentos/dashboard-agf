@@ -16,7 +16,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { add, addWeeks, format, getMonth, getWeek, getYear, startOfWeek, endOfWeek } from 'date-fns';
+import { add, format, getMonth, getWeek, startOfWeek } from 'date-fns';
 import toISODate from '../../utils/toISODate';
 import { Container as Cont } from './styles';
 import { generateSimplePrintCode } from '../../utils/generateSimplePrintCode';
@@ -76,39 +76,26 @@ export default function Pro_Dash() {
   const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0);
   const location = useLocation();
   const currentWeek = getWeek(new Date());
-  const completeDate = new Date()
-
-  // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas 
-  // Fazer um map, transformanda as 12 datas em 12 objetos.
-
-  const dates = [
-    'ATR',
-    ...Array.from({ length: 12 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
-  ];
-
-  const period = dates.map(date => {
-    if (date === 'ATR')
-      return {
-        week: 'ATR',
-        year: 'ATR'
-      }
-    return {
-        date,
-        week: getWeek(date),
-        year: getYear(date)
-      }
-   })
-
+  // const period = [
+  //   {
+  //     week: 1,
+  //     year: 2021
+  //   },
+  //   {
+  //     week: 2,
+  //     year: 2021
+  //   },
+  //   .....
+  // ]
   const weeks = [
     'ATR',
     ...Array.from({ length: 12 }, (_, i) => i + currentWeek),
   ];
-
   // average consumption
   const monthArray = [1,2,3,4,5,6,7,8,9,10,11,12];
   const month2DigArray = ['01','02','03','04','05','06','07','08','09','10','11','12'];
   const currentMonth = getMonth(new Date()) + 1;
-  const currentYear = getYear(new Date());
+  // const currentYear = getYear(new Date());
 
   useEffect(() => {
     const mapEmpenhos = EMPs.map(emp => emp.SALDO);
@@ -283,15 +270,10 @@ export default function Pro_Dash() {
       const reponseUpdated6 = response6.data.map(item => {
         const itemUpdated = {
           ...item,
-          DATE: toISODate(item.ENTREGA),
           WEEK:
-              toISODate(item.ENTREGA) < new Date()
+            getWeek(toISODate(item.ENTREGA)) < currentWeek
               ? 'ATR'
-              : (getWeek(toISODate(item.ENTREGA))),
-          YEAR:
-              toISODate(item.ENTREGA) < new Date()
-              ? 'ATR'
-              : (getYear(toISODate(item.ENTREGA)))
+              : getWeek(toISODate(item.ENTREGA)),
         };
         // acrescentar getYear (nova propriedade) 
         return itemUpdated;
@@ -307,15 +289,10 @@ export default function Pro_Dash() {
       const reponseUpdated7 = response7.data.map(item => {
         const itemUpdated = {
           ...item,
-          DATE: toISODate(item.ENTREGA),
           WEEK:
-            toISODate(item.ENTREGA) < new Date()
+            getWeek(toISODate(item.ENTREGA)) < currentWeek
               ? 'ATR'
-              : (getWeek(toISODate(item.ENTREGA))),
-          YEAR:
-            toISODate(item.ENTREGA) < new Date()
-            ? 'ATR'
-            : (getYear(toISODate(item.ENTREGA)))
+              : getWeek(toISODate(item.ENTREGA)),
         };
         return itemUpdated;
       });
@@ -344,18 +321,12 @@ export default function Pro_Dash() {
         setEmpPlaceholder('Parece que não há empenhos...');
       }
       const reponseUpdated8 = response8.data.map(item => {
-        const date = toISODate(item.ENTREGA)
         const itemUpdated = {
           ...item,
-          DATE: toISODate(item.ENTREGA),
           WEEK:
-            date < new Date()
+            getWeek(toISODate(item.ENTREGA)) < currentWeek
               ? 'ATR'
-              : (getWeek(date)),
-          YEAR:
-            date < new Date()
-                ? 'ATR'
-                : (getYear(date))
+              : getWeek(toISODate(item.ENTREGA)),
         };
         return itemUpdated;
       });
@@ -418,7 +389,7 @@ export default function Pro_Dash() {
         setAverage(reponseUpdated10[0]);
       }
     },
-    [productNumber, currentMonth, month2DigArray, monthArray],
+    [productNumber, currentWeek, currentMonth, month2DigArray, monthArray],
   );
 
   // submit on press Enter
@@ -794,21 +765,20 @@ export default function Pro_Dash() {
               <thead>
                 <tr>
                   <th style={{ paddingBlock: '35px' }}>#</th>
-                  {period.map(period => {
-                    if (period.week === 'ATR') {
+                  {weeks.map(weekNumber => {
+                    if (weekNumber === 'ATR') {
                       return <th style={{ paddingBlock: '35px' }}>ATRASO</th>;
                     }
-                    console.log(add(new Date(), {
-                      weeks: period.week - currentWeek,
-                    }))
                     return (
                       <th>
-                        WK{period.week}
+                        WK{weekNumber}
                         <br />
                         <p style={{ fontSize: '12px', marginBottom: '4px' }}>
                           {format(
                             startOfWeek(
-                              period.date,
+                              add(new Date(), {
+                                weeks: weekNumber - currentWeek,
+                              }),
                               { weekStartsOn: 1 },
                             ),
                             'dd/MM',
@@ -816,7 +786,9 @@ export default function Pro_Dash() {
                           <br />
                           {format(
                             startOfWeek(
-                              period.date,
+                              add(new Date(), {
+                                weeks: weekNumber + 1 - currentWeek,
+                              }),
                               { weekStartsOn: 5 },
                             ),
                             'dd/MM',
@@ -833,19 +805,16 @@ export default function Pro_Dash() {
                     <tr>
                       <td>EMPENHO</td>
 
-                      {period.map(period => {
+                      {weeks.map(weekNumber => {
                         const empWK = EMPs.reduce((acc, value) => {
-                          if (value.DATE < new Date() && period.week === 'ATR') {
-                            return acc + value.SALDO;
-                          }
-                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
+                          /* weekNumber =>  */
+                          if (value.WEEK === weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
                         }, 0);
-                        // console.log(period.week, empWK)
 
-                        if (period.week === 'ATR' && empWK !== 0) {
+                        if (weekNumber === 'ATR' && empWK !== 0) {
                           return (
                             <td
                               style={{
@@ -861,21 +830,21 @@ export default function Pro_Dash() {
                         return (
                           <td>
                             {Math.round((empWK + Number.EPSILON) * 100) / 100}
-                          </td> 
+                          </td>
                         );
                       })}
                     </tr>
                     <tr>
                       <td>PC</td>
 
-                      {period.map(period => {
-                        const pcWK = PCs.reduce( (acc, value) => {
-                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
+                      {weeks.map(weekNumber => {
+                        const pcWK = PCs.reduce((acc, value) => {
+                          if (value.WEEK === weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
                         }, 0);
-                        if (period.week === 'ATR' && pcWK !== 0 ) {
+                        if (weekNumber === 'ATR' && pcWK !== 0) {
                           return (
                             <td
                               style={{
@@ -898,12 +867,12 @@ export default function Pro_Dash() {
                     <tr>
                       <td>SALDO</td>
 
-                      {period.map(period => {
+                      {weeks.map(weekNumber => {
                         const empWK = EMPs.reduce((acc, value) => {
                           if (value.WEEK === 'ATR') {
                             return acc + value.SALDO;
                           }
-                          if (value.DATE <= period.date) {
+                          if (value.WEEK <= weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
@@ -912,7 +881,7 @@ export default function Pro_Dash() {
                           if (value.WEEK === 'ATR') {
                             return acc + value.SALDO;
                           }
-                          if (value.DATE <= period.date) {
+                          if (value.WEEK <= weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
@@ -921,12 +890,11 @@ export default function Pro_Dash() {
                           if (value.WEEK === 'ATR') {
                             return acc + value.SALDO;
                           }
-                          if (value.DATE <= period.date) {
+                          if (value.WEEK <= weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
                         }, 0);
-                        // console.log(period.date, period.week, period.year ,empWK, pcWK, scWK)
 
                         if (
                           pcWK +
@@ -1007,15 +975,15 @@ export default function Pro_Dash() {
                     <tr>
                       <td>SC</td>
 
-                      {period.map(period => {
+                      {weeks.map(weekNumber => {
                         const scWK = SCs.reduce((acc, value) => {
-                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
+                          if (value.WEEK === weekNumber) {
                             return acc + value.SALDO;
                           }
                           return acc;
                         }, 0);
 
-                        if (period.week === 'ATR' && scWK !== 0) {
+                        if (weekNumber === 'ATR' && scWK !== 0) {
                           return (
                             <td
                               style={{
