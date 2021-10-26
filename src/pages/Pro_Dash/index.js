@@ -16,7 +16,7 @@ import {
 import { useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { add, addWeeks, format, getMonth, getWeek, getYear, startOfWeek, endOfWeek } from 'date-fns';
+import { addWeeks, format, getMonth, getWeek, getYear, startOfWeek, endOfWeek } from 'date-fns';
 import toISODate from '../../utils/toISODate';
 import { Container as Cont } from './styles';
 import { generateSimplePrintCode } from '../../utils/generateSimplePrintCode';
@@ -75,10 +75,9 @@ export default function Pro_Dash() {
   const [saldoPrev, setSaldoPrev] = useState('');
   const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0);
   const location = useLocation();
-  const currentWeek = getWeek(new Date());
   const completeDate = new Date()
 
-  // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas 
+  // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
   // Fazer um map, transformanda as 12 datas em 12 objetos.
 
   const dates = [
@@ -287,7 +286,7 @@ export default function Pro_Dash() {
               ? 'ATR'
               : (getYear(toISODate(item.ENTREGA)))
         };
-        // acrescentar getYear (nova propriedade) 
+        // acrescentar getYear (nova propriedade)
         return itemUpdated;
       });
       setPCs(reponseUpdated6);
@@ -365,7 +364,7 @@ export default function Pro_Dash() {
         const reponseUpdated10 = response10.data.map(item => {
           const itemUpdated = {
             ...item,
-            average: 
+            average:
               Math.round((
                 ((item.Q01 +
                   item.Q02 +
@@ -380,7 +379,7 @@ export default function Pro_Dash() {
                   item.Q11 +
                   item.Q12) / 12)
                 + Number.EPSILON) * 100) / 100,
-            total: 
+            total:
               item.Q01 +
               item.Q02 +
               item.Q03 +
@@ -397,22 +396,19 @@ export default function Pro_Dash() {
           return itemUpdated;
         });
 
-        const lastThreeMonthAverageReduce = Math.round(((monthArray.reduce((accumulator, month) => {
-          accumulator += (
-            (currentMonth + month - 1) > 16 
-              ? reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth + month - 14]}`] 
-              : 0
-          ) / 3
-          return accumulator;
-        }, 0)
-        ) + Number.EPSILON) * 100) / 100;
+        console.log(reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`])
+        const lastThreeMonthAverageReduce = Math.round((
+          (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
+          reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
+          reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
+          + Number.EPSILON) * 100) / 100;
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce);
 
         setAverage(reponseUpdated10[0]);
       }
     },
-    [productNumber, currentMonth, month2DigArray, monthArray],
+    [productNumber, currentMonth, month2DigArray],
   );
 
   // submit on press Enter
@@ -528,7 +524,7 @@ export default function Pro_Dash() {
             >
               Ultimos pedidos
             </Button>
-            <LastPCsModal 
+            <LastPCsModal
               isOpen={isPCModalOpen}
               handleClose={handlePCModalClose}
               pcsData={pcsData}
@@ -763,8 +759,8 @@ export default function Pro_Dash() {
                   <tr>
                     {monthArray.map(month => {
                       return (
-                        <td>{(currentMonth + month - 1) > 12 
-                          ? Average?.[`Q${month2DigArray[currentMonth + month - 14]}`] 
+                        <td>{(currentMonth + month - 1) > 12
+                          ? Average?.[`Q${month2DigArray[currentMonth + month - 14]}`]
                           : Average?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
                       )
                     })}
@@ -792,9 +788,6 @@ export default function Pro_Dash() {
                     if (period.week === 'ATR') {
                       return <th style={{ paddingBlock: '35px' }}>ATRASO</th>;
                     }
-                    console.log(add(new Date(), {
-                      weeks: period.week - currentWeek,
-                    }))
                     return (
                       <th>
                         WK{period.week}
@@ -837,7 +830,6 @@ export default function Pro_Dash() {
                           }
                           return acc;
                         }, 0);
-                        // console.log(period.week, empWK)
 
                         if (period.week === 'ATR' && empWK !== 0) {
                           return (
@@ -855,7 +847,7 @@ export default function Pro_Dash() {
                         return (
                           <td>
                             {Math.round((empWK + Number.EPSILON) * 100) / 100}
-                          </td> 
+                          </td>
                         );
                       })}
                     </tr>
@@ -920,7 +912,6 @@ export default function Pro_Dash() {
                           }
                           return acc;
                         }, 0);
-                        // console.log(period.date, period.week, period.year ,empWK, pcWK, scWK)
 
                         if (
                           pcWK +
