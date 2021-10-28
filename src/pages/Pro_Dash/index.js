@@ -77,7 +77,7 @@ export default function Pro_Dash() {
   const location = useLocation();
   const completeDate = new Date()
 
-  // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas 
+  // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
   // Fazer um map, transformanda as 12 datas em 12 objetos.
 
   const dates = [
@@ -286,7 +286,7 @@ export default function Pro_Dash() {
               toISODate(item.ENTREGA) < startOfWeek(new Date())
               ? 'ATR'
               : (getYear(toISODate(item.ENTREGA)))
-        }; 
+        };
         return itemUpdated;
       });
       setPCs(reponseUpdated6);
@@ -365,7 +365,7 @@ export default function Pro_Dash() {
         const reponseUpdated10 = response10.data.map(item => {
           const itemUpdated = {
             ...item,
-            average: 
+            average:
               Math.round((
                 ((item.Q01 +
                   item.Q02 +
@@ -380,7 +380,7 @@ export default function Pro_Dash() {
                   item.Q11 +
                   item.Q12) / 12)
                 + Number.EPSILON) * 100) / 100,
-            total: 
+            total:
               item.Q01 +
               item.Q02 +
               item.Q03 +
@@ -397,22 +397,19 @@ export default function Pro_Dash() {
           return itemUpdated;
         });
 
-        const lastThreeMonthAverageReduce = Math.round(((monthArray.reduce((accumulator, month) => {
-          accumulator += (
-            (currentMonth + month - 1) > 16 
-              ? reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth + month - 14]}`] 
-              : 0
-          ) / 3
-          return accumulator;
-        }, 0)
-        ) + Number.EPSILON) * 100) / 100;
+        console.log(reponseUpdated10)
+        const lastThreeMonthAverageReduce = Math.round((
+          (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
+          reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
+          reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
+          + Number.EPSILON) * 100) / 100;
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce);
 
         setAverage(reponseUpdated10[0]);
       }
     },
-    [productNumber, currentMonth, month2DigArray, monthArray],
+    [productNumber, currentMonth, month2DigArray],
   );
 
   // submit on press Enter
@@ -528,7 +525,7 @@ export default function Pro_Dash() {
             >
               Ultimos pedidos
             </Button>
-            <LastPCsModal 
+            <LastPCsModal
               isOpen={isPCModalOpen}
               handleClose={handlePCModalClose}
               pcsData={pcsData}
@@ -566,6 +563,7 @@ export default function Pro_Dash() {
               <thead>
                 <tr>
                   <th>DESCRIÇÃO</th>
+                  <th>GRUPO</th>
                   <th>UM</th>
                   <th>PP</th>
                   <th>LE</th>
@@ -579,6 +577,7 @@ export default function Pro_Dash() {
                   productInfo.map(product => (
                     <tr>
                       <td>{product.DESCRICAO}</td>
+                      <td>{product.GRUPO}</td>
                       <td>{product.UM}</td>
                       <td>{product.PP}</td>
                       <td>{product.LE}</td>
@@ -589,7 +588,7 @@ export default function Pro_Dash() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7">{codigoPlaceholder}</td>
+                    <td colSpan="8">{codigoPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
@@ -763,8 +762,8 @@ export default function Pro_Dash() {
                   <tr>
                     {monthArray.map(month => {
                       return (
-                        <td>{(currentMonth + month - 1) > 12 
-                          ? Average?.[`Q${month2DigArray[currentMonth + month - 14]}`] 
+                        <td>{(currentMonth + month - 1) > 12
+                          ? Average?.[`Q${month2DigArray[currentMonth + month - 14]}`]
                           : Average?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
                       )
                     })}
@@ -831,7 +830,7 @@ export default function Pro_Dash() {
                           }
                           if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
                             return acc + value.SALDO;
-                          } 
+                          }
                           return acc;
                         }, 0);
                         if (period.week === 'ATR' && empWK !== 0) {
@@ -850,7 +849,7 @@ export default function Pro_Dash() {
                         return (
                           <td>
                             {Math.round((empWK + Number.EPSILON) * 100) / 100}
-                          </td> 
+                          </td>
                         );
                       })}
                     </tr>
@@ -863,7 +862,7 @@ export default function Pro_Dash() {
                           }
                             if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))&& (value.APROVADO === 'L')) {
                               return acc + value.SALDO;
-                          } 
+                          }
                           return acc;
                         }, 0);
                         if (period.week === 'ATR' && pcWK !== 0 ) {
@@ -1003,10 +1002,10 @@ export default function Pro_Dash() {
                           }
                           if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
                             return acc + value.SALDO;
-                          } 
+                          }
                           return acc;
                         }, 0);
-                        
+
                         if (period.week === 'ATR' && scWK !== 0) {
                           return (
                             <td
