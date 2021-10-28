@@ -396,7 +396,7 @@ export default function Pro_Dash() {
           return itemUpdated;
         });
 
-        console.log(reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`])
+        console.log(reponseUpdated10)
         const lastThreeMonthAverageReduce = Math.round((
           (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
           reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
@@ -562,6 +562,7 @@ export default function Pro_Dash() {
               <thead>
                 <tr>
                   <th>DESCRIÇÃO</th>
+                  <th>GRUPO</th>
                   <th>UM</th>
                   <th>PP</th>
                   <th>LE</th>
@@ -575,6 +576,7 @@ export default function Pro_Dash() {
                   productInfo.map(product => (
                     <tr>
                       <td>{product.DESCRICAO}</td>
+                      <td>{product.GRUPO}</td>
                       <td>{product.UM}</td>
                       <td>{product.PP}</td>
                       <td>{product.LE}</td>
@@ -585,7 +587,7 @@ export default function Pro_Dash() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7">{codigoPlaceholder}</td>
+                    <td colSpan="8">{codigoPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
