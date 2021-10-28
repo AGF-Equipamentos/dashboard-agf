@@ -87,16 +87,17 @@ export default function Pro_Dash() {
 
   const period = dates.map(date => {
     if (date === 'ATR')
-      return {
-        week: 'ATR',
-        year: 'ATR'
-      }
     return {
-        date,
-        week: getWeek(date),
-        year: getYear(date)
-      }
-   })
+      date,
+      week: 'ATR',
+      year: 'ATR'
+    }
+    return {
+      date,
+      week: getWeek(date),
+      year: getYear(date)
+    }
+  })
 
   // average consumption
   const monthArray = [1,2,3,4,5,6,7,8,9,10,11,12];
@@ -278,15 +279,14 @@ export default function Pro_Dash() {
           ...item,
           DATE: toISODate(item.ENTREGA),
           WEEK:
-              toISODate(item.ENTREGA) < new Date()
+              toISODate(item.ENTREGA) < startOfWeek(new Date())
               ? 'ATR'
               : (getWeek(toISODate(item.ENTREGA))),
           YEAR:
-              toISODate(item.ENTREGA) < new Date()
+              toISODate(item.ENTREGA) < startOfWeek(new Date())
               ? 'ATR'
               : (getYear(toISODate(item.ENTREGA)))
         };
-        // acrescentar getYear (nova propriedade)
         return itemUpdated;
       });
       setPCs(reponseUpdated6);
@@ -298,17 +298,18 @@ export default function Pro_Dash() {
         setScPlaceholder('Parece que não há SCs...');
       }
       const reponseUpdated7 = response7.data.map(item => {
+        const date = toISODate(item.ENTREGA)
         const itemUpdated = {
           ...item,
-          DATE: toISODate(item.ENTREGA),
+          DATE: date,
           WEEK:
-            toISODate(item.ENTREGA) < new Date()
+            date < startOfWeek(new Date())
               ? 'ATR'
-              : (getWeek(toISODate(item.ENTREGA))),
+              : (getWeek(date)),
           YEAR:
-            toISODate(item.ENTREGA) < new Date()
+            date < startOfWeek(new Date())
             ? 'ATR'
-            : (getYear(toISODate(item.ENTREGA)))
+            : (date)
         };
         return itemUpdated;
       });
@@ -340,13 +341,13 @@ export default function Pro_Dash() {
         const date = toISODate(item.ENTREGA)
         const itemUpdated = {
           ...item,
-          DATE: toISODate(item.ENTREGA),
+          DATE: date,
           WEEK:
-            date < new Date()
+            date < startOfWeek(new Date())
               ? 'ATR'
               : (getWeek(date)),
           YEAR:
-            date < new Date()
+            date < startOfWeek(new Date())
                 ? 'ATR'
                 : (getYear(date))
         };
@@ -824,15 +825,14 @@ export default function Pro_Dash() {
 
                       {period.map(period => {
                         const empWK = EMPs.reduce((acc, value) => {
-                          if (value.DATE < new Date() && period.week === 'ATR') {
-                            return acc + value.SALDO;
+                          if (value.WEEK === 'ATR' && period.week === 'ATR') {
+                          return acc + value.SALDO;
                           }
                           if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
                             return acc + value.SALDO;
                           }
                           return acc;
                         }, 0);
-
                         if (period.week === 'ATR' && empWK !== 0) {
                           return (
                             <td
@@ -855,11 +855,13 @@ export default function Pro_Dash() {
                     </tr>
                     <tr>
                       <td>PC</td>
-
                       {period.map(period => {
-                        const pcWK = PCs.reduce( (acc, value) => {
-                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
-                            return acc + value.SALDO;
+                        const pcWK = PCs.reduce((acc, value) => {
+                          if (value.WEEK === 'ATR' && period.week === 'ATR' && (value.APROVADO === 'L')) {
+                              return acc + value.SALDO;
+                          }
+                            if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))&& (value.APROVADO === 'L')) {
+                              return acc + value.SALDO;
                           }
                           return acc;
                         }, 0);
@@ -887,75 +889,95 @@ export default function Pro_Dash() {
                       <td>SALDO</td>
 
                       {period.map(period => {
-                        const empWK = EMPs.reduce((acc, value) => {
+                          const empWK = EMPs.reduce((acc, value) => {
+                            if (value.WEEK === 'ATR') {
+                              return acc + value.SALDO;
+                            }
+                            if (value.DATE <= period.date) {
+                              return acc + value.SALDO;
+                            }
+                            return acc;
+                            }, 0);
+                          const pcWK = PCs.reduce((acc, value) => {
+                            if (value.WEEK === 'ATR' && (value.APROVADO === 'L')) {
+                              return acc + value.SALDO;
+                            }
+                            if (value.DATE <= period.date && (value.APROVADO === 'L')) {
+                              return acc + value.SALDO;
+                            }
+                            return acc;
+                          }, 0);
+                          const scWK = SCs.reduce((acc, value) => {
                           if (value.WEEK === 'ATR') {
-                            return acc + value.SALDO;
-                          }
-                          if (value.DATE <= period.date) {
-                            return acc + value.SALDO;
-                          }
-                          return acc;
-                        }, 0);
-                        const pcWK = PCs.reduce((acc, value) => {
-                          if (value.WEEK === 'ATR') {
-                            return acc + value.SALDO;
-                          }
-                          if (value.DATE <= period.date) {
-                            return acc + value.SALDO;
-                          }
-                          return acc;
-                        }, 0);
-                        const scWK = SCs.reduce((acc, value) => {
-                          if (value.WEEK === 'ATR') {
-                            return acc + value.SALDO;
-                          }
-                          if (value.DATE <= period.date) {
-                            return acc + value.SALDO;
-                          }
-                          return acc;
-                        }, 0);
+                              return acc + value.SALDO;
+                            }
+                            if (value.DATE <= period.date) {
+                              return acc + value.SALDO;
+                            }
+                            return acc;
+                          }, 0);
 
-                        if (
-                          pcWK +
+                          if (
+                            pcWK +
                             scWK -
                             empWK +
                             almoxarifados[0].SALDO +
                             stockWarehouse06[0].SALDO <
-                          0
-                        ) {
-                          return (
-                            <td
-                              style={{
-                                color: '#9C0006',
-                                backgroundColor: '#FFC7CE',
-                              }}
-                            >
-                              {Math.round(
-                                (pcWK +
-                                  scWK -
-                                  empWK +
-                                  almoxarifados[0].SALDO +
-                                  stockWarehouse06[0].SALDO +
-                                  Number.EPSILON) *
+                            0
+                            ) {
+                            return (
+                              <td
+                                style={{
+                                  color: '#9C0006',
+                                  backgroundColor: '#FFC7CE',
+                                }}
+                              >
+                                {Math.round(
+                                  (pcWK +
+                                    scWK -
+                                    empWK +
+                                    almoxarifados[0].SALDO +
+                                    stockWarehouse06[0].SALDO +
+                                    Number.EPSILON) *
                                   100,
-                              ) / 100}
-                            </td>
-                          );
-                        }
+                                ) / 100}
+                              </td>
+                            );
+                          }
 
-                        if (
-                          pcWK +
+                          if (
+                            pcWK +
                             scWK -
                             empWK +
                             almoxarifados[0].SALDO +
                             stockWarehouse06[0].SALDO ===
-                          0
-                        ) {
+                            0
+                            ) {
+                            return (
+                              <td
+                                style={{
+                                  color: '#9C6500',
+                                  backgroundColor: '#FFEB9C',
+                                }}
+                              >
+                                {Math.round(
+                                  (pcWK +
+                                    scWK -
+                                    empWK +
+                                    almoxarifados[0].SALDO +
+                                    stockWarehouse06[0].SALDO +
+                                    Number.EPSILON) *
+                                  100,
+                                ) / 100}
+                              </td>
+                            );
+                          }
+
                           return (
                             <td
                               style={{
-                                color: '#9C6500',
-                                backgroundColor: '#FFEB9C',
+                                color: '#006100',
+                                backgroundColor: '#C6EFCE',
                               }}
                             >
                               {Math.round(
@@ -965,37 +987,19 @@ export default function Pro_Dash() {
                                   almoxarifados[0].SALDO +
                                   stockWarehouse06[0].SALDO +
                                   Number.EPSILON) *
-                                  100,
+                                100,
                               ) / 100}
                             </td>
                           );
-                        }
-
-                        return (
-                          <td
-                            style={{
-                              color: '#006100',
-                              backgroundColor: '#C6EFCE',
-                            }}
-                          >
-                            {Math.round(
-                              (pcWK +
-                                scWK -
-                                empWK +
-                                almoxarifados[0].SALDO +
-                                stockWarehouse06[0].SALDO +
-                                Number.EPSILON) *
-                                100,
-                            ) / 100}
-                          </td>
-                        );
-                      })}
+                        })}
                     </tr>
                     <tr>
                       <td>SC</td>
-
                       {period.map(period => {
                         const scWK = SCs.reduce((acc, value) => {
+                          if (value.WEEK === 'ATR' && period.week === 'ATR') {
+                            return acc + value.SALDO;
+                          }
                           if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
                             return acc + value.SALDO;
                           }
@@ -1014,7 +1018,6 @@ export default function Pro_Dash() {
                             </td>
                           );
                         }
-
                         return (
                           <td>
                             {Math.round((scWK + Number.EPSILON) * 100) / 100}
