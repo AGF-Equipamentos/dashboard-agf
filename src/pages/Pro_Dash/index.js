@@ -75,7 +75,7 @@ export default function Pro_Dash() {
   const [saldoPrev, setSaldoPrev] = useState('');
   const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0);
   const location = useLocation();
-  const completeDate = new Date()
+  const completeDate = new Date();
 
   // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
   // Fazer um map, transformanda as 12 datas em 12 objetos.
@@ -397,12 +397,26 @@ export default function Pro_Dash() {
           return itemUpdated;
         });
 
-        console.log(reponseUpdated10)
-        const lastThreeMonthAverageReduce = Math.round((
-          (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
-          reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
-          reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
-          + Number.EPSILON) * 100) / 100;
+
+        let lastThreeMonthAverageReduce = 0;
+        if(currentMonth < 4) {
+          const inverseMonths = ['10', '11', '12', '01', '02'];
+          lastThreeMonthAverageReduce = Math.round((
+            (reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth] - 1}`] +
+            reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth]}`] +
+            reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
+            + Number.EPSILON) * 100) / 100;
+            console.log(reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth]}`])
+            console.log([currentMonth - 2])
+        } else {
+          lastThreeMonthAverageReduce = Math.round((
+            (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
+            reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
+            reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
+            + Number.EPSILON) * 100) / 100;
+            console.log(reponseUpdated10[0])
+            console.log([currentMonth - 2])
+        }
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce);
 
