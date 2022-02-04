@@ -31,6 +31,7 @@ export default function Pro_Dash() {
   const [quebrados, setQuebrados] = useState([]);
   const [pos, setPos] = useState([]);
   const [vix, setVix] = useState([]);
+  const [bahia, setBahia] = useState([]);
   const [stockWarehouse06, setStockWarehouse06] = useState([]);
   const [productInfo, setProductInfo] = useState([]);
   const [PCs, setPCs] = useState([]);
@@ -66,6 +67,7 @@ export default function Pro_Dash() {
   const [supermercadosPlaceholder, setSupermercadosPlaceholder] = useState(0);
   const [posPlaceholder, setPosPlaceholder] = useState(0);
   const [vixPlaceholder, setVixPlaceholder] = useState(0);
+  const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0);
   const [stock06Placeholder, setStock06Placeholder] = useState(0);
   const [quebradosPlaceholder, setQuebradosPlaceholder] = useState(0);
   const [sumEmp, setSumEmp] = useState('');
@@ -158,6 +160,7 @@ export default function Pro_Dash() {
       setQuebrados([]);
       setPos([]);
       setVix([]);
+      setBahia([]);
       setStockWarehouse06([]);
       setPCs([]);
       setSCs([]);
@@ -182,6 +185,9 @@ export default function Pro_Dash() {
         <Spinner animation="border" size="sm" variant="warning" />,
       );
       setVixPlaceholder(
+        <Spinner animation="border" size="sm" variant="warning" />,
+      );
+      setBahiaPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />,
       );
       setStock06Placeholder(
@@ -256,7 +262,23 @@ export default function Pro_Dash() {
       if (response5.data.length === 0) {
         setVix([{ SALDO: 0 }]);
       } else {
-        setVix(response5.data);
+        console.log(response5.data)
+        const totalStock = response5.data.reduce((acc, stock) => {
+            return stock.SALDO + acc
+        }, 0)
+        setVix([{ SALDO: totalStock }]);
+      }
+
+      const responsebahia = await api.get(
+        `/estoques?filial=0103&produto=${product}`,
+      );
+      if (responsebahia.data.length === 0) {
+        setBahia([{ SALDO: 0 }]);
+      } else {
+        const totalStock = responsebahia.data.reduce((acc, stock) => {
+            return stock.SALDO + acc
+        }, 0)
+        setBahia([{ SALDO: totalStock }]);
       }
 
       const stockWarehouse06Data = await api.get(
@@ -406,16 +428,12 @@ export default function Pro_Dash() {
             reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth]}`] +
             reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
             + Number.EPSILON) * 100) / 100;
-            console.log(reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth]}`])
-            console.log([currentMonth - 2])
         } else {
           lastThreeMonthAverageReduce = Math.round((
             (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
             reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
             reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
             + Number.EPSILON) * 100) / 100;
-            console.log(reponseUpdated10[0])
-            console.log([currentMonth - 2])
         }
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce);
@@ -737,7 +755,7 @@ export default function Pro_Dash() {
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  <th>FILIAL</th>
+                  <th>FILIAL SC</th>
                 </tr>
               </thead>
               <tbody>
@@ -750,6 +768,28 @@ export default function Pro_Dash() {
                 ) : (
                   <tr>
                     <td>{vixPlaceholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>FILIAL BA</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bahia.length !== 0 ? (
+                  bahia.map(bahiaItem => (
+                    <tr key={bahiaItem.SALDO}>
+                      <td>{bahiaItem.SALDO}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td>{bahiaPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
