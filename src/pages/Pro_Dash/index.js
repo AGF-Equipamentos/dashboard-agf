@@ -755,7 +755,7 @@ export default function Pro_Dash() {
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  <th>FILIAL SC</th>
+                  <th>FILIAL ES</th>
                 </tr>
               </thead>
               <tbody>
