@@ -1,18 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  Table,
-  Button,
-  InputGroup,
-  FormControl,
-  Row,
-  Col,
-  Badge,
-  Spinner,
-  Container,
-  Overlay,
-  Tooltip,
-  Alert
-} from 'react-bootstrap';
+import { Table, Button, InputGroup, FormControl, Row, Col, Badge, Spinner, Container, Overlay, Tooltip, Alert } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -40,6 +27,8 @@ export default function Pro_Dash() {
   const [EMPs, setEMPs] = useState([]);
   const [OUs, setOUs] = useState([]);
   const [Average, setAverage] = useState([]);
+  const [Average02, setAverage02] = useState([]);
+  const [Average03, setAverage03] = useState([]);
 
   const [codigoPlaceholder, setCodigoPlaceholder] = useState(
     'Pesquise por um código...',
@@ -62,6 +51,12 @@ export default function Pro_Dash() {
   const [averagePlaceholder, setAveragePlaceholder] = useState(
     'Pesquise por um código...',
   );
+  const [average02Placeholder, setAverage02Placeholder] = useState(
+    'Pesquise por um código...',
+  );
+  const [average03Placeholder, setAverage03Placeholder] = useState(
+    'Pesquise por um código...',
+  );
 
   const [almoxarifadoPlaceholder, setAlmoxarifadoPlaceholder] = useState(0);
   const [supermercadosPlaceholder, setSupermercadosPlaceholder] = useState(0);
@@ -76,6 +71,8 @@ export default function Pro_Dash() {
   const [sumOPs, setSumOPs] = useState('');
   const [saldoPrev, setSaldoPrev] = useState('');
   const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0);
+  const [lastThreeMonthAverage02, setlastThreeMonthAverage02] = useState(0);
+  const [lastThreeMonthAverage03, setlastThreeMonthAverage03] = useState(0);
   const location = useLocation();
   const completeDate = new Date();
 
@@ -168,6 +165,8 @@ export default function Pro_Dash() {
       setOUs([]);
       setEMPs([]);
       setAverage([]);
+      setAverage02([]);
+      setAverage03([]);
 
       setCodigoPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />,
@@ -209,6 +208,12 @@ export default function Pro_Dash() {
         <Spinner animation="border" size="sm" variant="warning" />,
       );
       setAveragePlaceholder(
+        <Spinner animation="border" size="sm" variant="warning" />,
+      );
+      setAverage02Placeholder(
+        <Spinner animation="border" size="sm" variant="warning" />,
+      );
+      setAverage03Placeholder(
         <Spinner animation="border" size="sm" variant="warning" />,
       );
 
@@ -268,7 +273,8 @@ export default function Pro_Dash() {
         }, 0)
         setVix([{ SALDO: totalStock }]);
       }
-
+      
+      //formula com o estoque 
       const responsebahia = await api.get(
         `/estoques?filial=0103&produto=${product}`,
       );
@@ -377,6 +383,7 @@ export default function Pro_Dash() {
       });
       setEMPs(reponseUpdated8);
 
+    // start filial 0101
       const response10 = await api.get(
         `/average?filial=0101&produto=${product}`,
       );
@@ -419,7 +426,6 @@ export default function Pro_Dash() {
           return itemUpdated;
         });
 
-
         let lastThreeMonthAverageReduce = 0;
         if(currentMonth < 4) {
           const inverseMonths = ['10', '11', '12', '01', '02'];
@@ -440,6 +446,134 @@ export default function Pro_Dash() {
 
         setAverage(reponseUpdated10[0]);
       }
+    // finish filial 0101
+    // start filial 0102
+    const average0102 = await api.get(
+      `/average?filial=0102&produto=${product}`,
+    );
+
+    if (average0102.data.length === 0) {
+      setAverage02Placeholder('Parece que não há consumo...');
+    } else {
+      const averageUpdated0102 = average0102.data.map(item => {
+        const itemUpdated = {
+          ...item,
+          average02:
+            Math.round((
+              ((item.Q01 +
+                item.Q02 +
+                item.Q03 +
+                item.Q04 +
+                item.Q05 +
+                item.Q06 +
+                item.Q07 +
+                item.Q08 +
+                item.Q09 +
+                item.Q10 +
+                item.Q11 +
+                item.Q12) / 12)
+              + Number.EPSILON) * 100) / 100,
+          total:
+            item.Q01 +
+            item.Q02 +
+            item.Q03 +
+            item.Q04 +
+            item.Q05 +
+            item.Q06 +
+            item.Q07 +
+            item.Q08 +
+            item.Q09 +
+            item.Q10 +
+            item.Q11 +
+            item.Q12,
+        };
+        return itemUpdated;
+      });
+
+      let lastThreeMonthAverage02Reduce = 0;
+      if(currentMonth < 4) {
+        const inverseMonths = ['10', '11', '12', '01', '02'];
+        lastThreeMonthAverage02Reduce = Math.round((
+          (averageUpdated0102[0]?.[`Q${inverseMonths[currentMonth] - 1}`] +
+          averageUpdated0102[0]?.[`Q${inverseMonths[currentMonth]}`] +
+          averageUpdated0102[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
+          + Number.EPSILON) * 100) / 100;
+      } else {
+        lastThreeMonthAverage02Reduce = Math.round((
+          (averageUpdated0102[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
+          averageUpdated0102[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
+          averageUpdated0102[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
+          + Number.EPSILON) * 100) / 100;
+      }
+
+      setlastThreeMonthAverage02(lastThreeMonthAverage02Reduce);
+
+      setAverage02(averageUpdated0102[0]);
+    }
+    // start filial 02
+    // start filial 03
+    const average0103 = await api.get(
+      `/average?filial=0103&produto=${product}`,
+    );
+
+    if (average0103.data.length === 0) {
+      setAverage03Placeholder('Parece que não há consumo...');
+    } else {
+      const averageUpdated0103 = average0103.data.map(item => {
+        const itemUpdated = {
+          ...item,
+          average03:
+            Math.round((
+              ((item.Q01 +
+                item.Q02 +
+                item.Q03 +
+                item.Q04 +
+                item.Q05 +
+                item.Q06 +
+                item.Q07 +
+                item.Q08 +
+                item.Q09 +
+                item.Q10 +
+                item.Q11 +
+                item.Q12) / 12)
+              + Number.EPSILON) * 100) / 100,
+          total:
+            item.Q01 +
+            item.Q02 +
+            item.Q03 +
+            item.Q04 +
+            item.Q05 +
+            item.Q06 +
+            item.Q07 +
+            item.Q08 +
+            item.Q09 +
+            item.Q10 +
+            item.Q11 +
+            item.Q12,
+        };
+        return itemUpdated;
+      });
+
+      let lastThreeMonthAverage03Reduce = 0;
+      if(currentMonth < 4) {
+        const inverseMonths = ['10', '11', '12', '01', '02'];
+        lastThreeMonthAverage03Reduce = Math.round((
+          (averageUpdated0103[0]?.[`Q${inverseMonths[currentMonth] - 1}`] +
+          averageUpdated0103[0]?.[`Q${inverseMonths[currentMonth]}`] +
+          averageUpdated0103[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
+          + Number.EPSILON) * 100) / 100;
+      } else {
+        lastThreeMonthAverage03Reduce = Math.round((
+          (averageUpdated0103[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
+          averageUpdated0103[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
+          averageUpdated0103[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
+          + Number.EPSILON) * 100) / 100;
+      }
+
+      setlastThreeMonthAverage03(lastThreeMonthAverage03Reduce);
+
+      setAverage03(averageUpdated0103[0]);
+    }
     },
     [productNumber, currentMonth, month2DigArray],
   );
@@ -798,7 +932,7 @@ export default function Pro_Dash() {
         </Row>
         <Row>
           <Col>
-          <h5>Consumo últimos 12 meses</h5>
+          <h5>Consumo últimos 12 meses - Filial SP</h5>
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
@@ -827,6 +961,80 @@ export default function Pro_Dash() {
                   ) : (
                   <tr>
                     <td colSpan="14">{averagePlaceholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+          <h5>Consumo últimos 12 meses - Filial ES</h5>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  {monthArray.map(month => {
+                    return (
+                      <th>{(currentMonth + month - 1) > 12 ? `${currentMonth + month - 13}` : `${currentMonth + month - 1}`}</th>
+                    )
+                  })}
+                  <th>MÉDIA ÚLT 3 MESES</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Average02?.length !== 0 ? (
+                  <tr>
+                    {monthArray.map(month => {
+                      return (
+                        <td>{(currentMonth + month - 1) > 12
+                          ? Average02?.[`Q${month2DigArray[currentMonth + month - 14]}`]
+                          : Average02?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
+                      )
+                    })}
+                    <td>{lastThreeMonthAverage02}</td>
+                    <td>{Average02.total}</td>
+                  </tr>
+                  ) : (
+                  <tr>
+                    <td colSpan="14">{average02Placeholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+          <h5>Consumo últimos 12 meses - Filial BA</h5>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  {monthArray.map(month => {
+                    return (
+                      <th>{(currentMonth + month - 1) > 12 ? `${currentMonth + month - 13}` : `${currentMonth + month - 1}`}</th>
+                    )
+                  })}
+                  <th>MÉDIA ÚLT 3 MESES</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Average03?.length !== 0 ? (
+                  <tr>
+                    {monthArray.map(month => {
+                      return (
+                        <td>{(currentMonth + month - 1) > 12
+                          ? Average03?.[`Q${month2DigArray[currentMonth + month - 14]}`]
+                          : Average03?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
+                      )
+                    })}
+                    <td>{lastThreeMonthAverage03}</td>
+                    <td>{Average03.total}</td>
+                  </tr>
+                  ) : (
+                  <tr>
+                    <td colSpan="14">{average03Placeholder}</td>
                   </tr>
                 )}
               </tbody>
