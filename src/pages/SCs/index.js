@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Table,
-  Button,
-  InputGroup,
-  FormControl,
-  Row,
-  Col,
-  Spinner,
-  Container,
-} from 'react-bootstrap';
+import { Table, Button, InputGroup, FormControl, Row, Col, Spinner, Container, Dropdown, DropdownButton} from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Container as Cont } from './styles';
@@ -18,9 +9,8 @@ import api from '../../services/api';
 export default function SCs() {
   const [scNumber, setScNumber] = useState('');
   const [dataSCs, setDataSCs] = useState([]);
-  const [scsPlaceholder, setScsPlaceholder] = useState(
-    'Pesquise por uma SC...',
-  );
+  const [scsPlaceholder, setScsPlaceholder] = useState('Pesquise por uma SC...');
+  const [filial, setFilial] = useState('0101')
   const location = useLocation();
 
   const handleSubmit = useCallback(
@@ -34,15 +24,33 @@ export default function SCs() {
       if (search > 0) {
         sc = search.toUpperCase().trim();
       }
-      const response = await api.get(`/scs?filial=0101&sc=${sc}`, {});
+      const response = await api.get(`/scs`, {
+        params: {
+          filial,
+          sc: sc
+        }
+      });
       if (response.data.length === 0) {
         setScsPlaceholder('Parece que não há uma SC com esse número...');
       }
 
       setDataSCs(response.data);
     },
-    [scNumber],
+    [scNumber, filial],
   );
+
+  const handleFilialPlaceholder = useCallback((filial) => {
+    switch(filial) {
+      case '0101':
+        return 'Matriz'
+      case '0102':
+        return 'Filial ES'
+      case '0103':
+        return 'Filial BA'
+      default:
+        return 'Matriz'
+    }
+  }, [])
 
   // submit on press Enter
   function keyPressed(event) {
@@ -100,6 +108,22 @@ export default function SCs() {
             onKeyPress={keyPressed}
             onChange={e => setScNumber(e.target.value)}
           />
+          <DropdownButton
+            as={InputGroup.Append}
+            variant="outline-warning"
+            title={handleFilialPlaceholder(filial)}
+          >
+            <Dropdown.Item onClick={() => setFilial('0101')}>
+                Matriz
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilial('0102')}>
+                Filial ES
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilial('0103')}>
+                Filial BA
+            </Dropdown.Item>
+          </DropdownButton>
+
           <InputGroup.Append>
             <Button
               onClick={handleSubmit}
@@ -109,6 +133,7 @@ export default function SCs() {
               Enviar
             </Button>
           </InputGroup.Append>
+
         </InputGroup>
 
         <Table responsive striped bordered hover>

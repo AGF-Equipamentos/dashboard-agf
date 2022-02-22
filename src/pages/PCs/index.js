@@ -1,17 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  Table,
-  Button,
-  InputGroup,
-  FormControl,
-  Badge,
-  Row,
-  DropdownButton,
-  Dropdown,
-  Col,
-  Spinner,
-  Container,
-} from 'react-bootstrap';
+import { Table, Button, InputGroup, FormControl, Badge, Row, DropdownButton, Dropdown, Col, Spinner, Container} from 'react-bootstrap';
 import { useLocation, Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Container as Cont } from './styles';
@@ -27,6 +15,7 @@ export default function PCs() {
   const [sumPCs, setSumPCs] = useState([]);
   const [pcsPlaceholder, setPcsPlaceholder] = useState('Pesquise por um PC...');
   const [filter, setFilter] = useState('Pesquisar por número do PC');
+  const [filial, setFilial] = useState('0101')
   const location = useLocation();
 
   const handleSubmit = useCallback(
@@ -47,13 +36,24 @@ export default function PCs() {
       }
       if (filterVar === 'CNPJ') {
         response = await api.get(
-          `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&&cnpj=${searchVar}`,
+          `/pcs`, {
+            params: {
+              filial,
+              legenda: "PENDENTE', 'ATENDIDO PARCIALMENTE",
+              cnpj: searchVar
+            }
+          }
         );
         if (response.data.length === 0) {
           setPcsPlaceholder('Parece que não há um PC com esse CNPJ...');
         }
       } else {
-        response = await api.get(`/pcs?filial=0101&pc=${searchVar}`);
+        response = await api.get(`/pcs`, {
+          params: {
+            filial,
+            pc: searchVar
+          }
+        });
         if (response.data.length === 0) {
           setPcsPlaceholder('Parece que não há um PC com esse número...');
         }
@@ -61,7 +61,7 @@ export default function PCs() {
 
       setDataPCs(response.data);
     },
-    [searchValue, filter],
+    [searchValue, filter, filial],
   );
 
   useEffect(() => {
@@ -112,6 +112,20 @@ export default function PCs() {
     setTextPrint(generatedPrintText.join(''));
     setIsPrintModalOpen(true);
   };
+
+  const handleFilialPlaceholder = useCallback((filial) => {
+    switch(filial) {
+      case '0101':
+        return 'Matriz'
+      case '0102':
+        return 'Filial ES'
+      case '0103':
+        return 'Filial BA'
+      default:
+        return 'Matriz'
+    }
+  }, [])
+
   return (
     <Cont>
       <PrintModal
@@ -171,6 +185,24 @@ export default function PCs() {
               CNPJ
             </Dropdown.Item>
           </DropdownButton>
+
+          <DropdownButton
+            as={InputGroup.Append}
+            variant="outline-warning"
+            title={handleFilialPlaceholder(filial)}
+            id="input-group-dropdown-2"
+          >
+            <Dropdown.Item onClick={() => setFilial('0101')}>
+              Matriz
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilial('0102')}>
+              Filial ES
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilial('0103')}>
+              Filial BA
+            </Dropdown.Item>
+          </DropdownButton>
+
           <InputGroup.Append>
             <Button
               onClick={() => handleSubmit()}
