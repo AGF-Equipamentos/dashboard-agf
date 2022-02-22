@@ -117,16 +117,12 @@ export default function PCs() {
     switch(filial) {
       case '0101':
         return 'Matriz'
-        break;
       case '0102':
         return 'Filial ES'
-        break;
       case '0103':
         return 'Filial BA'
-        break;
       default:
         return 'Matriz'
-        break;
     }
   }, [])
 
