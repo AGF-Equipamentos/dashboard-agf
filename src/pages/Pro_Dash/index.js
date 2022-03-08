@@ -476,10 +476,9 @@ export default function Pro_Dash() {
         };
         return itemUpdated;
       });
-
+      
       const lastThreeMonthAverageReduce = average3Months(currentMonth, averageUpdated0102[0])
       setlastThreeMonthAverage02(lastThreeMonthAverageReduce);
-
       setAverage02(averageUpdated0102[0]);
     }
     // start filial 02
