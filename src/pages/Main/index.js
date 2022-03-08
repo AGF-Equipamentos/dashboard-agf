@@ -68,13 +68,6 @@ export default function Main() {
               </Link>
             </Col>
           </Row>
-          <Row className="align-items-center">
-            <Col>
-              <Link to="/critical-items">
-                <button type="button">Itens Críticos</button>
-              </Link>
-            </Col>
-          </Row>
         </Col>
       </Container>
     </Cont>
