@@ -10,6 +10,7 @@ import { generateSimplePrintCode } from '../../utils/generateSimplePrintCode';
 import LastPCsModal from '../../components/LastPCsModal'
 
 import api from '../../services/api';
+import { average3Months } from '../../utils/average';
 
 export default function Pro_Dash() {
   const [productNumber, setProductNumber] = useState('');
@@ -267,14 +268,13 @@ export default function Pro_Dash() {
       if (response5.data.length === 0) {
         setVix([{ SALDO: 0 }]);
       } else {
-        console.log(response5.data)
         const totalStock = response5.data.reduce((acc, stock) => {
             return stock.SALDO + acc
         }, 0)
         setVix([{ SALDO: totalStock }]);
       }
-      
-      //formula com o estoque 
+
+      //formula com o estoque
       const responsebahia = await api.get(
         `/estoques?filial=0103&produto=${product}`,
       );
@@ -425,22 +425,7 @@ export default function Pro_Dash() {
           };
           return itemUpdated;
         });
-
-        let lastThreeMonthAverageReduce = 0;
-        if(currentMonth < 4) {
-          const inverseMonths = ['10', '11', '12', '01', '02'];
-          lastThreeMonthAverageReduce = Math.round((
-            (reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth] - 1}`] +
-            reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth]}`] +
-            reponseUpdated10[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
-            + Number.EPSILON) * 100) / 100;
-        } else {
-          lastThreeMonthAverageReduce = Math.round((
-            (reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
-            reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
-            reponseUpdated10[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
-            + Number.EPSILON) * 100) / 100;
-        }
+        const lastThreeMonthAverageReduce = average3Months(currentMonth, reponseUpdated10[0])
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce);
 
@@ -490,24 +475,8 @@ export default function Pro_Dash() {
         return itemUpdated;
       });
 
-      let lastThreeMonthAverage02Reduce = 0;
-      if(currentMonth < 4) {
-        const inverseMonths = ['10', '11', '12', '01', '02'];
-        lastThreeMonthAverage02Reduce = Math.round((
-          (averageUpdated0102[0]?.[`Q${inverseMonths[currentMonth] - 1}`] +
-          averageUpdated0102[0]?.[`Q${inverseMonths[currentMonth]}`] +
-          averageUpdated0102[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
-          + Number.EPSILON) * 100) / 100;
-      } else {
-        lastThreeMonthAverage02Reduce = Math.round((
-          (averageUpdated0102[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
-          averageUpdated0102[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
-          averageUpdated0102[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
-          + Number.EPSILON) * 100) / 100;
-      }
-
-      setlastThreeMonthAverage02(lastThreeMonthAverage02Reduce);
-
+      const lastThreeMonthAverageReduce = average3Months(currentMonth, averageUpdated0102[0])
+      setlastThreeMonthAverage02(lastThreeMonthAverageReduce);
       setAverage02(averageUpdated0102[0]);
     }
     // start filial 02
@@ -554,28 +523,13 @@ export default function Pro_Dash() {
         return itemUpdated;
       });
 
-      let lastThreeMonthAverage03Reduce = 0;
-      if(currentMonth < 4) {
-        const inverseMonths = ['10', '11', '12', '01', '02'];
-        lastThreeMonthAverage03Reduce = Math.round((
-          (averageUpdated0103[0]?.[`Q${inverseMonths[currentMonth] - 1}`] +
-          averageUpdated0103[0]?.[`Q${inverseMonths[currentMonth]}`] +
-          averageUpdated0103[0]?.[`Q${inverseMonths[currentMonth + 1]}`]) / 3
-          + Number.EPSILON) * 100) / 100;
-      } else {
-        lastThreeMonthAverage03Reduce = Math.round((
-          (averageUpdated0103[0]?.[`Q${month2DigArray[currentMonth - 2]}`] +
-          averageUpdated0103[0]?.[`Q${month2DigArray[currentMonth - 3]}`] +
-          averageUpdated0103[0]?.[`Q${month2DigArray[currentMonth - 4]}`]) / 3
-          + Number.EPSILON) * 100) / 100;
-      }
-
-      setlastThreeMonthAverage03(lastThreeMonthAverage03Reduce);
+      const lastThreeMonthAverageReduce = average3Months(currentMonth, averageUpdated0103[0])
+      setlastThreeMonthAverage03(lastThreeMonthAverageReduce);
 
       setAverage03(averageUpdated0103[0]);
     }
     },
-    [productNumber, currentMonth, month2DigArray],
+    [productNumber, currentMonth],
   );
 
   // submit on press Enter
