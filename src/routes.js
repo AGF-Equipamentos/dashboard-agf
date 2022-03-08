@@ -11,6 +11,7 @@ import OPsPosVendas from './pages/OPsPosVendas';
 import OPsFilial from './pages/OPsFilial';
 import OPsPP from './pages/OPsPP';
 import ProductRegister from './pages/ProductRegister';
+import CriticalItems from './pages/CriticalItems';
 
 export default function Routes() {
   return (
@@ -25,6 +26,7 @@ export default function Routes() {
       <Route path="/opspos" component={OPsPosVendas} />
       <Route path="/opsfilial" component={OPsFilial} />
       <Route path="/opspp" component={OPsPP} />
+      <Route path="/critical-items" component={CriticalItems} />
     </BrowserRouter>
   );
 }

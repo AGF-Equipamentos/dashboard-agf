@@ -67,7 +67,13 @@ export default function Main() {
                 <button type="button">OPs por Ponto de Pedido</button>
               </Link>
             </Col>
-
+          </Row>
+          <Row className="align-items-center">
+            <Col>
+              <Link to="/critical-items">
+                <button type="button">Itens Críticos</button>
+              </Link>
+            </Col>
           </Row>
         </Col>
       </Container>
