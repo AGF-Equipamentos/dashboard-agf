@@ -268,7 +268,6 @@ export default function Pro_Dash() {
       if (response5.data.length === 0) {
         setVix([{ SALDO: 0 }]);
       } else {
-        console.log(response5.data)
         const totalStock = response5.data.reduce((acc, stock) => {
             return stock.SALDO + acc
         }, 0)
@@ -426,7 +425,6 @@ export default function Pro_Dash() {
           };
           return itemUpdated;
         });
-        console.log(reponseUpdated10[0])
         const lastThreeMonthAverageReduce = average3Months(currentMonth, reponseUpdated10[0])
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce);
@@ -476,7 +474,7 @@ export default function Pro_Dash() {
         };
         return itemUpdated;
       });
-      
+
       const lastThreeMonthAverageReduce = average3Months(currentMonth, averageUpdated0102[0])
       setlastThreeMonthAverage02(lastThreeMonthAverageReduce);
       setAverage02(averageUpdated0102[0]);
