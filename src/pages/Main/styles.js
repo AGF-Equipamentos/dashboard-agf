@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Container = styled.div`
   background: rgb(16, 15, 18);
@@ -30,7 +30,7 @@ export const Container = styled.div`
     background: rgb(247, 223, 30);
     color: rgb(16, 15, 18);
   }
-`;
+`
 
 export const Header = styled.div`
   @media only screen and (max-width: 400px) {
@@ -67,4 +67,4 @@ export const Header = styled.div`
       -webkit-text-fill-color: transparent;
     }
   }
-`;
+`

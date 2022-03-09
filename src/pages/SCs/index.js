@@ -1,46 +1,57 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Button, InputGroup, FormControl, Row, Col, Spinner, Container, Dropdown, DropdownButton} from 'react-bootstrap';
-import { useLocation, Link } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-import { Container as Cont } from './styles';
+import React, { useState, useEffect, useCallback } from 'react'
+import {
+  Table,
+  Button,
+  InputGroup,
+  FormControl,
+  Row,
+  Col,
+  Spinner,
+  Container,
+  Dropdown,
+  DropdownButton
+} from 'react-bootstrap'
+import { useLocation, Link } from 'react-router-dom'
+import { FiArrowLeft } from 'react-icons/fi'
+import { Container as Cont } from './styles'
 
-import api from '../../services/api';
+import api from '../../services/api'
 
 export default function SCs() {
-  const [scNumber, setScNumber] = useState('');
-  const [dataSCs, setDataSCs] = useState([]);
-  const [scsPlaceholder, setScsPlaceholder] = useState('Pesquise por uma SC...');
+  const [scNumber, setScNumber] = useState('')
+  const [dataSCs, setDataSCs] = useState([])
+  const [scsPlaceholder, setScsPlaceholder] = useState('Pesquise por uma SC...')
   const [filial, setFilial] = useState('0101')
-  const location = useLocation();
+  const location = useLocation()
 
   const handleSubmit = useCallback(
-    async search => {
-      setDataSCs([]);
+    async (search) => {
+      setDataSCs([])
       setScsPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
-      let sc = scNumber.trim();
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      let sc = scNumber.trim()
 
       if (search > 0) {
-        sc = search.toUpperCase().trim();
+        sc = search.toUpperCase().trim()
       }
       const response = await api.get(`/scs`, {
         params: {
           filial,
           sc: sc
         }
-      });
+      })
       if (response.data.length === 0) {
-        setScsPlaceholder('Parece que não há uma SC com esse número...');
+        setScsPlaceholder('Parece que não há uma SC com esse número...')
       }
 
-      setDataSCs(response.data);
+      setDataSCs(response.data)
     },
-    [scNumber, filial],
-  );
+    [scNumber, filial]
+  )
 
   const handleFilialPlaceholder = useCallback((filial) => {
-    switch(filial) {
+    switch (filial) {
       case '0101':
         return 'Matriz'
       case '0102':
@@ -55,14 +66,14 @@ export default function SCs() {
   // submit on press Enter
   function keyPressed(event) {
     if (event.key === 'Enter') {
-      handleSubmit();
+      handleSubmit()
     }
   }
 
   useEffect(() => {
     if (location.state) {
-      setScNumber(location.state[0]);
-      handleSubmit(location.state[0]);
+      setScNumber(location.state[0])
+      handleSubmit(location.state[0])
     }
     // eslint-disable-next-line
   }, [location.state]);
@@ -76,7 +87,7 @@ export default function SCs() {
               <Link
                 to={{
                   pathname: '/prodash',
-                  state: location.state[1],
+                  state: location.state[1]
                 }}
               >
                 <FiArrowLeft color="#999" />
@@ -88,7 +99,7 @@ export default function SCs() {
             <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
               <Link
                 to={{
-                  pathname: '/',
+                  pathname: '/'
                 }}
               >
                 <FiArrowLeft color="#999" />
@@ -106,7 +117,7 @@ export default function SCs() {
             autoFocus
             value={scNumber}
             onKeyPress={keyPressed}
-            onChange={e => setScNumber(e.target.value)}
+            onChange={(e) => setScNumber(e.target.value)}
           />
           <DropdownButton
             as={InputGroup.Append}
@@ -114,13 +125,13 @@ export default function SCs() {
             title={handleFilialPlaceholder(filial)}
           >
             <Dropdown.Item onClick={() => setFilial('0101')}>
-                Matriz
+              Matriz
             </Dropdown.Item>
             <Dropdown.Item onClick={() => setFilial('0102')}>
-                Filial ES
+              Filial ES
             </Dropdown.Item>
             <Dropdown.Item onClick={() => setFilial('0103')}>
-                Filial BA
+              Filial BA
             </Dropdown.Item>
           </DropdownButton>
 
@@ -133,7 +144,6 @@ export default function SCs() {
               Enviar
             </Button>
           </InputGroup.Append>
-
         </InputGroup>
 
         <Table responsive striped bordered hover>
@@ -155,14 +165,14 @@ export default function SCs() {
           </thead>
           <tbody>
             {dataSCs.length !== 0 ? (
-              dataSCs.map(scs => (
-                <tr>
+              dataSCs.map((scs, i) => (
+                <tr key={i}>
                   <td>{scs.ITEM}</td>
                   <td>
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: scs.PRODUTO,
+                        state: scs.PRODUTO
                       }}
                     >
                       {scs.PRODUTO}
@@ -180,7 +190,7 @@ export default function SCs() {
                     <Link
                       to={{
                         pathname: '/pcs',
-                        state: [scs.PC, 'Número'],
+                        state: [scs.PC, 'Número']
                       }}
                     >
                       {scs.PC}
@@ -198,5 +208,5 @@ export default function SCs() {
         </Table>
       </Container>
     </Cont>
-  );
+  )
 }

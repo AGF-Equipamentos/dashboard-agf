@@ -18,7 +18,10 @@ jobs:
 
     - name: install dependencies
       run: yarn
-      
+
+    - name: lint-staged
+      run: npx --no-install lint-staged
+
     - name: Run build
       run: yarn build
       env:

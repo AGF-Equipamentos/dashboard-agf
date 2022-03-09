@@ -1,97 +1,120 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Table, Button, InputGroup, FormControl, Row, Col, Badge, Spinner, Container, Overlay, Tooltip, Alert } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import { addWeeks, format, getMonth, getWeek, getYear, startOfWeek, endOfWeek } from 'date-fns';
-import toISODate from '../../utils/toISODate';
-import { Container as Cont } from './styles';
-import { generateSimplePrintCode } from '../../utils/generateSimplePrintCode';
+import React, { useState, useEffect, useCallback, useRef } from 'react'
+import {
+  Table,
+  Button,
+  InputGroup,
+  FormControl,
+  Row,
+  Col,
+  Badge,
+  Spinner,
+  Container,
+  Overlay,
+  Tooltip,
+  Alert
+} from 'react-bootstrap'
+import { useLocation } from 'react-router-dom'
+import { FiArrowLeft } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
+import {
+  addWeeks,
+  format,
+  getMonth,
+  getWeek,
+  getYear,
+  startOfWeek,
+  endOfWeek
+} from 'date-fns'
+import toISODate from '../../utils/toISODate'
+import { Container as Cont } from './styles'
+import { generateSimplePrintCode } from '../../utils/generateSimplePrintCode'
 import LastPCsModal from '../../components/LastPCsModal'
 
-import api from '../../services/api';
-import { average3Months } from '../../utils/average';
+import api from '../../services/api'
+import { average3Months } from '../../utils/average'
 
 export default function Pro_Dash() {
-  const [productNumber, setProductNumber] = useState('');
-  const [almoxarifados, setAlmoxarifados] = useState([]);
-  const [supermercados, setSupermercados] = useState([]);
-  const [quebrados, setQuebrados] = useState([]);
-  const [pos, setPos] = useState([]);
-  const [vix, setVix] = useState([]);
-  const [bahia, setBahia] = useState([]);
-  const [stockWarehouse06, setStockWarehouse06] = useState([]);
-  const [productInfo, setProductInfo] = useState([]);
-  const [PCs, setPCs] = useState([]);
-  const [SCs, setSCs] = useState([]);
-  const [OPs, setOPs] = useState([]);
-  const [EMPs, setEMPs] = useState([]);
-  const [OUs, setOUs] = useState([]);
-  const [Average, setAverage] = useState([]);
-  const [Average02, setAverage02] = useState([]);
-  const [Average03, setAverage03] = useState([]);
+  const [productNumber, setProductNumber] = useState('')
+  const [almoxarifados, setAlmoxarifados] = useState([])
+  const [supermercados, setSupermercados] = useState([])
+  const [quebrados, setQuebrados] = useState([])
+  const [pos, setPos] = useState([])
+  const [vix, setVix] = useState([])
+  const [bahia, setBahia] = useState([])
+  const [stockWarehouse06, setStockWarehouse06] = useState([])
+  const [productInfo, setProductInfo] = useState([])
+  const [PCs, setPCs] = useState([])
+  const [SCs, setSCs] = useState([])
+  const [OPs, setOPs] = useState([])
+  const [EMPs, setEMPs] = useState([])
+  const [OUs, setOUs] = useState([])
+  const [Average, setAverage] = useState([])
+  const [Average02, setAverage02] = useState([])
+  const [Average03, setAverage03] = useState([])
 
   const [codigoPlaceholder, setCodigoPlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [pcPlaceholder, setPcPlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [scPlaceholder, setScPlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [opPlaceholder, setOpPlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [ouPlaceholder, setOuPlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [empPlaceholder, setEmpPlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [averagePlaceholder, setAveragePlaceholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [average02Placeholder, setAverage02Placeholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
   const [average03Placeholder, setAverage03Placeholder] = useState(
-    'Pesquise por um código...',
-  );
+    'Pesquise por um código...'
+  )
 
-  const [almoxarifadoPlaceholder, setAlmoxarifadoPlaceholder] = useState(0);
-  const [supermercadosPlaceholder, setSupermercadosPlaceholder] = useState(0);
-  const [posPlaceholder, setPosPlaceholder] = useState(0);
-  const [vixPlaceholder, setVixPlaceholder] = useState(0);
-  const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0);
-  const [stock06Placeholder, setStock06Placeholder] = useState(0);
-  const [quebradosPlaceholder, setQuebradosPlaceholder] = useState(0);
-  const [sumEmp, setSumEmp] = useState('');
-  const [sumSCs, setSumSCs] = useState('');
-  const [sumPCs, setSumPCs] = useState('');
-  const [sumOPs, setSumOPs] = useState('');
-  const [saldoPrev, setSaldoPrev] = useState('');
-  const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0);
-  const [lastThreeMonthAverage02, setlastThreeMonthAverage02] = useState(0);
-  const [lastThreeMonthAverage03, setlastThreeMonthAverage03] = useState(0);
-  const location = useLocation();
-  const completeDate = new Date();
+  const [almoxarifadoPlaceholder, setAlmoxarifadoPlaceholder] = useState(0)
+  const [supermercadosPlaceholder, setSupermercadosPlaceholder] = useState(0)
+  const [posPlaceholder, setPosPlaceholder] = useState(0)
+  const [vixPlaceholder, setVixPlaceholder] = useState(0)
+  const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0)
+  const [stock06Placeholder, setStock06Placeholder] = useState(0)
+  const [quebradosPlaceholder, setQuebradosPlaceholder] = useState(0)
+  const [sumEmp, setSumEmp] = useState('')
+  const [sumSCs, setSumSCs] = useState('')
+  const [sumPCs, setSumPCs] = useState('')
+  const [sumOPs, setSumOPs] = useState('')
+  const [saldoPrev, setSaldoPrev] = useState('')
+  const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0)
+  const [lastThreeMonthAverage02, setlastThreeMonthAverage02] = useState(0)
+  const [lastThreeMonthAverage03, setlastThreeMonthAverage03] = useState(0)
+  const location = useLocation()
+  const completeDate = new Date()
 
   // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
   // Fazer um map, transformanda as 12 datas em 12 objetos.
 
   const dates = [
     'ATR',
-    ...Array.from({ length: 12 }, (_, i) => addWeeks(endOfWeek(completeDate), i)),
-  ];
+    ...Array.from({ length: 12 }, (_, i) =>
+      addWeeks(endOfWeek(completeDate), i)
+    )
+  ]
 
-  const period = dates.map(date => {
+  const period = dates.map((date) => {
     if (date === 'ATR')
-    return {
-      date,
-      week: 'ATR',
-      year: 'ATR'
-    }
+      return {
+        date,
+        week: 'ATR',
+        year: 'ATR'
+      }
     return {
       date,
       week: getWeek(date),
@@ -100,302 +123,300 @@ export default function Pro_Dash() {
   })
 
   // average consumption
-  const monthArray = [1,2,3,4,5,6,7,8,9,10,11,12];
-  const month2DigArray = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-  const currentMonth = getMonth(new Date()) + 1;
+  const monthArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  const month2DigArray = [
+    '01',
+    '02',
+    '03',
+    '04',
+    '05',
+    '06',
+    '07',
+    '08',
+    '09',
+    '10',
+    '11',
+    '12'
+  ]
+  const currentMonth = getMonth(new Date()) + 1
 
   useEffect(() => {
-    const mapEmpenhos = EMPs.map(emp => emp.SALDO);
+    const mapEmpenhos = EMPs.map((emp) => emp.SALDO)
     const sumEmpenhos =
       mapEmpenhos.length > 0
         ? Number(parseFloat(mapEmpenhos.reduce((a, b) => a + b)).toFixed(2))
-        : 0;
-    setSumEmp(sumEmpenhos);
+        : 0
+    setSumEmp(sumEmpenhos)
 
-    const mapSCs = SCs.map(sc => sc.QTD - sc.QTD_ENT);
+    const mapSCs = SCs.map((sc) => sc.QTD - sc.QTD_ENT)
     const totalSumSCs =
       mapSCs.length > 0
         ? Number(parseFloat(mapSCs.reduce((a, b) => a + b)).toFixed(2))
-        : 0;
-    setSumSCs(totalSumSCs);
+        : 0
+    setSumSCs(totalSumSCs)
 
-    const mapPCs = PCs.map(pc => pc.QTD - pc.QTD_ENT);
+    const mapPCs = PCs.map((pc) => pc.QTD - pc.QTD_ENT)
     const totalSumPCs =
       mapPCs.length > 0
         ? Number(parseFloat(mapPCs.reduce((a, b) => a + b)).toFixed(2))
-        : 0;
-    setSumPCs(totalSumPCs);
+        : 0
+    setSumPCs(totalSumPCs)
 
-    const mapOPs = OPs.map(op => op.QTD - op.QTD_PRO);
+    const mapOPs = OPs.map((op) => op.QTD - op.QTD_PRO)
     const totalSumOPs =
       mapOPs.length > 0
         ? Number(parseFloat(mapOPs.reduce((a, b) => a + b)).toFixed(2))
-        : 0;
-    setSumOPs(totalSumOPs);
+        : 0
+    setSumOPs(totalSumOPs)
 
     const saldo =
       (almoxarifados[0] !== undefined ? almoxarifados[0].SALDO : 0) +
       sumPCs +
       sumOPs +
       sumSCs -
-      sumEmp;
-    setSaldoPrev(Number(parseFloat(saldo).toFixed(2)));
-  }, [EMPs, PCs, SCs, almoxarifados, sumEmp, sumPCs, sumSCs, OPs, sumOPs]);
+      sumEmp
+    setSaldoPrev(Number(parseFloat(saldo).toFixed(2)))
+  }, [EMPs, PCs, SCs, almoxarifados, sumEmp, sumPCs, sumSCs, OPs, sumOPs])
 
   // Colocar OPs, Onde Usado e opção matriz/filial
 
   const handleSubmit = useCallback(
-    async search => {
-      let product = productNumber.toUpperCase().trim();
+    async (search) => {
+      let product = productNumber.toUpperCase().trim()
 
       if (search) {
-        product = search.toUpperCase().trim();
+        product = search.toUpperCase().trim()
       }
 
-      setProductInfo([]);
-      setAlmoxarifados([]);
-      setSupermercados([]);
-      setQuebrados([]);
-      setPos([]);
-      setVix([]);
-      setBahia([]);
-      setStockWarehouse06([]);
-      setPCs([]);
-      setSCs([]);
-      setOPs([]);
-      setOUs([]);
-      setEMPs([]);
-      setAverage([]);
-      setAverage02([]);
-      setAverage03([]);
+      setProductInfo([])
+      setAlmoxarifados([])
+      setSupermercados([])
+      setQuebrados([])
+      setPos([])
+      setVix([])
+      setBahia([])
+      setStockWarehouse06([])
+      setPCs([])
+      setSCs([])
+      setOPs([])
+      setOUs([])
+      setEMPs([])
+      setAverage([])
+      setAverage02([])
+      setAverage03([])
 
       setCodigoPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setAlmoxarifadoPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setSupermercadosPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setQuebradosPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setPosPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setVixPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setBahiaPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setStock06Placeholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setPcPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setScPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setOpPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setEmpPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setOuPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setAveragePlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setAverage02Placeholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
       setAverage03Placeholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
 
       const productInfoResponse = await api.get(
-        `/register?filial=0101&produto=${product}`,
-      );
+        `/register?filial=0101&produto=${product}`
+      )
       if (productInfoResponse.data.length === 0) {
-        setCodigoPlaceholder('Parece que esse código não existe...');
+        setCodigoPlaceholder('Parece que esse código não existe...')
       }
-      setProductInfo(productInfoResponse.data);
+      setProductInfo(productInfoResponse.data)
 
       const response = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=01`,
-      );
+        `/estoques?filial=0101&produto=${product}&armazem=01`
+      )
       if (response.data.length === 0) {
-        setAlmoxarifados([{ SALDO: 0 }]);
+        setAlmoxarifados([{ SALDO: 0 }])
       } else {
-        setAlmoxarifados(response.data);
+        setAlmoxarifados(response.data)
       }
 
       const response2 = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=99`,
-      );
+        `/estoques?filial=0101&produto=${product}&armazem=99`
+      )
       if (response2.data.length === 0) {
-        setSupermercados([{ SALDO: 0 }]);
+        setSupermercados([{ SALDO: 0 }])
       } else {
-        setSupermercados(response2.data);
+        setSupermercados(response2.data)
       }
 
       const response3 = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=04`,
-      );
+        `/estoques?filial=0101&produto=${product}&armazem=04`
+      )
       if (response3.data.length === 0) {
-        setQuebrados([{ SALDO: 0 }]);
+        setQuebrados([{ SALDO: 0 }])
       } else {
-        setQuebrados(response3.data);
+        setQuebrados(response3.data)
       }
 
       const response4 = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=03`,
-      );
+        `/estoques?filial=0101&produto=${product}&armazem=03`
+      )
       if (response4.data.length === 0) {
-        setPos([{ SALDO: 0 }]);
+        setPos([{ SALDO: 0 }])
       } else {
-        setPos(response4.data);
+        setPos(response4.data)
       }
 
       const response5 = await api.get(
-        `/estoques?filial=0102&produto=${product}`,
-      );
+        `/estoques?filial=0102&produto=${product}`
+      )
       if (response5.data.length === 0) {
-        setVix([{ SALDO: 0 }]);
+        setVix([{ SALDO: 0 }])
       } else {
         const totalStock = response5.data.reduce((acc, stock) => {
-            return stock.SALDO + acc
+          return stock.SALDO + acc
         }, 0)
-        setVix([{ SALDO: totalStock }]);
+        setVix([{ SALDO: totalStock }])
       }
 
       //formula com o estoque
       const responsebahia = await api.get(
-        `/estoques?filial=0103&produto=${product}`,
-      );
+        `/estoques?filial=0103&produto=${product}`
+      )
       if (responsebahia.data.length === 0) {
-        setBahia([{ SALDO: 0 }]);
+        setBahia([{ SALDO: 0 }])
       } else {
         const totalStock = responsebahia.data.reduce((acc, stock) => {
-            return stock.SALDO + acc
+          return stock.SALDO + acc
         }, 0)
-        setBahia([{ SALDO: totalStock }]);
+        setBahia([{ SALDO: totalStock }])
       }
 
       const stockWarehouse06Data = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=06`,
-      );
+        `/estoques?filial=0101&produto=${product}&armazem=06`
+      )
       if (stockWarehouse06Data.data.length === 0) {
-        setStockWarehouse06([{ SALDO: 0 }]);
+        setStockWarehouse06([{ SALDO: 0 }])
       } else {
-        setStockWarehouse06(stockWarehouse06Data.data);
+        setStockWarehouse06(stockWarehouse06Data.data)
       }
 
       const response6 = await api.get(
-        `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=${product}`,
-      );
+        `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=${product}`
+      )
       if (response6.data.length === 0) {
-        setPcPlaceholder('Parece que não há PCs...');
+        setPcPlaceholder('Parece que não há PCs...')
       }
-      const reponseUpdated6 = response6.data.map(item => {
+      const reponseUpdated6 = response6.data.map((item) => {
         const itemUpdated = {
           ...item,
           DATE: toISODate(item.ENTREGA),
           WEEK:
-              toISODate(item.ENTREGA) < startOfWeek(new Date())
+            toISODate(item.ENTREGA) < startOfWeek(new Date())
               ? 'ATR'
-              : (getWeek(toISODate(item.ENTREGA))),
+              : getWeek(toISODate(item.ENTREGA)),
           YEAR:
-              toISODate(item.ENTREGA) < startOfWeek(new Date())
+            toISODate(item.ENTREGA) < startOfWeek(new Date())
               ? 'ATR'
-              : (getYear(toISODate(item.ENTREGA)))
-        };
-        return itemUpdated;
-      });
-      setPCs(reponseUpdated6);
+              : getYear(toISODate(item.ENTREGA))
+        }
+        return itemUpdated
+      })
+      setPCs(reponseUpdated6)
 
       const response7 = await api.get(
-        `/scs?filial=0101&aberto=true&produto=${product}`,
-      );
+        `/scs?filial=0101&aberto=true&produto=${product}`
+      )
       if (response7.data.length === 0) {
-        setScPlaceholder('Parece que não há SCs...');
+        setScPlaceholder('Parece que não há SCs...')
       }
-      const reponseUpdated7 = response7.data.map(item => {
+      const reponseUpdated7 = response7.data.map((item) => {
         const date = toISODate(item.ENTREGA)
         const itemUpdated = {
           ...item,
           DATE: date,
-          WEEK:
-            date < startOfWeek(new Date())
-              ? 'ATR'
-              : (getWeek(date)),
-          YEAR:
-            date < startOfWeek(new Date())
-            ? 'ATR'
-            : (date)
-        };
-        return itemUpdated;
-      });
-      setSCs(reponseUpdated7);
+          WEEK: date < startOfWeek(new Date()) ? 'ATR' : getWeek(date),
+          YEAR: date < startOfWeek(new Date()) ? 'ATR' : date
+        }
+        return itemUpdated
+      })
+      setSCs(reponseUpdated7)
 
       const opsRecieved = await api.get(
         `/ops?filial=0101&produto=${product}&fechado=false`,
-        {},
-      );
+        {}
+      )
       if (opsRecieved.data.length === 0) {
-        setOpPlaceholder('Parece que não há OPs...');
+        setOpPlaceholder('Parece que não há OPs...')
       }
-      setOPs(opsRecieved.data);
+      setOPs(opsRecieved.data)
 
-      const response9 = await api.get(`/ou?filial=0101&produto=${product}`, {});
+      const response9 = await api.get(`/ou?filial=0101&produto=${product}`, {})
       if (response9.data.length === 0) {
-        setOuPlaceholder('Parece que não é usado em nenhum lugar...');
+        setOuPlaceholder('Parece que não é usado em nenhum lugar...')
       }
-      setOUs(response9.data);
+      setOUs(response9.data)
 
-      const response8 = await api.get(
-        `/emp?filial=0101&produto=${product}`,
-        {},
-      );
+      const response8 = await api.get(`/emp?filial=0101&produto=${product}`, {})
       if (response8.data.length === 0) {
-        setEmpPlaceholder('Parece que não há empenhos...');
+        setEmpPlaceholder('Parece que não há empenhos...')
       }
-      const reponseUpdated8 = response8.data.map(item => {
+      const reponseUpdated8 = response8.data.map((item) => {
         const date = toISODate(item.ENTREGA)
         const itemUpdated = {
           ...item,
           DATE: date,
-          WEEK:
-            date < startOfWeek(new Date())
-              ? 'ATR'
-              : (getWeek(date)),
-          YEAR:
-            date < startOfWeek(new Date())
-                ? 'ATR'
-                : (getYear(date))
-        };
-        return itemUpdated;
-      });
-      setEMPs(reponseUpdated8);
+          WEEK: date < startOfWeek(new Date()) ? 'ATR' : getWeek(date),
+          YEAR: date < startOfWeek(new Date()) ? 'ATR' : getYear(date)
+        }
+        return itemUpdated
+      })
+      setEMPs(reponseUpdated8)
 
-    // start filial 0101
+      // start filial 0101
       const response10 = await api.get(
-        `/average?filial=0101&produto=${product}`,
-      );
+        `/average?filial=0101&produto=${product}`
+      )
 
       if (response10.data.length === 0) {
-        setAveragePlaceholder('Parece que não há consumo...');
+        setAveragePlaceholder('Parece que não há consumo...')
       } else {
-        const reponseUpdated10 = response10.data.map(item => {
+        const reponseUpdated10 = response10.data.map((item) => {
           const itemUpdated = {
             ...item,
             average:
-              Math.round((
+              Math.round(
                 ((item.Q01 +
                   item.Q02 +
                   item.Q03 +
@@ -407,8 +428,11 @@ export default function Pro_Dash() {
                   item.Q09 +
                   item.Q10 +
                   item.Q11 +
-                  item.Q12) / 12)
-                + Number.EPSILON) * 100) / 100,
+                  item.Q12) /
+                  12 +
+                  Number.EPSILON) *
+                  100
+              ) / 100,
             total:
               item.Q01 +
               item.Q02 +
@@ -421,148 +445,161 @@ export default function Pro_Dash() {
               item.Q09 +
               item.Q10 +
               item.Q11 +
-              item.Q12,
-          };
-          return itemUpdated;
-        });
-        const lastThreeMonthAverageReduce = average3Months(currentMonth, reponseUpdated10[0])
+              item.Q12
+          }
+          return itemUpdated
+        })
+        const lastThreeMonthAverageReduce = average3Months(
+          currentMonth,
+          reponseUpdated10[0]
+        )
 
-        setlastThreeMonthAverage(lastThreeMonthAverageReduce);
+        setlastThreeMonthAverage(lastThreeMonthAverageReduce)
 
-        setAverage(reponseUpdated10[0]);
+        setAverage(reponseUpdated10[0])
       }
-    // finish filial 0101
-    // start filial 0102
-    const average0102 = await api.get(
-      `/average?filial=0102&produto=${product}`,
-    );
+      // finish filial 0101
+      // start filial 0102
+      const average0102 = await api.get(
+        `/average?filial=0102&produto=${product}`
+      )
 
-    if (average0102.data.length === 0) {
-      setAverage02Placeholder('Parece que não há consumo...');
-    } else {
-      const averageUpdated0102 = average0102.data.map(item => {
-        const itemUpdated = {
-          ...item,
-          average02:
-            Math.round((
-              ((item.Q01 +
-                item.Q02 +
-                item.Q03 +
-                item.Q04 +
-                item.Q05 +
-                item.Q06 +
-                item.Q07 +
-                item.Q08 +
-                item.Q09 +
-                item.Q10 +
-                item.Q11 +
-                item.Q12) / 12)
-              + Number.EPSILON) * 100) / 100,
-          total:
-            item.Q01 +
-            item.Q02 +
-            item.Q03 +
-            item.Q04 +
-            item.Q05 +
-            item.Q06 +
-            item.Q07 +
-            item.Q08 +
-            item.Q09 +
-            item.Q10 +
-            item.Q11 +
-            item.Q12,
-        };
-        return itemUpdated;
-      });
+      if (average0102.data.length === 0) {
+        setAverage02Placeholder('Parece que não há consumo...')
+      } else {
+        const averageUpdated0102 = average0102.data.map((item) => {
+          const itemUpdated = {
+            ...item,
+            average02:
+              Math.round(
+                ((item.Q01 +
+                  item.Q02 +
+                  item.Q03 +
+                  item.Q04 +
+                  item.Q05 +
+                  item.Q06 +
+                  item.Q07 +
+                  item.Q08 +
+                  item.Q09 +
+                  item.Q10 +
+                  item.Q11 +
+                  item.Q12) /
+                  12 +
+                  Number.EPSILON) *
+                  100
+              ) / 100,
+            total:
+              item.Q01 +
+              item.Q02 +
+              item.Q03 +
+              item.Q04 +
+              item.Q05 +
+              item.Q06 +
+              item.Q07 +
+              item.Q08 +
+              item.Q09 +
+              item.Q10 +
+              item.Q11 +
+              item.Q12
+          }
+          return itemUpdated
+        })
 
-      const lastThreeMonthAverageReduce = average3Months(currentMonth, averageUpdated0102[0])
-      setlastThreeMonthAverage02(lastThreeMonthAverageReduce);
-      setAverage02(averageUpdated0102[0]);
-    }
-    // start filial 02
-    // start filial 03
-    const average0103 = await api.get(
-      `/average?filial=0103&produto=${product}`,
-    );
+        const lastThreeMonthAverageReduce = average3Months(
+          currentMonth,
+          averageUpdated0102[0]
+        )
+        setlastThreeMonthAverage02(lastThreeMonthAverageReduce)
+        setAverage02(averageUpdated0102[0])
+      }
+      // start filial 02
+      // start filial 03
+      const average0103 = await api.get(
+        `/average?filial=0103&produto=${product}`
+      )
 
-    if (average0103.data.length === 0) {
-      setAverage03Placeholder('Parece que não há consumo...');
-    } else {
-      const averageUpdated0103 = average0103.data.map(item => {
-        const itemUpdated = {
-          ...item,
-          average03:
-            Math.round((
-              ((item.Q01 +
-                item.Q02 +
-                item.Q03 +
-                item.Q04 +
-                item.Q05 +
-                item.Q06 +
-                item.Q07 +
-                item.Q08 +
-                item.Q09 +
-                item.Q10 +
-                item.Q11 +
-                item.Q12) / 12)
-              + Number.EPSILON) * 100) / 100,
-          total:
-            item.Q01 +
-            item.Q02 +
-            item.Q03 +
-            item.Q04 +
-            item.Q05 +
-            item.Q06 +
-            item.Q07 +
-            item.Q08 +
-            item.Q09 +
-            item.Q10 +
-            item.Q11 +
-            item.Q12,
-        };
-        return itemUpdated;
-      });
+      if (average0103.data.length === 0) {
+        setAverage03Placeholder('Parece que não há consumo...')
+      } else {
+        const averageUpdated0103 = average0103.data.map((item) => {
+          const itemUpdated = {
+            ...item,
+            average03:
+              Math.round(
+                ((item.Q01 +
+                  item.Q02 +
+                  item.Q03 +
+                  item.Q04 +
+                  item.Q05 +
+                  item.Q06 +
+                  item.Q07 +
+                  item.Q08 +
+                  item.Q09 +
+                  item.Q10 +
+                  item.Q11 +
+                  item.Q12) /
+                  12 +
+                  Number.EPSILON) *
+                  100
+              ) / 100,
+            total:
+              item.Q01 +
+              item.Q02 +
+              item.Q03 +
+              item.Q04 +
+              item.Q05 +
+              item.Q06 +
+              item.Q07 +
+              item.Q08 +
+              item.Q09 +
+              item.Q10 +
+              item.Q11 +
+              item.Q12
+          }
+          return itemUpdated
+        })
 
-      const lastThreeMonthAverageReduce = average3Months(currentMonth, averageUpdated0103[0])
-      setlastThreeMonthAverage03(lastThreeMonthAverageReduce);
+        const lastThreeMonthAverageReduce = average3Months(
+          currentMonth,
+          averageUpdated0103[0]
+        )
+        setlastThreeMonthAverage03(lastThreeMonthAverageReduce)
 
-      setAverage03(averageUpdated0103[0]);
-    }
+        setAverage03(averageUpdated0103[0])
+      }
     },
-    [productNumber, currentMonth],
-  );
+    [productNumber, currentMonth]
+  )
 
   // submit on press Enter
   function keyPressed(event) {
     if (event.key === 'Enter') {
-      handleSubmit();
+      handleSubmit()
     }
   }
 
   useEffect(() => {
     if (location.state) {
-      setProductNumber(location.state);
-      handleSubmit(location.state);
+      setProductNumber(location.state)
+      handleSubmit(location.state)
     }
 
     // eslint-disable-next-line
   }, [location.state]);
 
-  const [show, setShow] = useState(false);
-  const [printQtd, setPrintQtd] = useState(1);
-  const target = useRef(null);
+  const [show, setShow] = useState(false)
+  const [printQtd, setPrintQtd] = useState(1)
+  const target = useRef(null)
 
   function handlePrint() {
-    if(productInfo.length !== 0) {
+    if (productInfo.length !== 0) {
       const productPrint = {
         ...productInfo[0],
         PRODUTO: productInfo[0].CODIGO,
         SALDO: Number(printQtd)
       }
-      navigator.clipboard.writeText(
-        generateSimplePrintCode([productPrint])
-      )
-      setShow(!show);
+      navigator.clipboard.writeText(generateSimplePrintCode([productPrint]))
+      setShow(!show)
       setTimeout(() => {
         setShow(false)
       }, 1500)
@@ -570,33 +607,33 @@ export default function Pro_Dash() {
   }
 
   // LastPCsModal
-  const [isPCModalOpen, setIsPCModalOpen] = useState(false);
-  const [pcsData, setPcsData] = useState([]);
+  const [isPCModalOpen, setIsPCModalOpen] = useState(false)
+  const [pcsData, setPcsData] = useState([])
 
   function handlePCModalClose() {
-    setIsPCModalOpen(false);
+    setIsPCModalOpen(false)
   }
 
   const handlePCModal = async () => {
-    let product = productNumber.toUpperCase().trim();
+    let product = productNumber.toUpperCase().trim()
 
     const response = await api.get(
-      `inputdocs?filial=0101&produto=${product}&top=10&desc=true`,
-    );
+      `inputdocs?filial=0101&produto=${product}&top=10&desc=true`
+    )
 
-    const pcsFormatted = response.data.map(pc => {
+    const pcsFormatted = response.data.map((pc) => {
       return {
         ...pc,
         PRECO: new Intl.NumberFormat('pt-BR', {
           style: 'currency',
-          currency: 'BRL',
+          currency: 'BRL'
         }).format(pc.PRECO)
       }
     })
 
     setPcsData(pcsFormatted)
-    setIsPCModalOpen(true);
-  };
+    setIsPCModalOpen(true)
+  }
 
   return (
     <Cont>
@@ -605,7 +642,7 @@ export default function Pro_Dash() {
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
             <Link
               to={{
-                pathname: '/',
+                pathname: '/'
               }}
             >
               <FiArrowLeft color="#999" />
@@ -623,7 +660,7 @@ export default function Pro_Dash() {
                 autoFocus
                 value={productNumber}
                 onKeyPress={keyPressed}
-                onChange={e => setProductNumber(e.target.value)}
+                onChange={(e) => setProductNumber(e.target.value)}
               />
               <InputGroup.Append>
                 <Button
@@ -656,23 +693,23 @@ export default function Pro_Dash() {
               <FormControl
                 type="number"
                 placeholder="Qtd"
-                onChange={e => setPrintQtd(e.target.value)}
+                onChange={(e) => setPrintQtd(e.target.value)}
               />
               <InputGroup.Append>
-              <Button
-                ref={target}
-                variant="outline-warning"
-                onClick={handlePrint}
-              >
-                Etiqueta
-              </Button>
-              <Overlay target={target.current} show={show} placement="top">
-                {props => (
-                  <Tooltip {...props}>
-                    Copiado para a área de transferência!
-                  </Tooltip>
-                )}
-              </Overlay>
+                <Button
+                  ref={target}
+                  variant="outline-warning"
+                  onClick={handlePrint}
+                >
+                  Etiqueta
+                </Button>
+                <Overlay target={target.current} show={show} placement="top">
+                  {(props) => (
+                    <Tooltip {...props}>
+                      Copiado para a área de transferência!
+                    </Tooltip>
+                  )}
+                </Overlay>
               </InputGroup.Append>
             </InputGroup>
           </Col>
@@ -694,8 +731,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {productInfo.length !== 0 ? (
-                  productInfo.map(product => (
-                    <tr>
+                  productInfo.map((product, i) => (
+                    <tr key={i}>
                       <td>{product.DESCRICAO}</td>
                       <td>{product.GRUPO}</td>
                       <td>{product.UM}</td>
@@ -715,12 +752,10 @@ export default function Pro_Dash() {
             </Table>
           </Col>
         </Row>
-        {(productInfo.length !== 0 && (productInfo[0].BLOQUEADO === true)) ? (
+        {productInfo.length !== 0 && productInfo[0].BLOQUEADO === true ? (
           <Row>
             <Col>
-              <Alert variant={'danger'}>
-                Este item está bloqueado!
-              </Alert>
+              <Alert variant={'danger'}>Este item está bloqueado!</Alert>
             </Col>
           </Row>
         ) : null}
@@ -734,8 +769,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {almoxarifados.length !== 0 ? (
-                  almoxarifados.map(almoxarifado => (
-                    <tr>
+                  almoxarifados.map((almoxarifado, i) => (
+                    <tr key={i}>
                       <td>{almoxarifado.SALDO}</td>
                     </tr>
                   ))
@@ -757,8 +792,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {supermercados.length !== 0 ? (
-                  supermercados.map(supermercado => (
-                    <tr>
+                  supermercados.map((supermercado, i) => (
+                    <tr key={i}>
                       <td>{supermercado.SALDO}</td>
                     </tr>
                   ))
@@ -780,8 +815,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {stockWarehouse06.length !== 0 ? (
-                  stockWarehouse06.map(stock06 => (
-                    <tr>
+                  stockWarehouse06.map((stock06, i) => (
+                    <tr key={i}>
                       <td>{stock06.SALDO}</td>
                     </tr>
                   ))
@@ -803,8 +838,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {quebrados.length !== 0 ? (
-                  quebrados.map(quebrado => (
-                    <tr>
+                  quebrados.map((quebrado, i) => (
+                    <tr key={i}>
                       <td>{quebrado.SALDO}</td>
                     </tr>
                   ))
@@ -826,8 +861,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {pos.length !== 0 ? (
-                  pos.map(posItem => (
-                    <tr>
+                  pos.map((posItem, i) => (
+                    <tr key={i}>
                       <td>{posItem.SALDO}</td>
                     </tr>
                   ))
@@ -848,7 +883,7 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {vix.length !== 0 ? (
-                  vix.map(vixItem => (
+                  vix.map((vixItem) => (
                     <tr key={vixItem.SALDO}>
                       <td>{vixItem.SALDO}</td>
                     </tr>
@@ -870,7 +905,7 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {bahia.length !== 0 ? (
-                  bahia.map(bahiaItem => (
+                  bahia.map((bahiaItem) => (
                     <tr key={bahiaItem.SALDO}>
                       <td>{bahiaItem.SALDO}</td>
                     </tr>
@@ -886,13 +921,17 @@ export default function Pro_Dash() {
         </Row>
         <Row>
           <Col>
-          <h5>Consumo últimos 12 meses - Filial SP</h5>
+            <h5>Consumo últimos 12 meses - Filial SP</h5>
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  {monthArray.map(month => {
+                  {monthArray.map((month, i) => {
                     return (
-                      <th>{(currentMonth + month - 1) > 12 ? `${currentMonth + month - 13}` : `${currentMonth + month - 1}`}</th>
+                      <th key={i}>
+                        {currentMonth + month - 1 > 12
+                          ? `${currentMonth + month - 13}`
+                          : `${currentMonth + month - 1}`}
+                      </th>
                     )
                   })}
                   <th>MÉDIA ÚLT 3 MESES</th>
@@ -902,17 +941,23 @@ export default function Pro_Dash() {
               <tbody>
                 {Average?.length !== 0 ? (
                   <tr>
-                    {monthArray.map(month => {
+                    {monthArray.map((month, i) => {
                       return (
-                        <td>{(currentMonth + month - 1) > 12
-                          ? Average?.[`Q${month2DigArray[currentMonth + month - 14]}`]
-                          : Average?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
+                        <td key={i}>
+                          {currentMonth + month - 1 > 12
+                            ? Average?.[
+                                `Q${month2DigArray[currentMonth + month - 14]}`
+                              ]
+                            : Average?.[
+                                `Q${month2DigArray[currentMonth + month - 2]}`
+                              ]}
+                        </td>
                       )
                     })}
                     <td>{lastThreeMonthAverage}</td>
                     <td>{Average.total}</td>
                   </tr>
-                  ) : (
+                ) : (
                   <tr>
                     <td colSpan="14">{averagePlaceholder}</td>
                   </tr>
@@ -923,13 +968,17 @@ export default function Pro_Dash() {
         </Row>
         <Row>
           <Col>
-          <h5>Consumo últimos 12 meses - Filial ES</h5>
+            <h5>Consumo últimos 12 meses - Filial ES</h5>
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  {monthArray.map(month => {
+                  {monthArray.map((month, i) => {
                     return (
-                      <th>{(currentMonth + month - 1) > 12 ? `${currentMonth + month - 13}` : `${currentMonth + month - 1}`}</th>
+                      <th key={i}>
+                        {currentMonth + month - 1 > 12
+                          ? `${currentMonth + month - 13}`
+                          : `${currentMonth + month - 1}`}
+                      </th>
                     )
                   })}
                   <th>MÉDIA ÚLT 3 MESES</th>
@@ -939,17 +988,23 @@ export default function Pro_Dash() {
               <tbody>
                 {Average02?.length !== 0 ? (
                   <tr>
-                    {monthArray.map(month => {
+                    {monthArray.map((month, i) => {
                       return (
-                        <td>{(currentMonth + month - 1) > 12
-                          ? Average02?.[`Q${month2DigArray[currentMonth + month - 14]}`]
-                          : Average02?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
+                        <td key={i}>
+                          {currentMonth + month - 1 > 12
+                            ? Average02?.[
+                                `Q${month2DigArray[currentMonth + month - 14]}`
+                              ]
+                            : Average02?.[
+                                `Q${month2DigArray[currentMonth + month - 2]}`
+                              ]}
+                        </td>
                       )
                     })}
                     <td>{lastThreeMonthAverage02}</td>
                     <td>{Average02.total}</td>
                   </tr>
-                  ) : (
+                ) : (
                   <tr>
                     <td colSpan="14">{average02Placeholder}</td>
                   </tr>
@@ -960,13 +1015,17 @@ export default function Pro_Dash() {
         </Row>
         <Row>
           <Col>
-          <h5>Consumo últimos 12 meses - Filial BA</h5>
+            <h5>Consumo últimos 12 meses - Filial BA</h5>
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  {monthArray.map(month => {
+                  {monthArray.map((month, i) => {
                     return (
-                      <th>{(currentMonth + month - 1) > 12 ? `${currentMonth + month - 13}` : `${currentMonth + month - 1}`}</th>
+                      <th key={i}>
+                        {currentMonth + month - 1 > 12
+                          ? `${currentMonth + month - 13}`
+                          : `${currentMonth + month - 1}`}
+                      </th>
                     )
                   })}
                   <th>MÉDIA ÚLT 3 MESES</th>
@@ -976,17 +1035,23 @@ export default function Pro_Dash() {
               <tbody>
                 {Average03?.length !== 0 ? (
                   <tr>
-                    {monthArray.map(month => {
+                    {monthArray.map((month, i) => {
                       return (
-                        <td>{(currentMonth + month - 1) > 12
-                          ? Average03?.[`Q${month2DigArray[currentMonth + month - 14]}`]
-                          : Average03?.[`Q${month2DigArray[currentMonth + month - 2]}`]}</td>
+                        <td key={i}>
+                          {currentMonth + month - 1 > 12
+                            ? Average03?.[
+                                `Q${month2DigArray[currentMonth + month - 14]}`
+                              ]
+                            : Average03?.[
+                                `Q${month2DigArray[currentMonth + month - 2]}`
+                              ]}
+                        </td>
                       )
                     })}
                     <td>{lastThreeMonthAverage03}</td>
                     <td>{Average03.total}</td>
                   </tr>
-                  ) : (
+                ) : (
                   <tr>
                     <td colSpan="14">{average03Placeholder}</td>
                   </tr>
@@ -1003,33 +1068,27 @@ export default function Pro_Dash() {
               <thead>
                 <tr>
                   <th style={{ paddingBlock: '35px' }}>#</th>
-                  {period.map(period => {
+                  {period.map((period, i) => {
                     if (period.week === 'ATR') {
-                      return <th style={{ paddingBlock: '35px' }}>ATRASO</th>;
+                      return <th style={{ paddingBlock: '35px' }}>ATRASO</th>
                     }
                     return (
-                      <th>
+                      <th key={i}>
                         WK{period.week}
                         <br />
                         <p style={{ fontSize: '12px', marginBottom: '4px' }}>
                           {format(
-                            startOfWeek(
-                              period.date,
-                              { weekStartsOn: 1 },
-                            ),
-                            'dd/MM',
+                            startOfWeek(period.date, { weekStartsOn: 1 }),
+                            'dd/MM'
                           )}
                           <br />
                           {format(
-                            startOfWeek(
-                              period.date,
-                              { weekStartsOn: 5 },
-                            ),
-                            'dd/MM',
+                            startOfWeek(period.date, { weekStartsOn: 5 }),
+                            'dd/MM'
                           )}
                         </p>
                       </th>
-                    );
+                    )
                   })}
                 </tr>
               </thead>
@@ -1039,161 +1098,127 @@ export default function Pro_Dash() {
                     <tr>
                       <td>EMPENHO</td>
 
-                      {period.map(period => {
+                      {period.map((period, i) => {
                         const empWK = EMPs.reduce((acc, value) => {
                           if (value.WEEK === 'ATR' && period.week === 'ATR') {
-                          return acc + value.SALDO;
+                            return acc + value.SALDO
                           }
-                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
-                            return acc + value.SALDO;
+                          if (
+                            value.DATE <= period.date &&
+                            value.DATE >= startOfWeek(period.date)
+                          ) {
+                            return acc + value.SALDO
                           }
-                          return acc;
-                        }, 0);
+                          return acc
+                        }, 0)
                         if (period.week === 'ATR' && empWK !== 0) {
                           return (
                             <td
                               style={{
                                 color: '#9C0006',
-                                backgroundColor: '#FFC7CE',
+                                backgroundColor: '#FFC7CE'
                               }}
                             >
                               {Math.round((empWK + Number.EPSILON) * 100) / 100}
                             </td>
-                          );
+                          )
                         }
 
                         return (
-                          <td>
+                          <td key={i}>
                             {Math.round((empWK + Number.EPSILON) * 100) / 100}
                           </td>
-                        );
+                        )
                       })}
                     </tr>
                     <tr>
                       <td>PC</td>
-                      {period.map(period => {
+                      {period.map((period, i) => {
                         const pcWK = PCs.reduce((acc, value) => {
-                          if (value.WEEK === 'ATR' && period.week === 'ATR' && (value.APROVADO === 'L')) {
-                              return acc + value.SALDO;
+                          if (
+                            value.WEEK === 'ATR' &&
+                            period.week === 'ATR' &&
+                            value.APROVADO === 'L'
+                          ) {
+                            return acc + value.SALDO
                           }
-                            if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))&& (value.APROVADO === 'L')) {
-                              return acc + value.SALDO;
+                          if (
+                            value.DATE <= period.date &&
+                            value.DATE >= startOfWeek(period.date) &&
+                            value.APROVADO === 'L'
+                          ) {
+                            return acc + value.SALDO
                           }
-                          return acc;
-                        }, 0);
-                        if (period.week === 'ATR' && pcWK !== 0 ) {
+                          return acc
+                        }, 0)
+                        if (period.week === 'ATR' && pcWK !== 0) {
                           return (
                             <td
                               style={{
                                 color: '#9C0006',
-                                backgroundColor: '#FFC7CE',
+                                backgroundColor: '#FFC7CE'
                               }}
                             >
                               {Math.round((pcWK + Number.EPSILON) * 100) / 100}
                             </td>
-                          );
+                          )
                         }
 
                         return (
-                          <td>
+                          <td key={i}>
                             {Math.round((pcWK + Number.EPSILON) * 100) / 100}
                           </td>
-                        );
+                        )
                       })}
                     </tr>
                     <tr>
                       <td>SALDO</td>
 
-                      {period.map(period => {
-                          const empWK = EMPs.reduce((acc, value) => {
-                            if (value.WEEK === 'ATR') {
-                              return acc + value.SALDO;
-                            }
-                            if (value.DATE <= period.date) {
-                              return acc + value.SALDO;
-                            }
-                            return acc;
-                            }, 0);
-                          const pcWK = PCs.reduce((acc, value) => {
-                            if (value.WEEK === 'ATR' && (value.APROVADO === 'L')) {
-                              return acc + value.SALDO;
-                            }
-                            if (value.DATE <= period.date && (value.APROVADO === 'L')) {
-                              return acc + value.SALDO;
-                            }
-                            return acc;
-                          }, 0);
-                          const scWK = SCs.reduce((acc, value) => {
+                      {period.map((period, i) => {
+                        const empWK = EMPs.reduce((acc, value) => {
                           if (value.WEEK === 'ATR') {
-                              return acc + value.SALDO;
-                            }
-                            if (value.DATE <= period.date) {
-                              return acc + value.SALDO;
-                            }
-                            return acc;
-                          }, 0);
-
+                            return acc + value.SALDO
+                          }
+                          if (value.DATE <= period.date) {
+                            return acc + value.SALDO
+                          }
+                          return acc
+                        }, 0)
+                        const pcWK = PCs.reduce((acc, value) => {
+                          if (value.WEEK === 'ATR' && value.APROVADO === 'L') {
+                            return acc + value.SALDO
+                          }
                           if (
-                            pcWK +
+                            value.DATE <= period.date &&
+                            value.APROVADO === 'L'
+                          ) {
+                            return acc + value.SALDO
+                          }
+                          return acc
+                        }, 0)
+                        const scWK = SCs.reduce((acc, value) => {
+                          if (value.WEEK === 'ATR') {
+                            return acc + value.SALDO
+                          }
+                          if (value.DATE <= period.date) {
+                            return acc + value.SALDO
+                          }
+                          return acc
+                        }, 0)
+
+                        if (
+                          pcWK +
                             scWK -
                             empWK +
                             almoxarifados[0].SALDO +
                             stockWarehouse06[0].SALDO <
-                            0
-                            ) {
-                            return (
-                              <td
-                                style={{
-                                  color: '#9C0006',
-                                  backgroundColor: '#FFC7CE',
-                                }}
-                              >
-                                {Math.round(
-                                  (pcWK +
-                                    scWK -
-                                    empWK +
-                                    almoxarifados[0].SALDO +
-                                    stockWarehouse06[0].SALDO +
-                                    Number.EPSILON) *
-                                  100,
-                                ) / 100}
-                              </td>
-                            );
-                          }
-
-                          if (
-                            pcWK +
-                            scWK -
-                            empWK +
-                            almoxarifados[0].SALDO +
-                            stockWarehouse06[0].SALDO ===
-                            0
-                            ) {
-                            return (
-                              <td
-                                style={{
-                                  color: '#9C6500',
-                                  backgroundColor: '#FFEB9C',
-                                }}
-                              >
-                                {Math.round(
-                                  (pcWK +
-                                    scWK -
-                                    empWK +
-                                    almoxarifados[0].SALDO +
-                                    stockWarehouse06[0].SALDO +
-                                    Number.EPSILON) *
-                                  100,
-                                ) / 100}
-                              </td>
-                            );
-                          }
-
+                          0
+                        ) {
                           return (
                             <td
                               style={{
-                                color: '#006100',
-                                backgroundColor: '#C6EFCE',
+                                color: '#9C0006',
+                                backgroundColor: '#FFC7CE'
                               }}
                             >
                               {Math.round(
@@ -1203,42 +1228,94 @@ export default function Pro_Dash() {
                                   almoxarifados[0].SALDO +
                                   stockWarehouse06[0].SALDO +
                                   Number.EPSILON) *
-                                100,
+                                  100
                               ) / 100}
                             </td>
-                          );
-                        })}
+                          )
+                        }
+
+                        if (
+                          pcWK +
+                            scWK -
+                            empWK +
+                            almoxarifados[0].SALDO +
+                            stockWarehouse06[0].SALDO ===
+                          0
+                        ) {
+                          return (
+                            <td
+                              style={{
+                                color: '#9C6500',
+                                backgroundColor: '#FFEB9C'
+                              }}
+                            >
+                              {Math.round(
+                                (pcWK +
+                                  scWK -
+                                  empWK +
+                                  almoxarifados[0].SALDO +
+                                  stockWarehouse06[0].SALDO +
+                                  Number.EPSILON) *
+                                  100
+                              ) / 100}
+                            </td>
+                          )
+                        }
+
+                        return (
+                          <td
+                            key={i}
+                            style={{
+                              color: '#006100',
+                              backgroundColor: '#C6EFCE'
+                            }}
+                          >
+                            {Math.round(
+                              (pcWK +
+                                scWK -
+                                empWK +
+                                almoxarifados[0].SALDO +
+                                stockWarehouse06[0].SALDO +
+                                Number.EPSILON) *
+                                100
+                            ) / 100}
+                          </td>
+                        )
+                      })}
                     </tr>
                     <tr>
                       <td>SC</td>
-                      {period.map(period => {
+                      {period.map((period, i) => {
                         const scWK = SCs.reduce((acc, value) => {
                           if (value.WEEK === 'ATR' && period.week === 'ATR') {
-                            return acc + value.SALDO;
+                            return acc + value.SALDO
                           }
-                          if ((value.DATE <= period.date) && (value.DATE >= startOfWeek(period.date))) {
-                            return acc + value.SALDO;
+                          if (
+                            value.DATE <= period.date &&
+                            value.DATE >= startOfWeek(period.date)
+                          ) {
+                            return acc + value.SALDO
                           }
-                          return acc;
-                        }, 0);
+                          return acc
+                        }, 0)
 
                         if (period.week === 'ATR' && scWK !== 0) {
                           return (
                             <td
                               style={{
                                 color: '#9C0006',
-                                backgroundColor: '#FFC7CE',
+                                backgroundColor: '#FFC7CE'
                               }}
                             >
                               {Math.round((scWK + Number.EPSILON) * 100) / 100}
                             </td>
-                          );
+                          )
                         }
                         return (
-                          <td>
+                          <td key={i}>
                             {Math.round((scWK + Number.EPSILON) * 100) / 100}
                           </td>
-                        );
+                        )
                       })}
                     </tr>
                   </>
@@ -1296,8 +1373,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {PCs.length !== 0 ? (
-                  PCs.map(pc => (
-                    <tr>
+                  PCs.map((pc, i) => (
+                    <tr key={i}>
                       <td>{pc.EMISSAO}</td>
                       <td>
                         {pc.APROVADO === 'L' ? (
@@ -1310,7 +1387,7 @@ export default function Pro_Dash() {
                         <Link
                           to={{
                             pathname: '/pcs',
-                            state: [pc.PEDIDO, 'Número'],
+                            state: [pc.PEDIDO, 'Número']
                           }}
                         >
                           {pc.PEDIDO}
@@ -1348,14 +1425,14 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {SCs.length !== 0 ? (
-                  SCs.map(sc => (
-                    <tr>
+                  SCs.map((sc, i) => (
+                    <tr key={i}>
                       <td>{sc.EMISSAO}</td>
                       <td>
                         <Link
                           to={{
                             pathname: '/scs',
-                            state: [sc.SC, productNumber],
+                            state: [sc.SC, productNumber]
                           }}
                         >
                           {sc.SC}
@@ -1396,8 +1473,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {OPs.length !== 0 ? (
-                  OPs.map(op => (
-                    <tr>
+                  OPs.map((op, i) => (
+                    <tr key={i}>
                       <td>{op.OP}</td>
                       <td>{op.PRODUTO}</td>
                       <td>{op.DESCRICAO}</td>
@@ -1431,8 +1508,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {OUs.length !== 0 ? (
-                  OUs.map(ou => (
-                    <tr>
+                  OUs.map((ou, i) => (
+                    <tr key={i}>
                       <td>{ou.CODIGO}</td>
                       <td>{ou.QUANTIDADE}</td>
                     </tr>
@@ -1459,8 +1536,8 @@ export default function Pro_Dash() {
               </thead>
               <tbody>
                 {EMPs.length !== 0 ? (
-                  EMPs.map(emp => (
-                    <tr>
+                  EMPs.map((emp, i) => (
+                    <tr key={i}>
                       <td>{emp.DEC_OP}</td>
                       <td>{emp.OP}</td>
                       <td>{emp.SALDO}</td>
@@ -1479,5 +1556,5 @@ export default function Pro_Dash() {
         </Row>
       </Container>
     </Cont>
-  );
+  )
 }

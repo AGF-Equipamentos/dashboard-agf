@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
-import { Container as Cont, Header } from './styles';
-import logo from '../../img/logo.svg';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Container, Row, Col } from 'react-bootstrap'
+import { Container as Cont, Header } from './styles'
+import logo from '../../img/logo.svg'
 
 export default function Main() {
   return (
@@ -71,5 +71,5 @@ export default function Main() {
         </Col>
       </Container>
     </Cont>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Table,
   Button,
@@ -11,47 +11,47 @@ import {
   Spinner,
   Container,
   Badge
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FiLogIn, FiArrowLeft } from 'react-icons/fi';
-import { Container as Cont } from './styles';
+} from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { FiLogIn, FiArrowLeft } from 'react-icons/fi'
+import { Container as Cont } from './styles'
 
-import api from '../../services/api';
+import api from '../../services/api'
 
 export default function ProductRegister() {
-  const [searchValue, setSearchValue] = useState('');
-  const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState('Pesquisar por descrição');
+  const [searchValue, setSearchValue] = useState('')
+  const [products, setProducts] = useState([])
+  const [filter, setFilter] = useState('Pesquisar por descrição')
   const [searchPlaceholder, setSearchPlaceholder] = useState(
-    'Pesquise por um produto...',
-  );
+    'Pesquise por um produto...'
+  )
 
   async function handleSubmit() {
-    const search = searchValue.toUpperCase().trim();
-    let response;
-    setProducts([]);
+    const search = searchValue.toUpperCase().trim()
+    let response
+    setProducts([])
     setSearchPlaceholder(
-      <Spinner animation="border" size="sm" variant="warning" />,
-    );
+      <Spinner animation="border" size="sm" variant="warning" />
+    )
     if (filter === 'Código') {
       response = await api.get(
-        `/register?filial=0101&busca_cod_produto=${search}`,
-      );
+        `/register?filial=0101&busca_cod_produto=${search}`
+      )
     } else {
       response = await api.get(
-        `/register?filial=0101&busca_desc_produto=${search}`,
-      );
+        `/register?filial=0101&busca_desc_produto=${search}`
+      )
     }
     if (response.data.length === 0) {
-      setSearchPlaceholder('Não encontramos nenhum produto...');
+      setSearchPlaceholder('Não encontramos nenhum produto...')
     }
-    setProducts(response.data);
+    setProducts(response.data)
   }
 
   // submit on press Enter
   function keyPressed(event) {
     if (event.key === 'Enter') {
-      handleSubmit();
+      handleSubmit()
     }
   }
 
@@ -62,7 +62,7 @@ export default function ProductRegister() {
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
             <Link
               to={{
-                pathname: '/',
+                pathname: '/'
               }}
             >
               <FiArrowLeft color="#999" />
@@ -78,7 +78,7 @@ export default function ProductRegister() {
             autoFocus
             value={searchValue}
             onKeyPress={keyPressed}
-            onChange={e => setSearchValue(e.target.value)}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
           <DropdownButton
             as={InputGroup.Append}
@@ -114,17 +114,21 @@ export default function ProductRegister() {
           </thead>
           <tbody>
             {products.length !== 0 ? (
-              products.map(product => (
+              products.map((product) => (
                 <tr key={product.CODIGO}>
                   <td>{product.CODIGO}</td>
-                  <td>{product.DESCRICAO} - {product.BLOQUEADO === true ? 
-                  <Badge variant={'danger'}>Item bloqueado!</Badge> : null}</td>
+                  <td>
+                    {product.DESCRICAO} -{' '}
+                    {product.BLOQUEADO === true ? (
+                      <Badge variant={'danger'}>Item bloqueado!</Badge>
+                    ) : null}
+                  </td>
                   <td>{product.UM}</td>
                   <td>
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: product.CODIGO,
+                        state: product.CODIGO
                       }}
                     >
                       <FiLogIn color="#999" />
@@ -141,5 +145,5 @@ export default function ProductRegister() {
         </Table>
       </Container>
     </Cont>
-  );
+  )
 }
