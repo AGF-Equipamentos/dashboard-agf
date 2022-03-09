@@ -19,7 +19,7 @@ jobs:
     - name: install dependencies
       run: yarn
 
-    - name: lint-staged
+    - name: Check lint and tests
       run: npx --no-install lint-staged
 
     - name: Run build
