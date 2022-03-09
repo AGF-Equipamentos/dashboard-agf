@@ -8,11 +8,10 @@ import {
   InputGroup,
   Table,
   Form,
-  FormControl,
   Spinner,
   DropdownButton,
-  Dropdown
-  
+  Dropdown,
+
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -22,23 +21,31 @@ import axios from 'axios';
 export default function CriticalItems() {
   const [searchPlaceholder, setSearchPlaceholder] = useState('Pesquise por um código...');
   const [items, setItems] = useState([]);
-  const [filter, setFilter] = useState('Pesquisar...');
+  const [searchValue, setSearchValue] = useState('');
  
   async function handleSubmit(){
-  let response;
+    let response;
+    setItems([]);
     setSearchPlaceholder(
       <Spinner animation="border" size="sm" variant="warning" />,
       );
       const part_numberInformation = await axios.get(
         `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+        {
+          params: {
+            part_number: searchValue
+          }
+        }
       );
-      setItems(part_numberInformation.data); 
+      if (searchValue === '') {
+        response = await axios.get(
+        
+        );
+        } else{
+          setSearchPlaceholder('Não encontramos a peça...')
+        }
 
-      if (part_numberInformation.data.length === 0){
-        setSearchPlaceholder('Não tem essa peça...');
-
-      }
-      setItems(part_numberInformation.data);
+     setItems(part_numberInformation.data); 
 
     }
     function keyPressed(event){
@@ -64,31 +71,19 @@ export default function CriticalItems() {
         </Row>
         <h1>Itens Críticos</h1>
         <InputGroup className="mb-3">
-      
-          
-          <Form.Control type="text" placeholder="Número da peça..." /><br />
-          <Form.Control type="text" placeholder="Observação de Estoque..."/><br />
-          <Form.Control type="text" placeholder="Observação de Compras..."/><br />
-          <Form.Control type="text" placeholder="Usado..."/><br />
-          <Form.Control type="text" placeholder="Responsavel..."/><br />
-              <DropdownButton
-              as={InputGroup.Append}
-              variant="outline-warning"
-              title={filter}
-              id="input-group-dropdown-2"
-              >
-          <Dropdown.Item onClick={() => setFilter('Número da Peça')}>
-              Número da Peça
-          </Dropdown.Item>
-          </DropdownButton>
+          <Form.Control 
+            type="text" 
+            placeholder="Pesquise por um produto..."
+            aria-label="Pesquise por um produto..."
+            onChange={e => setSearchValue(e.target.value)}
+          />
             <InputGroup.Append>
-          
               <Button 
-              onClick={handleSubmit}
-              type="submit"
-              variant="outline-warning"
+                onClick={handleSubmit}
+                type="submit"
+                variant="outline-warning"
               >
-               Cadastar
+              Enviar 
               </Button>
               </InputGroup.Append>
         </InputGroup>
@@ -101,7 +96,7 @@ export default function CriticalItems() {
             <th>DESCRIÇÃO DO ITEM</th>
             <th>OBSERVAÇÃO DO ESTOQUE</th>
             <th>OBSERVAÇÃO DE COMPRAS</th>
-            <th>Usado</th>
+            <th>USADO</th>
             <th>RESPONSAVEL</th>
             <th>CRIADO:</th>
             <th>ULT. ATUAL.</th>
@@ -137,12 +132,3 @@ export default function CriticalItems() {
     </Cont>
   );
 }
-           
-                       
-            
-           
-
-
-
-
-  
