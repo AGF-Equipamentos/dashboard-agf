@@ -1,139 +1,139 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Col, Row, Spinner, Container } from 'react-bootstrap';
-import { FiArrowLeft } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import { Container as Cont } from './styles';
+import React, { useEffect, useState } from 'react'
+import { Table, Col, Row, Spinner, Container } from 'react-bootstrap'
+import { FiArrowLeft } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
+import { Container as Cont } from './styles'
 
-import api from '../../services/api';
+import api from '../../services/api'
 
 export default function EstoquesGer() {
-  const [estoques, setEstoques] = useState([]);
-  const [PCs, setPCs] = useState([]);
-  const [SCs, setSCs] = useState([]);
-  const [gs125_01, setGS125_01] = useState([]);
-  const [gs165_01, setGS165_01] = useState([]);
-  const [gs230_01, setGS230_01] = useState([]);
-  const [gs260_01, setGS260_01] = useState([]);
-  const [gs125A_01, setGS125A_01] = useState([]);
-  const [gs165A_01, setGS165A_01] = useState([]);
-  const [gs230A_01, setGS230A_01] = useState([]);
-  const [gs260A_01, setGS260A_01] = useState([]);
+  const [estoques, setEstoques] = useState([])
+  const [PCs, setPCs] = useState([])
+  const [SCs, setSCs] = useState([])
+  const [gs125_01, setGS125_01] = useState([])
+  const [gs165_01, setGS165_01] = useState([])
+  const [gs230_01, setGS230_01] = useState([])
+  const [gs260_01, setGS260_01] = useState([])
+  const [gs125A_01, setGS125A_01] = useState([])
+  const [gs165A_01, setGS165A_01] = useState([])
+  const [gs230A_01, setGS230A_01] = useState([])
+  const [gs260A_01, setGS260A_01] = useState([])
   const [saldosPlaceholder, setSaldosPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />,
-  );
+    <Spinner animation="border" size="sm" variant="warning" />
+  )
   const [pcPlaceholder, setPcPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />,
-  );
+    <Spinner animation="border" size="sm" variant="warning" />
+  )
   const [scPlaceholder, setScPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />,
-  );
+    <Spinner animation="border" size="sm" variant="warning" />
+  )
 
   useEffect(() => {
     async function loadEstoques() {
       const saldos = await api.get(
-        `/estoques?produto=GS125',%20'GS165',%20'GS230',%20'GS260`,
-      );
+        `/estoques?produto=GS125',%20'GS165',%20'GS230',%20'GS260`
+      )
       if (saldos.data.length === 0) {
-        setSaldosPlaceholder('Parece que não há saldo...');
+        setSaldosPlaceholder('Parece que não há saldo...')
       } else {
-        setEstoques(saldos.data);
+        setEstoques(saldos.data)
       }
 
       const pcs = await api.get(
-        `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=9900001327',%20'9900000777',%20'9900000778',%20'9900001100',%20'9900001718',%20'9900000786',%20'9900000821',%20'9900001101`,
-      );
+        `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=9900001327',%20'9900000777',%20'9900000778',%20'9900001100',%20'9900001718',%20'9900000786',%20'9900000821',%20'9900001101`
+      )
       if (pcs.data.length === 0) {
-        setPcPlaceholder('Parece que não há PCs...');
+        setPcPlaceholder('Parece que não há PCs...')
       } else {
-        setPCs(pcs.data);
+        setPCs(pcs.data)
       }
 
       const scs = await api.get(
-        `/scs?filial=0101&aberto=true&produto=9900001327',%20'9900000777',%20'9900000778',%20'9900001100',%20'9900001718',%20'9900000786',%20'9900000821',%20'9900001101`,
-      );
+        `/scs?filial=0101&aberto=true&produto=9900001327',%20'9900000777',%20'9900000778',%20'9900001100',%20'9900001718',%20'9900000786',%20'9900000821',%20'9900001101`
+      )
       if (scs.data.length === 0) {
-        setScPlaceholder('Parece que não há PCs...');
+        setScPlaceholder('Parece que não há PCs...')
       } else {
-        setSCs(scs.data);
+        setSCs(scs.data)
       }
 
       // motores
       const response1 = await api.get(
-        '/estoques?filial=0101&produto=9900001327&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900001327&armazem=01'
+      )
       if (response1.data.length === 0) {
-        setGS125_01([{ SALDO: 0 }]);
+        setGS125_01([{ SALDO: 0 }])
       } else {
-        setGS125_01(response1.data);
+        setGS125_01(response1.data)
       }
 
       const response2 = await api.get(
-        '/estoques?filial=0101&produto=9900000777&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900000777&armazem=01'
+      )
       if (response2.data.length === 0) {
-        setGS165_01([{ SALDO: 0 }]);
+        setGS165_01([{ SALDO: 0 }])
       } else {
-        setGS165_01(response2.data);
+        setGS165_01(response2.data)
       }
 
       const response3 = await api.get(
-        '/estoques?filial=0101&produto=9900000778&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900000778&armazem=01'
+      )
       if (response3.data.length === 0) {
-        setGS230_01([{ SALDO: 0 }]);
+        setGS230_01([{ SALDO: 0 }])
       } else {
-        setGS230_01(response3.data);
+        setGS230_01(response3.data)
       }
 
       const response4 = await api.get(
-        '/estoques?filial=0101&produto=9900001100&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900001100&armazem=01'
+      )
       if (response4.data.length === 0) {
-        setGS260_01([{ SALDO: 0 }]);
+        setGS260_01([{ SALDO: 0 }])
       } else {
-        setGS260_01(response4.data);
+        setGS260_01(response4.data)
       }
 
       // alternadores
 
       const response5 = await api.get(
-        '/estoques?filial=0101&produto=9900001718&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900001718&armazem=01'
+      )
       if (response5.data.length === 0) {
-        setGS125A_01([{ SALDO: 0 }]);
+        setGS125A_01([{ SALDO: 0 }])
       } else {
-        setGS125A_01(response5.data);
+        setGS125A_01(response5.data)
       }
 
       const response6 = await api.get(
-        '/estoques?filial=0101&produto=9900000786&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900000786&armazem=01'
+      )
       if (response6.data.length === 0) {
-        setGS165A_01([{ SALDO: 0 }]);
+        setGS165A_01([{ SALDO: 0 }])
       } else {
-        setGS165A_01(response6.data);
+        setGS165A_01(response6.data)
       }
 
       const response7 = await api.get(
-        '/estoques?filial=0101&produto=9900000821&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900000821&armazem=01'
+      )
       if (response7.data.length === 0) {
-        setGS230A_01([{ SALDO: 0 }]);
+        setGS230A_01([{ SALDO: 0 }])
       } else {
-        setGS230A_01(response7.data);
+        setGS230A_01(response7.data)
       }
 
       const response8 = await api.get(
-        '/estoques?filial=0101&produto=9900001101&armazem=01',
-      );
+        '/estoques?filial=0101&produto=9900001101&armazem=01'
+      )
       if (response8.data.length === 0) {
-        setGS260A_01([{ SALDO: 0 }]);
+        setGS260A_01([{ SALDO: 0 }])
       } else {
-        setGS260A_01(response8.data);
+        setGS260A_01(response8.data)
       }
     }
-    loadEstoques();
-  }, []);
+    loadEstoques()
+  }, [])
 
   return (
     <Cont>
@@ -142,7 +142,7 @@ export default function EstoquesGer() {
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
             <Link
               to={{
-                pathname: '/',
+                pathname: '/'
               }}
             >
               <FiArrowLeft color="#999" />
@@ -162,14 +162,14 @@ export default function EstoquesGer() {
 
           <tbody>
             {estoques.length > 0 ? (
-              estoques.map(estoque => (
+              estoques.map((estoque) => (
                 <tr key={estoque.FILIAL.concat('', estoque.PRODUTO)}>
                   <td>{estoque.FILIAL}</td>
                   <td>
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: estoque.PRODUTO,
+                        state: estoque.PRODUTO
                       }}
                     >
                       {estoque.PRODUTO}
@@ -203,14 +203,14 @@ export default function EstoquesGer() {
               </thead>
               <tbody>
                 {PCs.length > 0 ? (
-                  PCs.map(pc => (
+                  PCs.map((pc) => (
                     <tr key={pc.PEDIDO.concat('', pc.PRODUTO)}>
                       <td>{pc.PEDIDO}</td>
                       <td>
                         <Link
                           to={{
                             pathname: '/prodash',
-                            state: pc.PRODUTO,
+                            state: pc.PRODUTO
                           }}
                         >
                           {pc.PRODUTO}
@@ -247,14 +247,14 @@ export default function EstoquesGer() {
               </thead>
               <tbody>
                 {SCs.length > 0 ? (
-                  SCs.map(sc => (
+                  SCs.map((sc) => (
                     <tr key={sc.SC.concat('', sc.PRODUTO)}>
                       <td>{sc.SC}</td>
                       <td>
                         <Link
                           to={{
                             pathname: '/prodash',
-                            state: sc.PRODUTO,
+                            state: sc.PRODUTO
                           }}
                         >
                           {sc.PRODUTO}
@@ -294,7 +294,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900001327',
+                        state: '9900001327'
                       }}
                     >
                       9900001327
@@ -302,8 +302,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs125_01.length > 0 ? (
                     <td>
-                      {gs125_01.map(gs125 => (
-                        <div>{gs125.SALDO}</div>
+                      {gs125_01.map((gs125, i) => (
+                        <div key={i}>{gs125.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -318,7 +318,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900000777',
+                        state: '9900000777'
                       }}
                     >
                       9900000777
@@ -326,8 +326,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs165_01.length > 0 ? (
                     <td>
-                      {gs165_01.map(gs165 => (
-                        <div>{gs165.SALDO}</div>
+                      {gs165_01.map((gs165, i) => (
+                        <div key={i}>{gs165.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -342,7 +342,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900000778',
+                        state: '9900000778'
                       }}
                     >
                       9900000778
@@ -350,8 +350,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs230_01.length > 0 ? (
                     <td>
-                      {gs230_01.map(gs230 => (
-                        <div>{gs230.SALDO}</div>
+                      {gs230_01.map((gs230, i) => (
+                        <div key={i}>{gs230.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -366,7 +366,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900001100',
+                        state: '9900001100'
                       }}
                     >
                       9900001100
@@ -374,8 +374,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs260_01.length > 0 ? (
                     <td>
-                      {gs260_01.map(gs260 => (
-                        <div>{gs260.SALDO}</div>
+                      {gs260_01.map((gs260, i) => (
+                        <div key={i}>{gs260.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -407,7 +407,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900001718',
+                        state: '9900001718'
                       }}
                     >
                       9900001718
@@ -415,8 +415,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs125A_01.length > 0 ? (
                     <td>
-                      {gs125A_01.map(gs125 => (
-                        <div>{gs125.SALDO}</div>
+                      {gs125A_01.map((gs125, i) => (
+                        <div key={i}>{gs125.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -431,7 +431,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900000786',
+                        state: '9900000786'
                       }}
                     >
                       9900000786
@@ -439,8 +439,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs165A_01.length > 0 ? (
                     <td>
-                      {gs165A_01.map(gs165 => (
-                        <div>{gs165.SALDO}</div>
+                      {gs165A_01.map((gs165, i) => (
+                        <div key={i}>{gs165.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -455,7 +455,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900000821',
+                        state: '9900000821'
                       }}
                     >
                       9900000821
@@ -463,8 +463,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs230A_01.length > 0 ? (
                     <td>
-                      {gs230A_01.map(gs230 => (
-                        <div>{gs230.SALDO}</div>
+                      {gs230A_01.map((gs230, i) => (
+                        <div key={i}>{gs230.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -479,7 +479,7 @@ export default function EstoquesGer() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: '9900001101',
+                        state: '9900001101'
                       }}
                     >
                       9900001101
@@ -487,8 +487,8 @@ export default function EstoquesGer() {
                   </td>
                   {gs260A_01.length > 0 ? (
                     <td>
-                      {gs260A_01.map(gs260 => (
-                        <div>{gs260.SALDO}</div>
+                      {gs260A_01.map((gs260, i) => (
+                        <div key={i}>{gs260.SALDO}</div>
                       ))}
                     </td>
                   ) : (
@@ -503,5 +503,5 @@ export default function EstoquesGer() {
         </Row>
       </Container>
     </Cont>
-  );
+  )
 }

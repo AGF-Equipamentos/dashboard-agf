@@ -1,5 +1,5 @@
 export function generateSimplePrintCode(data) {
-  const printItens = data.map(item => {
+  const printItens = data.map((item) => {
     return `
       ^XA
   
@@ -11,7 +11,7 @@ export function generateSimplePrintCode(data) {
       ^FO50,230^A0,35^FD ${item.DESCRICAO.slice(60, 89)}^FS
   
       ^XZ
-      `.repeat(item.SALDO);
-  });
-  return printItens;
+      `.repeat(item.SALDO)
+  })
+  return printItens
 }

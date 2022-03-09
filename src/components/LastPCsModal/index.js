@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, Modal, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { Container as Cont } from './styles';
+import React from 'react'
+import { Button, Modal, Table } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { Container as Cont } from './styles'
 
 export default function LastPCsModal({ isOpen, handleClose, pcsData }) {
   return (
@@ -23,13 +23,13 @@ export default function LastPCsModal({ isOpen, handleClose, pcsData }) {
             </thead>
             <tbody>
               {pcsData.length !== 0 ? (
-                pcsData.map(pc => (
-                  <tr>
+                pcsData.map((pc, index) => (
+                  <tr key={index}>
                     <td>
                       <Link
                         to={{
                           pathname: '/pcs',
-                          state: [pc.PEDIDO, 'Número'],
+                          state: [pc.PEDIDO, 'Número']
                         }}
                       >
                         {pc.PEDIDO}
@@ -56,5 +56,5 @@ export default function LastPCsModal({ isOpen, handleClose, pcsData }) {
         </Modal.Footer>
       </Modal>
     </Cont>
-  );
+  )
 }

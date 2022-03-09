@@ -1,13 +1,13 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Button, Modal, Overlay, Tooltip } from 'react-bootstrap';
-import { DataGrid } from '@material-ui/data-grid';
-import { Container as Cont } from './styles';
-import { generatePrintCode } from '../../utils/generatePrintCode';
+import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { Button, Modal, Overlay, Tooltip } from 'react-bootstrap'
+import { DataGrid } from '@material-ui/data-grid'
+import { Container as Cont } from './styles'
+import { generatePrintCode } from '../../utils/generatePrintCode'
 
 export default function PrintModal({ isOpen, handleClose, pcsData }) {
-  const [selectionModel, setSelectionModel] = useState([]);
-  const [dataSelectionModel, setDataSelectionModel] = useState([]);
-  const [rows, setRows] = useState([]);
+  const [selectionModel, setSelectionModel] = useState([])
+  const [dataSelectionModel, setDataSelectionModel] = useState([])
+  const [rows, setRows] = useState([])
 
   function handlePreClose() {
     setSelectionModel([])
@@ -15,21 +15,19 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
   }
 
   useEffect(() => {
-    setRows(pcsData);
-  }, [pcsData]);
+    setRows(pcsData)
+  }, [pcsData])
 
   const handlePrintPC = () => {
-    navigator.clipboard.writeText(
-      generatePrintCode(dataSelectionModel),
-    )
-    setShow(!show);
+    navigator.clipboard.writeText(generatePrintCode(dataSelectionModel))
+    setShow(!show)
     setTimeout(() => {
       setShow(false)
     }, 1500)
-  };
+  }
 
-  const [show, setShow] = useState(false);
-  const target = useRef(null);
+  const [show, setShow] = useState(false)
+  const target = useRef(null)
 
   const columns = [
     { field: 'PRODUTO', headerName: 'PRODUTO', width: 150 },
@@ -39,30 +37,30 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
       headerName: 'SALDO',
       width: 150,
       type: 'number',
-      editable: true,
-    },
-  ];
+      editable: true
+    }
+  ]
 
   const handleEditCellChangeCommitted = useCallback(
     ({ id, field, props }) => {
       if (field === 'SALDO') {
-        const data = props;
-        const SALDO = data.value;
-        const updatedRows = rows.map(row => {
+        const data = props
+        const SALDO = data.value
+        const updatedRows = rows.map((row) => {
           if (row.id === id) {
-            return { ...row, SALDO: Number(SALDO) };
+            return { ...row, SALDO: Number(SALDO) }
           }
-          return row;
-        });
-        setRows(updatedRows);
-        const newSelectionData = updatedRows.filter(row =>
-          selectionModel.includes(row.id),
-        );
-        setDataSelectionModel(newSelectionData);
+          return row
+        })
+        setRows(updatedRows)
+        const newSelectionData = updatedRows.filter((row) =>
+          selectionModel.includes(row.id)
+        )
+        setDataSelectionModel(newSelectionData)
       }
     },
-    [rows, selectionModel],
-  );
+    [rows, selectionModel]
+  )
 
   return (
     <Cont>
@@ -78,12 +76,12 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
                 columns={columns}
                 checkboxSelection
                 disableSelectionOnClick
-                onSelectionModelChange={newSelection => {
-                  setSelectionModel(newSelection.selectionModel);
-                  const newSelectionData = rows.filter(row =>
-                    newSelection.selectionModel.includes(row.id),
-                  );
-                  setDataSelectionModel(newSelectionData);
+                onSelectionModelChange={(newSelection) => {
+                  setSelectionModel(newSelection.selectionModel)
+                  const newSelectionData = rows.filter((row) =>
+                    newSelection.selectionModel.includes(row.id)
+                  )
+                  setDataSelectionModel(newSelectionData)
                 }}
                 selectionModel={selectionModel}
                 onEditCellChangeCommitted={handleEditCellChangeCommitted}
@@ -95,15 +93,11 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
           <Button variant="secondary" onClick={handlePreClose}>
             Fechar
           </Button>
-          <Button
-            ref={target}
-            variant="warning"
-            onClick={handlePrintPC}
-          >
+          <Button ref={target} variant="warning" onClick={handlePrintPC}>
             Gerar código
           </Button>
           <Overlay target={target.current} show={show} placement="top">
-            {props => (
+            {(props) => (
               <Tooltip {...props}>
                 Copiado para a área de transferência!
               </Tooltip>
@@ -112,5 +106,5 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
         </Modal.Footer>
       </Modal>
     </Cont>
-  );
+  )
 }

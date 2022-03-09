@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Col, Spinner, Container } from 'react-bootstrap';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-import { Container as Cont } from './styles';
+import React, { useEffect, useState } from 'react'
+import { Row, Col, Spinner, Container } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { FiArrowLeft } from 'react-icons/fi'
+import { Container as Cont } from './styles'
 
-import api from '../../services/api';
+import api from '../../services/api'
 
 export default function OPsPP() {
-  const [OPs, setOPs] = useState([]);
+  const [OPs, setOPs] = useState([])
   const [opsPlaceholder, setOpsPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />,
-  );
+    <Spinner animation="border" size="sm" variant="warning" />
+  )
 
   useEffect(() => {
     async function loadOPs() {
-      const response = await api.get(
-        '/ops?filial=0101&obs=PONTO&fechado=false',
-      );
+      const response = await api.get('/ops?filial=0101&obs=PONTO&fechado=false')
       if (response.data.length === 0) {
-        setOpsPlaceholder('Parece que não há ops...');
+        setOpsPlaceholder('Parece que não há ops...')
       }
-      setOPs(response.data);
+      setOPs(response.data)
     }
-    loadOPs();
-  }, []);
+    loadOPs()
+  }, [])
 
   return (
     <Cont>
@@ -33,7 +31,7 @@ export default function OPsPP() {
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
             <Link
               to={{
-                pathname: '/',
+                pathname: '/'
               }}
             >
               <FiArrowLeft color="#999" />
@@ -59,8 +57,8 @@ export default function OPsPP() {
 
           <tbody>
             {OPs.length > 0 ? (
-              OPs.map(ops => (
-                <tr>
+              OPs.map((ops, i) => (
+                <tr key={i}>
                   <td>{ops.OP}</td>
                   <td>{ops.PRODUTO}</td>
                   <td>{ops.DESCRICAO}</td>
@@ -82,5 +80,5 @@ export default function OPsPP() {
         </Table>
       </Container>
     </Cont>
-  );
+  )
 }

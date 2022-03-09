@@ -1,16 +1,16 @@
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import React from 'react'
+import { BrowserRouter, Route } from 'react-router-dom'
 
-import Main from './pages/Main';
-import EstoquesMaq from './pages/EstoquesMaq';
-import PCs from './pages/PCs';
-import SCs from './pages/SCs';
-import Pro_Dash from './pages/Pro_Dash';
-import EstoquesGer from './pages/EstoqueGer';
-import OPsPosVendas from './pages/OPsPosVendas';
-import OPsFilial from './pages/OPsFilial';
-import OPsPP from './pages/OPsPP';
-import ProductRegister from './pages/ProductRegister';
+import Main from './pages/Main'
+import EstoquesMaq from './pages/EstoquesMaq'
+import PCs from './pages/PCs'
+import SCs from './pages/SCs'
+import Pro_Dash from './pages/Pro_Dash'
+import EstoquesGer from './pages/EstoqueGer'
+import OPsPosVendas from './pages/OPsPosVendas'
+import OPsFilial from './pages/OPsFilial'
+import OPsPP from './pages/OPsPP'
+import ProductRegister from './pages/ProductRegister'
 
 export default function Routes() {
   return (
@@ -26,5 +26,5 @@ export default function Routes() {
       <Route path="/opsfilial" component={OPsFilial} />
       <Route path="/opspp" component={OPsPP} />
     </BrowserRouter>
-  );
+  )
 }

@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Row, Col, Spinner, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-import { Container as Cont } from './styles';
+import React, { useEffect, useState } from 'react'
+import { Table, Row, Col, Spinner, Container } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { FiArrowLeft } from 'react-icons/fi'
+import { Container as Cont } from './styles'
 
-import api from '../../services/api';
+import api from '../../services/api'
 
 export default function EstoquesMaq() {
-  const [estoques, setEstoques] = useState([]);
+  const [estoques, setEstoques] = useState([])
   const [estoquesPlaceholder, setEstoquesPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />,
-  );
+    <Spinner animation="border" size="sm" variant="warning" />
+  )
 
   useEffect(() => {
     async function loadEstoques() {
       const response = await api.get(
-        `/estoques?filial=0101,0102&grupo=0094','0500','0501','0502','0503','0510','0520','0530','0540','0550','0560','0570`,
-      );
+        `/estoques?filial=0101,0102&grupo=0094','0500','0501','0502','0503','0510','0520','0530','0540','0550','0560','0570`
+      )
       if (response.data.length === 0) {
-        setEstoquesPlaceholder('Parece que não há nada em estoque...');
+        setEstoquesPlaceholder('Parece que não há nada em estoque...')
       }
-      setEstoques(response.data);
+      setEstoques(response.data)
     }
-    loadEstoques();
-  }, []);
+    loadEstoques()
+  }, [])
 
   return (
     <Cont>
@@ -32,7 +32,7 @@ export default function EstoquesMaq() {
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
             <Link
               to={{
-                pathname: '/',
+                pathname: '/'
               }}
             >
               <FiArrowLeft color="#999" />
@@ -52,7 +52,7 @@ export default function EstoquesMaq() {
 
           <tbody>
             {estoques.length > 0 ? (
-              estoques.map(estoque => (
+              estoques.map((estoque) => (
                 <tr key={estoque.FILIAL.concat('', estoque.PRODUTO)}>
                   <td>{estoque.FILIAL}</td>
                   <td>{estoque.PRODUTO}</td>
@@ -69,5 +69,5 @@ export default function EstoquesMaq() {
         </Table>
       </Container>
     </Cont>
-  );
+  )
 }

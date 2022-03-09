@@ -1,51 +1,61 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Table, Button, InputGroup, FormControl, Badge, Row, DropdownButton, Dropdown, Col, Spinner, Container} from 'react-bootstrap';
-import { useLocation, Link } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-import { Container as Cont } from './styles';
-import { generatePrintCode } from '../../utils/generatePrintCode';
+import React, { useState, useEffect, useCallback } from 'react'
+import {
+  Table,
+  Button,
+  InputGroup,
+  FormControl,
+  Badge,
+  Row,
+  DropdownButton,
+  Dropdown,
+  Col,
+  Spinner,
+  Container
+} from 'react-bootstrap'
+import { useLocation, Link } from 'react-router-dom'
+import { FiArrowLeft } from 'react-icons/fi'
+import { Container as Cont } from './styles'
+import { generatePrintCode } from '../../utils/generatePrintCode'
 
-import api from '../../services/api';
-import PrintModal from '../../components/PrintModal';
+import api from '../../services/api'
+import PrintModal from '../../components/PrintModal'
 
 export default function PCs() {
-  const [searchValue, setSearchValue] = useState('');
-  const [dataPCs, setDataPCs] = useState([]);
-  const [formattedPCs, setFormattedPCs] = useState([]);
-  const [sumPCs, setSumPCs] = useState([]);
-  const [pcsPlaceholder, setPcsPlaceholder] = useState('Pesquise por um PC...');
-  const [filter, setFilter] = useState('Pesquisar por número do PC');
+  const [searchValue, setSearchValue] = useState('')
+  const [dataPCs, setDataPCs] = useState([])
+  const [formattedPCs, setFormattedPCs] = useState([])
+  const [sumPCs, setSumPCs] = useState([])
+  const [pcsPlaceholder, setPcsPlaceholder] = useState('Pesquise por um PC...')
+  const [filter, setFilter] = useState('Pesquisar por número do PC')
   const [filial, setFilial] = useState('0101')
-  const location = useLocation();
+  const location = useLocation()
 
   const handleSubmit = useCallback(
     async (searchInput, filterInput) => {
-      let searchVar = searchValue.toUpperCase().trim();
-      let filterVar = filter;
-      let response;
-      setDataPCs([]);
+      let searchVar = searchValue.toUpperCase().trim()
+      let filterVar = filter
+      let response
+      setDataPCs([])
       setPcsPlaceholder(
-        <Spinner animation="border" size="sm" variant="warning" />,
-      );
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
 
       if (searchInput > 0) {
-        searchVar = searchInput.toUpperCase().trim();
+        searchVar = searchInput.toUpperCase().trim()
       }
       if (filterInput !== undefined) {
-        filterVar = filterInput;
+        filterVar = filterInput
       }
       if (filterVar === 'CNPJ') {
-        response = await api.get(
-          `/pcs`, {
-            params: {
-              filial,
-              legenda: "PENDENTE', 'ATENDIDO PARCIALMENTE",
-              cnpj: searchVar
-            }
+        response = await api.get(`/pcs`, {
+          params: {
+            filial,
+            legenda: "PENDENTE', 'ATENDIDO PARCIALMENTE",
+            cnpj: searchVar
           }
-        );
+        })
         if (response.data.length === 0) {
-          setPcsPlaceholder('Parece que não há um PC com esse CNPJ...');
+          setPcsPlaceholder('Parece que não há um PC com esse CNPJ...')
         }
       } else {
         response = await api.get(`/pcs`, {
@@ -53,68 +63,68 @@ export default function PCs() {
             filial,
             pc: searchVar
           }
-        });
+        })
         if (response.data.length === 0) {
-          setPcsPlaceholder('Parece que não há um PC com esse número...');
+          setPcsPlaceholder('Parece que não há um PC com esse número...')
         }
       }
 
-      setDataPCs(response.data);
+      setDataPCs(response.data)
     },
-    [searchValue, filter, filial],
-  );
+    [searchValue, filter, filial]
+  )
 
   useEffect(() => {
-    const mapPCs = dataPCs.map(pc => pc.PRECO * (pc.QTD - pc.QTD_ENT));
-    const totalSumPCs = mapPCs.length > 0 ? mapPCs.reduce((a, b) => a + b) : 0;
-    setSumPCs(totalSumPCs);
-  }, [dataPCs]);
+    const mapPCs = dataPCs.map((pc) => pc.PRECO * (pc.QTD - pc.QTD_ENT))
+    const totalSumPCs = mapPCs.length > 0 ? mapPCs.reduce((a, b) => a + b) : 0
+    setSumPCs(totalSumPCs)
+  }, [dataPCs])
 
   // submit on press Enter
   function keyPressed(event) {
     if (event.key === 'Enter') {
-      handleSubmit();
+      handleSubmit()
     }
   }
 
   useEffect(() => {
     if (location.state) {
-      setFilter(location.state[1]);
-      setSearchValue(location.state[0]);
-      handleSubmit(location.state[0], location.state[1]);
+      setFilter(location.state[1])
+      setSearchValue(location.state[0])
+      handleSubmit(location.state[0], location.state[1])
     }
     // eslint-disable-next-line
   }, [location.state]);
 
   const handlePC = useCallback(
-    async pcInput => {
-      handleSubmit(pcInput, 'Número');
+    async (pcInput) => {
+      handleSubmit(pcInput, 'Número')
     },
-    [handleSubmit],
-  );
+    [handleSubmit]
+  )
 
   // modal handle
 
-  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
-  const [textPrint, setTextPrint] = useState('');
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
+  const [textPrint, setTextPrint] = useState('')
 
   function handleClose() {
-    setIsPrintModalOpen(false);
+    setIsPrintModalOpen(false)
   }
 
   const handlePrintPC = () => {
-    const updatedPCs = dataPCs.map(pc => ({
+    const updatedPCs = dataPCs.map((pc) => ({
       ...pc,
-      id: pc.ITEM,
-    }));
-    setFormattedPCs(updatedPCs.filter(row => row.SALDO > 0));
-    const generatedPrintText = generatePrintCode(dataPCs);
-    setTextPrint(generatedPrintText.join(''));
-    setIsPrintModalOpen(true);
-  };
+      id: pc.ITEM
+    }))
+    setFormattedPCs(updatedPCs.filter((row) => row.SALDO > 0))
+    const generatedPrintText = generatePrintCode(dataPCs)
+    setTextPrint(generatedPrintText.join(''))
+    setIsPrintModalOpen(true)
+  }
 
   const handleFilialPlaceholder = useCallback((filial) => {
-    switch(filial) {
+    switch (filial) {
       case '0101':
         return 'Matriz'
       case '0102':
@@ -141,7 +151,7 @@ export default function PCs() {
               <Link
                 to={{
                   pathname: '/prodash',
-                  state: location.state[1],
+                  state: location.state[1]
                 }}
               >
                 <FiArrowLeft color="#999" />
@@ -153,7 +163,7 @@ export default function PCs() {
             <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
               <Link
                 to={{
-                  pathname: '/',
+                  pathname: '/'
                 }}
               >
                 <FiArrowLeft color="#999" />
@@ -170,7 +180,7 @@ export default function PCs() {
             autoFocus
             value={searchValue}
             onKeyPress={keyPressed}
-            onChange={e => setSearchValue(e.target.value)}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
           <DropdownButton
             as={InputGroup.Append}
@@ -244,8 +254,8 @@ export default function PCs() {
           </thead>
           <tbody>
             {dataPCs.length !== 0 ? (
-              dataPCs.map(pcs => (
-                <tr>
+              dataPCs.map((pcs, i) => (
+                <tr key={i}>
                   <td>
                     {pcs.APROVADO === 'L' ? (
                       <Badge variant="success">SIM</Badge>
@@ -264,7 +274,7 @@ export default function PCs() {
                     <Link
                       to={{
                         pathname: '/prodash',
-                        state: pcs.PRODUTO,
+                        state: pcs.PRODUTO
                       }}
                     >
                       {pcs.PRODUTO}
@@ -280,7 +290,7 @@ export default function PCs() {
                     <Link
                       to={{
                         pathname: '/scs',
-                        state: [pcs.NUMSC, pcs.PRODUTO],
+                        state: [pcs.NUMSC, pcs.PRODUTO]
                       }}
                     >
                       {pcs.NUMSC}
@@ -303,10 +313,10 @@ export default function PCs() {
           Total do pedido:{' '}
           {sumPCs.toLocaleString('pt-br', {
             style: 'currency',
-            currency: 'BRL',
+            currency: 'BRL'
           })}
         </h3>
       </Container>
     </Cont>
-  );
+  )
 }
