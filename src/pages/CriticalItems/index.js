@@ -8,9 +8,7 @@ import {
   InputGroup,
   Table,
   Form,
-  Spinner,
-  DropdownButton,
-  Dropdown
+  Spinner
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -25,21 +23,24 @@ export default function CriticalItems() {
   const [searchValue, setSearchValue] = useState('')
 
   async function handleSubmit() {
-    let response
+    let part_numberInformation
+    const search = searchValue.toUpperCase().trim()
     setItems([])
     setSearchPlaceholder(
       <Spinner animation="border" size="sm" variant="warning" />
     )
-    const part_numberInformation = await axios.get(
+    part_numberInformation = await axios.get(
       `${process.env.REACT_APP_LOCALHOST}/critical-items`,
       {
         params: {
-          part_number: searchValue
+          part_number: search
         }
       }
     )
     if (searchValue === '') {
-      response = await axios.get()
+      part_numberInformation = await axios.get(
+        `${process.env.REACT_APP_LOCALHOST}/critical-items`
+      )
     } else {
       setSearchPlaceholder('Não encontramos a peça...')
     }
@@ -69,9 +70,10 @@ export default function CriticalItems() {
         <InputGroup className="mb-3">
           <Form.Control
             type="text"
-            placeholder="Pesquise por um produto..."
-            aria-label="Pesquise por um produto..."
+            placeholder="Pesquisar por um item..."
+            arial-label="Pesquisar por um item..."
             onChange={(e) => setSearchValue(e.target.value)}
+            onKeyPress={keyPressed}
           />
           <InputGroup.Append>
             <Button
@@ -108,8 +110,16 @@ export default function CriticalItems() {
                   <td>{item.purchase_obs}</td>
                   <td>{item.used_obs}</td>
                   <td>{item.responsable}</td>
-                  <td>{item.created_at}</td>
-                  <td>{item.update_at}</td>
+                  <td>
+                    {new Intl.DateTimeFormat('pt-BR').format(
+                      new Date(item.created_at)
+                    )}
+                  </td>
+                  <td>
+                    {new Intl.DateTimeFormat('pt-BR').format(
+                      new Date(item.update_at)
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (
