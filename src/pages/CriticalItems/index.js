@@ -81,7 +81,7 @@ export default function CriticalItems() {
               type="submit"
               variant="outline-warning"
             >
-              Enviar
+              Procurar
             </Button>
           </InputGroup.Append>
         </InputGroup>
@@ -117,7 +117,7 @@ export default function CriticalItems() {
                   </td>
                   <td>
                     {new Intl.DateTimeFormat('pt-BR').format(
-                      new Date(item.update_at)
+                      new Date(item.updated_at)
                     )}
                   </td>
                 </tr>

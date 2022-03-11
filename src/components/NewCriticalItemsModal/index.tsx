@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+
 import { Form, FormGroup, Modal} from 'react-bootstrap';
 import axios from 'axios';
-import { useState } from 'react';
 import { Button } from 'react-bootstrap';
+
 
  export interface Data{
    id: string;
@@ -17,27 +18,39 @@ import { Button } from 'react-bootstrap';
 
  }
 
+ type MainProps = {
+userd_obs: string
+ }
 
 
-export default function Main(){
+
+const Main: React.FC<MainProps> = ({ userd_obs }) => {
+
 const [showNewCriticalItems, setShowNewCriticalItems] = useState(false);
 const [Criticaitems_part_number, setPartNumber] = useState('');
 const [Criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('');
 const [Criticalitems_used_obs, setCriticalItems_used_obs] = useState('');
-// const [showSave, setShowSave] = useState(false);
+const [criticalitems, setcriticalitems] = useState<Data>({} as Data);
+
+// const handleExcludeSubmit = useCallback(async () => {
+
+//     await axios.delete(`${process.env.REACT_APP_LOCALHOST.id}/critical-items`);
+
+// }); 
 
 
-const handleNewCriticalItemsSubmit = useCallback(async () => {
-try{
-  const newcriticalitens = await axios.post(`${process.env.REACT_APP_LOCALHOST}/critical-items`,{
-    part_number: Criticaitems_part_number,
-    stock_obs: Criticalitems_stock_obs,
-    userd_obs: Criticalitems_used_obs,
-    });
-  }
-});
+// const handleNewCriticalItemsSubmit = useCallback(async() => {
+
+//   // const newcriticalitens = await axios.post(`${process.env.REACT_APP_LOCALHOST}/critical-items`,{
+//   //   part_number: Criticaitems_part_number,
+//   //   stock_obs: Criticalitems_stock_obs,
+//   //   userd_obs: Criticalitems_used_obs,
+//   //   });
+
+// });
 
 return(
+<>
   <Modal
   styler={{ color: 'black' }}
   show={showNewCriticalItems}
@@ -46,7 +59,7 @@ return(
     <Modal.Header closeButton>
       <Modal.Title>Novo Item</Modal.Title>
     </Modal.Header>
-    <Form onSubmit={handleNewCriticalItemsSubmit}>
+    <Form >
       <Modal.Body>
         <Form>
           <Form.Group controlId="exampleForm.ControlInput1">
@@ -66,16 +79,13 @@ return(
               />
               </Form.Group>
 
-              <Form.Group controlId= "exampleForm.ControlSelect1">
+              <Form.Group controlId= "exampleForm.ControlInput1">
                 <Form.Label>Onde usado</Form.Label>
                 <Form.Control
-                as="select"
-                onChange={e => setCriticalItems_used_obs(e.target.value)}
-                >
-                  <option> SP </option>
-                  <option> ES </option>
-                  <option> </option>
-                  </Form.Control>
+               type="text"
+               placeholder="Digite onde é usado"
+               onChange={e => setCriticalItems_used_obs(e.target.value)}
+               />
               </Form.Group>
         </Form>
       </Modal.Body>
@@ -89,4 +99,13 @@ return(
       </Modal.Footer>
       </Form>
       </Modal>
-);
+      <Modal.Header closeButton>
+        <Modal.Title>Excluir Item</Modal.Title>
+        </Modal.Header>
+          
+        
+      </>
+      
+  );
+
+};
