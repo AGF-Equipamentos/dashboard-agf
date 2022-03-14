@@ -14,8 +14,11 @@ import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import axios from 'axios'
+import NewCriticalItemsModal from '../../components/NewCriticalItemsModal'
 
 export default function CriticalItems() {
+  const [showNewCriticalItemModal, setShowNewCriticalItemModal] =
+    useState(false)
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     'Pesquise por um código...'
   )
@@ -47,6 +50,15 @@ export default function CriticalItems() {
 
     setItems(part_numberInformation.data)
   }
+
+  async function handleOpenNewCriticalItemModal() {
+    setShowNewCriticalItemModal(true)
+  }
+
+  async function handleCloseNewCriticalItemModal() {
+    setShowNewCriticalItemModal(false)
+  }
+
   function keyPressed(event) {
     if (event.key === 'Enter') {
       handleSubmit()
@@ -54,6 +66,10 @@ export default function CriticalItems() {
   }
   return (
     <Cont>
+      <NewCriticalItemsModal
+        isOpen={showNewCriticalItemModal}
+        handleClose={handleCloseNewCriticalItemModal}
+      />
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
@@ -82,6 +98,15 @@ export default function CriticalItems() {
               variant="outline-warning"
             >
               Procurar
+            </Button>
+          </InputGroup.Append>
+          <InputGroup.Append>
+            <Button
+              onClick={handleOpenNewCriticalItemModal}
+              type="submit"
+              variant="outline-warning"
+            >
+              Iniciar
             </Button>
           </InputGroup.Append>
         </InputGroup>
