@@ -1,41 +1,27 @@
 import React, { useState } from 'react'
-
+import axios from 'axios'
 import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 
-const NewCriticalItemsModal = ({ isOpen, handleClose}) => {
-  const [showNewCriticalItems, setShowNewCriticalItems] = useState(false)
-  const [Criticaitems_part_number, setPartNumber] = useState('')
-  const [Criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('')
-  const [Criticalitems_used_obs, setCriticalItems_used_obs] = useState('')
+const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
+  const [criticaitems_part_number, setPartNumber] = useState('')
+  const [criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('')
+  const [criticalitems_used_obs, setCriticalItems_used_obs] = useState('')
+  // const [error, setError] = useState(Error())
 
- const handleNewCriticalItemsSubmit = async () => {
-  try{
-  const newCriticalItems = await axios.post(`${process.env.REACT_APP_LOCALHOST.id}/critical-items`,{
-   part_number: Criticaitems_part_number,
-  stock_obs: Criticalitems_stock_obs,
-  used_obs: Criticalitems_used_obs,
-
-  });
-  const newData = [... data, newCriticalItems.data ];
-
-  mutate(newData, false);
-
-  setShowNewCriticalItems(false);
-  }catch (err) {
-  if (err instanceof Yup.ValidationError){
-  const errors = getValidationErrors(err);
-  formSave.currrent?.setErrors(errors);
-  return;
+  const handleNewCriticalItemsSubmit = async () => {
+    try {
+      await axios.post(`http://localhost:3334/critical-items.`, {
+        part_number: criticaitems_part_number,
+        stock_obs: criticalitems_stock_obs,
+        used_obs: criticalitems_used_obs
+      })
+      handleClose()
+    } catch (error) {
+      // setError(error)
+      // setError('Algo deu errado, verifique se os campos foram digitados corretamente')
+    }
   }
-
-  addToast({
-   type: 'error',
-  title: 'erro na criação do Item Critico',
-  description: 'Parece que este Item Critico não existe, já foi fechado, ou já foi criado.', 
-  });
-  }
-  },[addToast, data, mutate,Criticalitems_part_number, Critical_stock_obs, Criticalitems_userd_obs];
 
   return (
     <>
@@ -77,7 +63,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose}) => {
             <Button variant="warning" onClick={handleClose}>
               Fechar
             </Button>
-            <Button variant="warning" type="submit">
+            <Button variant="warning" onClick={handleNewCriticalItemsSubmit}>
               Salvar
             </Button>
           </Modal.Footer>
