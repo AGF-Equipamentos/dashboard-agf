@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { FiEdit, FiXOctagon } from 'react-icons/fi'
 
 import {
   Col,
@@ -122,6 +123,7 @@ export default function CriticalItems() {
               <th>RESPONSAVEL</th>
               <th>CRIADO:</th>
               <th>ULT. ATUAL.</th>
+              <th>AÇÕES</th>
             </tr>
           </thead>
 
@@ -149,7 +151,7 @@ export default function CriticalItems() {
               ))
             ) : (
               <tr>
-                <td colSpan="8">{searchPlaceholder}</td>
+                <td colSpan="9">{searchPlaceholder}</td>
               </tr>
             )}
           </tbody>

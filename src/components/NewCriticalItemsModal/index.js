@@ -4,25 +4,24 @@ import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 
 const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
-  const [criticaitems_part_number, setPartNumber] = useState('')
+  const [criticalitems_part_number, setPartNumber] = useState('')
   const [criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('')
   const [criticalitems_used_obs, setCriticalItems_used_obs] = useState('')
-  // const [error, setError] = useState(Error())
+  const [error, setError] = useState(Error())
+  // const [criticalitems, setcriticalitems] = useState<Data>({} as Data);
 
   const handleNewCriticalItemsSubmit = async () => {
     try {
-      await axios.post(`http://localhost:3334/critical-items.`, {
-        part_number: criticaitems_part_number,
+      await axios.post(`http://localhost:3334/critical-items`, {
+        part_number: criticalitems_part_number,
         stock_obs: criticalitems_stock_obs,
         used_obs: criticalitems_used_obs
       })
       handleClose()
     } catch (error) {
-      // setError(error)
-      // setError('Algo deu errado, verifique se os campos foram digitados corretamente')
+      setError(error)
     }
   }
-
   return (
     <>
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
@@ -59,6 +58,14 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
               </Form.Group>
             </Form>
           </Modal.Body>
+          <p
+            style={{
+              color: 'red',
+              textAlign: 'center'
+            }}
+          >
+            {error.message}
+          </p>
           <Modal.Footer>
             <Button variant="warning" onClick={handleClose}>
               Fechar
