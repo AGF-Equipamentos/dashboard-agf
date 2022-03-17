@@ -16,10 +16,14 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import axios from 'axios'
 import NewCriticalItemsModal from '../../components/NewCriticalItemsModal'
+import ExcludeCriticalItemsModal from '../../components/ExcludeCriticalItemModal'
 
 export default function CriticalItems() {
   const [showNewCriticalItemModal, setShowNewCriticalItemModal] =
     useState(false)
+  const [showExcludeCriticalItemModal, setShowExcludeCriticaItemModal] =
+    useState(false)
+
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     'Pesquise por um código...'
   )
@@ -60,11 +64,18 @@ export default function CriticalItems() {
     setShowNewCriticalItemModal(false)
   }
 
+  async function handleOpenExcludeCriticalItemModal() {
+    setShowExcludeCriticaItemModal(true)
+  }
+  async function handleCloseExcludeCriticalItemModal() {
+    setShowExcludeCriticaItemModal(false)
+  }
   function keyPressed(event) {
     if (event.key === 'Enter') {
       handleSubmit()
     }
   }
+
   return (
     <Cont>
       <NewCriticalItemsModal
@@ -146,6 +157,27 @@ export default function CriticalItems() {
                     {new Intl.DateTimeFormat('pt-BR').format(
                       new Date(item.updated_at)
                     )}
+                  </td>
+                  <ExcludeCriticalItemsModal
+                    isOpen={showExcludeCriticalItemModal}
+                    handleClose={handleCloseExcludeCriticalItemModal}
+                  />
+                  <td>
+                    <Button
+                      block={false}
+                      variant="link"
+                      style={{ color: 'black', padding: 0 }}
+                    >
+                      <FiEdit />
+                    </Button>
+
+                    <Button
+                      onClick={handleOpenExcludeCriticalItemModal}
+                      variant="link"
+                      style={{ color: 'black', padding: 0 }}
+                    >
+                      <FiXOctagon />
+                    </Button>
                   </td>
                 </tr>
               ))

@@ -8,7 +8,6 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
   const [criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('')
   const [criticalitems_used_obs, setCriticalItems_used_obs] = useState('')
   const [error, setError] = useState(Error())
-  // const [criticalitems, setcriticalitems] = useState<Data>({} as Data);
 
   const handleNewCriticalItemsSubmit = async () => {
     try {
