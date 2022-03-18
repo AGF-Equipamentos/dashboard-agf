@@ -3,11 +3,14 @@ import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 
-const ExcludeCriticalItemsModal = ({ isOpen, handleClose }) => {
+const ExcludeCriticalItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   const [error, setError] = useState(Error())
   const handleExcludeSubmit = async () => {
     try {
-      await axios.delete(`http://localhost:3334/critical-items/id`, {})
+      await axios.delete(
+        `http://localhost:3334/critical-items/${criticalItem.id}`
+      )
+
       handleClose()
     } catch (error) {
       setError(error)

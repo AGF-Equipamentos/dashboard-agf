@@ -17,11 +17,15 @@ import { Container as Cont } from './styles'
 import axios from 'axios'
 import NewCriticalItemsModal from '../../components/NewCriticalItemsModal'
 import ExcludeCriticalItemsModal from '../../components/ExcludeCriticalItemModal'
+import UpdateTypeCritialItemsModal from '../../components/UpdateTypeCriticaItemModal'
 
 export default function CriticalItems() {
   const [showNewCriticalItemModal, setShowNewCriticalItemModal] =
     useState(false)
   const [showExcludeCriticalItemModal, setShowExcludeCriticaItemModal] =
+    useState(false)
+  const [ciSelected, setCiSelected] = useState({})
+  const [showUpdateTypeCriticalItemModal, setShowUpdateTypeCriticalItemModal] =
     useState(false)
 
   const [searchPlaceholder, setSearchPlaceholder] = useState(
@@ -64,11 +68,18 @@ export default function CriticalItems() {
     setShowNewCriticalItemModal(false)
   }
 
-  async function handleOpenExcludeCriticalItemModal() {
+  async function handleOpenExcludeCriticalItemModal(ci) {
+    setCiSelected(ci)
     setShowExcludeCriticaItemModal(true)
   }
   async function handleCloseExcludeCriticalItemModal() {
     setShowExcludeCriticaItemModal(false)
+  }
+  async function handleOpenUpdateTypeCriticalItemModal() {
+    setShowUpdateTypeCriticalItemModal(true)
+  }
+  async function handleCloseUpdateTypeCriticalItemModal() {
+    setShowUpdateTypeCriticalItemModal(false)
   }
   function keyPressed(event) {
     if (event.key === 'Enter') {
@@ -81,6 +92,15 @@ export default function CriticalItems() {
       <NewCriticalItemsModal
         isOpen={showNewCriticalItemModal}
         handleClose={handleCloseNewCriticalItemModal}
+      />
+      <ExcludeCriticalItemsModal
+        isOpen={showExcludeCriticalItemModal}
+        handleClose={handleCloseExcludeCriticalItemModal}
+        criticalItem={ciSelected}
+      />
+      <UpdateTypeCritialItemsModal
+        isOpen={showUpdateTypeCriticalItemModal}
+        handleClose={handleCloseUpdateTypeCriticalItemModal}
       />
       <Container fluid className="justify-content-center">
         <Row>
@@ -140,39 +160,36 @@ export default function CriticalItems() {
 
           <tbody>
             {items.length !== 0 ? (
-              items.map((item) => (
-                <tr key={item.part_number}>
-                  <td>{item.part_number}</td>
-                  <td>{item.description}</td>
-                  <td>{item.stock_obs}</td>
-                  <td>{item.purchase_obs}</td>
-                  <td>{item.used_obs}</td>
-                  <td>{item.responsable}</td>
+              items.map((ci) => (
+                <tr key={ci.part_number}>
+                  <td>{ci.part_number}</td>
+                  <td>{ci.description}</td>
+                  <td>{ci.stock_obs}</td>
+                  <td>{ci.purchase_obs}</td>
+                  <td>{ci.used_obs}</td>
+                  <td>{ci.responsable}</td>
                   <td>
                     {new Intl.DateTimeFormat('pt-BR').format(
-                      new Date(item.created_at)
+                      new Date(ci.created_at)
                     )}
                   </td>
                   <td>
                     {new Intl.DateTimeFormat('pt-BR').format(
-                      new Date(item.updated_at)
+                      new Date(ci.updated_at)
                     )}
                   </td>
-                  <ExcludeCriticalItemsModal
-                    isOpen={showExcludeCriticalItemModal}
-                    handleClose={handleCloseExcludeCriticalItemModal}
-                  />
+
                   <td>
                     <Button
                       block={false}
                       variant="link"
                       style={{ color: 'black', padding: 0 }}
+                      onClick={handleOpenUpdateTypeCriticalItemModal}
                     >
                       <FiEdit />
                     </Button>
-
                     <Button
-                      onClick={handleOpenExcludeCriticalItemModal}
+                      onClick={() => handleOpenExcludeCriticalItemModal(ci)}
                       variant="link"
                       style={{ color: 'black', padding: 0 }}
                     >
