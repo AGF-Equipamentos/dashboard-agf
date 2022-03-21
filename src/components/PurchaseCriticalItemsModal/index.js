@@ -3,20 +3,36 @@ import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
 
-const UpdatePurchaseCriticalItemModal = ({ isOpen, handleClose }) => {
+const UpdatePurchaseCriticalItemsModal = ({
+  isOpen,
+  handleClose,
+  criticalItem
+}) => {
   const [purchaseCriticalItem, setPurchaseCriticalItem] = useState('')
-  const [usedCriticalItem, setUsedCriticalItem] = useState('')
+  const [responsableCriticalItem, setResponsableCriticalItem] = useState('')
   const [error, setError] = useState(Error())
 
-  const handleUpdateStockSubmit = async () => {}
-
+  const handleSavePurchaseSubmit = async () => {
+    try {
+      await axios.put(
+        `http://localhost:3334/critical-items/purchase/${criticalItem.id}`,
+        {
+          purchase_obs: purchaseCriticalItem,
+          used_obs: responsableCriticalItem
+        }
+      )
+      handleClose()
+    } catch (error) {
+      setError(error)
+    }
+  }
   return (
     <>
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Compras</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleUpdateStockSubmit}>
+        <Form onSubmit={handleSavePurchaseSubmit}>
           <Modal.Body>
             <Form>
               <Form.Group controlId="exapleForm.ControlInput1">
@@ -33,7 +49,7 @@ const UpdatePurchaseCriticalItemModal = ({ isOpen, handleClose }) => {
                 <Form.Control
                   type="text"
                   placeholder="Digite o responsavel..."
-                  onChange={(e) => setUsedCriticalItem(e.target.valu)}
+                  onChange={(e) => setResponsableCriticalItem(e.target.valu)}
                 />
               </Form.Group>
             </Form>
@@ -50,11 +66,13 @@ const UpdatePurchaseCriticalItemModal = ({ isOpen, handleClose }) => {
             <Button variant="warning" onClick={handleClose}>
               Fechar
             </Button>
-            <Button variant="warning">Salvar</Button>
+            <Button variant="warning" onClick={handleSavePurchaseSubmit}>
+              Salvar
+            </Button>
           </Modal.Footer>
         </Form>
       </Modal>
     </>
   )
 }
-export default UpdatePurchaseCriticalItemModal
+export default UpdatePurchaseCriticalItemsModal

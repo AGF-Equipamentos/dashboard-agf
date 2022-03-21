@@ -16,17 +16,19 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import axios from 'axios'
 import NewCriticalItemsModal from '../../components/NewCriticalItemsModal'
-import ExcludeCriticalItemsModal from '../../components/ExcludeCriticalItemModal'
-import UpdateTypeCritialItemsModal from '../../components/UpdateTypeCriticaItemModal'
+import ExcludeCriticalItemsModal from '../../components/ExcludeCriticalItemsModal'
+import UpdateTypeCritialItemsModal from '../../components/UpdateTypeCriticaItemsModal'
 
 export default function CriticalItems() {
-  const [showNewCriticalItemModal, setShowNewCriticalItemModal] =
+  const [showNewCriticalItemsModal, setShowNewCriticalItemsModal] =
     useState(false)
-  const [showExcludeCriticalItemModal, setShowExcludeCriticaItemModal] =
+  const [showExcludeCriticalItemsModal, setShowExcludeCriticaItemsModal] =
     useState(false)
   const [ciSelected, setCiSelected] = useState({})
-  const [showUpdateTypeCriticalItemModal, setShowUpdateTypeCriticalItemModal] =
-    useState(false)
+  const [
+    showUpdateTypeCriticalItemsModal,
+    setShowUpdateTypeCriticalItemsModal
+  ] = useState(false)
 
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     'Pesquise por um código...'
@@ -60,26 +62,27 @@ export default function CriticalItems() {
     setItems(part_numberInformation.data)
   }
 
-  async function handleOpenNewCriticalItemModal() {
-    setShowNewCriticalItemModal(true)
+  async function handleOpenNewCriticalItemsModal() {
+    setShowNewCriticalItemsModal(true)
   }
 
-  async function handleCloseNewCriticalItemModal() {
-    setShowNewCriticalItemModal(false)
+  async function handleCloseNewCriticalItemsModal() {
+    setShowNewCriticalItemsModal(false)
   }
 
-  async function handleOpenExcludeCriticalItemModal(ci) {
+  async function handleOpenExcludeCriticalItemsModal(ci) {
     setCiSelected(ci)
-    setShowExcludeCriticaItemModal(true)
+    setShowExcludeCriticaItemsModal(true)
   }
-  async function handleCloseExcludeCriticalItemModal() {
-    setShowExcludeCriticaItemModal(false)
+  async function handleCloseExcludeCriticalItemsModal() {
+    setShowExcludeCriticaItemsModal(false)
   }
-  async function handleOpenUpdateTypeCriticalItemModal() {
-    setShowUpdateTypeCriticalItemModal(true)
+  async function handleOpenUpdateTypeCriticalItemsModal(ci) {
+    setCiSelected(ci)
+    setShowUpdateTypeCriticalItemsModal(true)
   }
-  async function handleCloseUpdateTypeCriticalItemModal() {
-    setShowUpdateTypeCriticalItemModal(false)
+  async function handleCloseUpdateTypeCriticalItemsModal() {
+    setShowUpdateTypeCriticalItemsModal(false)
   }
   function keyPressed(event) {
     if (event.key === 'Enter') {
@@ -90,17 +93,18 @@ export default function CriticalItems() {
   return (
     <Cont>
       <NewCriticalItemsModal
-        isOpen={showNewCriticalItemModal}
-        handleClose={handleCloseNewCriticalItemModal}
+        isOpen={showNewCriticalItemsModal}
+        handleClose={handleCloseNewCriticalItemsModal}
       />
       <ExcludeCriticalItemsModal
-        isOpen={showExcludeCriticalItemModal}
-        handleClose={handleCloseExcludeCriticalItemModal}
+        isOpen={showExcludeCriticalItemsModal}
+        handleClose={handleCloseExcludeCriticalItemsModal}
         criticalItem={ciSelected}
       />
       <UpdateTypeCritialItemsModal
-        isOpen={showUpdateTypeCriticalItemModal}
-        handleClose={handleCloseUpdateTypeCriticalItemModal}
+        isOpen={showUpdateTypeCriticalItemsModal}
+        handleClose={handleCloseUpdateTypeCriticalItemsModal}
+        criticalItem={ciSelected}
       />
       <Container fluid className="justify-content-center">
         <Row>
@@ -134,7 +138,7 @@ export default function CriticalItems() {
           </InputGroup.Append>
           <InputGroup.Append>
             <Button
-              onClick={handleOpenNewCriticalItemModal}
+              onClick={handleOpenNewCriticalItemsModal}
               type="submit"
               variant="outline-warning"
             >
@@ -184,12 +188,12 @@ export default function CriticalItems() {
                       block={false}
                       variant="link"
                       style={{ color: 'black', padding: 0 }}
-                      onClick={handleOpenUpdateTypeCriticalItemModal}
+                      onClick={() => handleOpenUpdateTypeCriticalItemsModal(ci)}
                     >
                       <FiEdit />
                     </Button>
                     <Button
-                      onClick={() => handleOpenExcludeCriticalItemModal(ci)}
+                      onClick={() => handleOpenExcludeCriticalItemsModal(ci)}
                       variant="link"
                       style={{ color: 'black', padding: 0 }}
                     >
