@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FiEdit, FiXOctagon } from 'react-icons/fi'
 
 import {
@@ -35,6 +35,18 @@ export default function CriticalItems() {
   )
   const [items, setItems] = useState([])
   const [searchValue, setSearchValue] = useState('')
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_LOCALHOST}/critical-items`
+      )
+
+      setItems(response.data)
+    }
+
+    fetchItems()
+  }, [])
 
   async function handleSubmit() {
     let part_numberInformation

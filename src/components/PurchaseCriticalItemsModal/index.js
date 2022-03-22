@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
@@ -10,22 +10,45 @@ const UpdatePurchaseCriticalItemsModal = ({
 }) => {
   const [purchaseCriticalItem, setPurchaseCriticalItem] = useState('')
   const [responsableCriticalItem, setResponsableCriticalItem] = useState('')
-  const [error, setError] = useState(Error())
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    setPurchaseCriticalItem(criticalItem.purchase_obs)
+    setResponsableCriticalItem(criticalItem.responsable)
+  }, [criticalItem])
 
   const handleSavePurchaseSubmit = async () => {
     try {
+      const updatePurchaseBody = {}
+
+      if (purchaseCriticalItem !== '') {
+        Object.assign(updatePurchaseBody, {
+          purchase_obs: purchaseCriticalItem
+        })
+      }
+
+      if (responsableCriticalItem !== '') {
+        Object.assign(updatePurchaseBody, {
+          responsable: responsableCriticalItem
+        })
+      }
+
       await axios.put(
         `http://localhost:3334/critical-items/purchase/${criticalItem.id}`,
-        {
-          purchase_obs: purchaseCriticalItem,
-          used_obs: responsableCriticalItem
-        }
+        updatePurchaseBody
       )
+      setError('')
       handleClose()
+      window.location.reload()
     } catch (error) {
-      setError(error)
+      const errorMessage = error.response.data.message
+      if (errorMessage === '"responsable" is not allowed to be empty') {
+        return setError('Responsável é obrigatório')
+      }
+      setError('Algo deu errado, tente novamente')
     }
   }
+
   return (
     <>
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
@@ -40,6 +63,7 @@ const UpdatePurchaseCriticalItemsModal = ({
                 <Form.Control
                   type="text"
                   placeholder="Digite observação..."
+                  defaultValue={purchaseCriticalItem}
                   onChange={(e) => setPurchaseCriticalItem(e.target.value)}
                 />
               </Form.Group>
@@ -49,7 +73,8 @@ const UpdatePurchaseCriticalItemsModal = ({
                 <Form.Control
                   type="text"
                   placeholder="Digite o responsavel..."
-                  onChange={(e) => setResponsableCriticalItem(e.target.valu)}
+                  defaultValue={responsableCriticalItem}
+                  onChange={(e) => setResponsableCriticalItem(e.target.value)}
                 />
               </Form.Group>
             </Form>
@@ -60,7 +85,7 @@ const UpdatePurchaseCriticalItemsModal = ({
               textAlign: 'center'
             }}
           >
-            {error.message}
+            {error}
           </p>
           <Modal.Footer>
             <Button variant="warning" onClick={handleClose}>

@@ -1,11 +1,14 @@
 import { Button, Form, Modal } from 'react-bootstrap'
 import React, { useState } from 'react'
 import UpdatePurchaseCriticalItemsModal from '../PurchaseCriticalItemsModal'
+// import UpdateStockCriticalItemsModal from '../StockCriticalItemsModal'
 
 const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   const [showPurchaseCriticalItemsModal, setShowPurchaseCritiicalItemsModal] =
     useState(false)
-  // console.log(criticalItem)
+
+  // const [showStockCriticalItemsModal, setShowStockCriticalItemsModal] =
+  //   useState(false)
 
   async function handleOpenUpdatePurchase() {
     setShowPurchaseCritiicalItemsModal(true)
@@ -14,6 +17,15 @@ const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   async function handleClosePurchaseCriticalItemsModal() {
     setShowPurchaseCritiicalItemsModal(false)
   }
+
+  // async function handleOpenUpdateStock() {
+  //   setShowStockCriticalItemsModal(true)
+  //   handleClose()
+  // }
+  // async function handleCloseUpdateStock() {
+  //   setShowStockCriticalItemsModal(false)
+  // }
+
   return (
     <>
       <UpdatePurchaseCriticalItemsModal
@@ -21,6 +33,12 @@ const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
         handleClose={handleClosePurchaseCriticalItemsModal}
         criticalItem={criticalItem}
       />
+
+      {/* <UpdateStockCriticalItemsModal
+        isOpen={showStockCriticalItemsModal}
+        handleClose={handleCloseUpdateStock}
+      /> */}
+
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Escolha o tipo de atualização</Modal.Title>
