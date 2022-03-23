@@ -16,7 +16,6 @@ const UpdateStockCriticalItemsModal = ({
     setStockCriticalItem(criticalItem.stock_obs)
     setUsedCriticalItem(criticalItem.used_obs)
   }, [criticalItem])
-
   const handleSaveStockSubmit = async () => {
     try {
       const updateStockBody = {}
@@ -26,7 +25,6 @@ const UpdateStockCriticalItemsModal = ({
           stock_obs: stockCriticalItem
         })
       }
-
       if (usedCriticalItem !== '') {
         Object.assign(updateStockBody, {
           used_obs: usedCriticalItem
@@ -40,10 +38,6 @@ const UpdateStockCriticalItemsModal = ({
       handleClose()
       window.location.reload()
     } catch (error) {
-      const errorMessage = error.response.data.message
-      if (errorMessage === '"responsable" is not allowed to be empty') {
-        return setError('Responsável é obrigatório')
-      }
       setError('Algo deu errado, tente novamente')
     }
   }
@@ -54,23 +48,37 @@ const UpdateStockCriticalItemsModal = ({
           <Modal.Title>Estoque</Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSaveStockSubmit}>
+          <Modal.Body>
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>Observação Estoque</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite a observação"
+                defaultValue={stockCriticalItem}
+                onChange={(e) => setStockCriticalItem(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="exapleForm.ControlInput1">
+              <Form.Label>Onde Usado</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite onde é usado..."
+                defaultValue={usedCriticalItem}
+                onChange={(e) => setUsedCriticalItem(e.target.value)}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <p style={{ color: 'red', textAling: 'center' }}>{error}</p>
           <Modal.Footer>
             <Button variant="warning" onClick={handleClose}>
-              Cancelar
+              Fechar
             </Button>
             <Button variant="warning" onClick={handleSaveStockSubmit}>
               Salvar
             </Button>
           </Modal.Footer>
         </Form>
-        <p
-          style={{
-            color: 'red',
-            textAlign: 'center'
-          }}
-        >
-          {error.mensage}
-        </p>
       </Modal>
     </>
   )

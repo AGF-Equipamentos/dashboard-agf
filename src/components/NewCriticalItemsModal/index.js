@@ -7,18 +7,49 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
   const [criticalitems_part_number, setPartNumber] = useState('')
   const [criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('')
   const [criticalitems_used_obs, setCriticalItems_used_obs] = useState('')
-  const [error, setError] = useState(Error())
+  const [error, setError] = useState('')
 
   const handleNewCriticalItemsSubmit = async () => {
     try {
-      await axios.post(`http://localhost:3334/critical-items`, {
-        part_number: criticalitems_part_number,
-        stock_obs: criticalitems_stock_obs,
-        used_obs: criticalitems_used_obs
-      })
+      const createNewCriticalItems = {}
+
+      if (criticalitems_part_number !== '') {
+        Object.assign(createNewCriticalItems, {
+          part_number: criticalitems_part_number.toLocaleUpperCase().trim()
+        })
+      }
+
+      if (criticalitems_stock_obs !== '') {
+        Object.assign(createNewCriticalItems, {
+          stock_obs: criticalitems_stock_obs
+        })
+      }
+
+      if (criticalitems_used_obs !== '') {
+        Object.assign(createNewCriticalItems, {
+          used_obs: criticalitems_used_obs
+        })
+      }
+
+      await axios.post(
+        `http://localhost:3334/critical-items`,
+
+        createNewCriticalItems
+        // tratar o codigo trim e uppercase
+      )
+      setError('')
       handleClose()
+      window.location.reload()
     } catch (error) {
-      setError(error)
+      const errorMessage = error.response.data.message
+      if (errorMessage === '"part_number" is not allowed to be empty') {
+        return setError('"Código" não é permitido estar vazio')
+      }
+      if (errorMessage === 'Part Number does not exits!') {
+        return setError('Esse código não existe')
+      }
+
+      setError('Algo deu errado, tente novamente')
     }
   }
   return (
@@ -29,33 +60,31 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
         </Modal.Header>
         <Form onSubmit={handleNewCriticalItemsSubmit}>
           <Modal.Body>
-            <Form>
-              <Form.Group controlId="exampleForm.ControlInput1">
-                <Form.Label>Código</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Digite o código"
-                  onChange={(e) => setPartNumber(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group controlId="exampleForm.ControlInput1">
-                <Form.Label>Observação Estoque</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Digite uma observação"
-                  onChange={(e) => setCriticalItems_stock_obs(e.target.value)}
-                />
-              </Form.Group>
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>Código</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite o código"
+                onChange={(e) => setPartNumber(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>Observação Estoque</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite uma observação"
+                onChange={(e) => setCriticalItems_stock_obs(e.target.value)}
+              />
+            </Form.Group>
 
-              <Form.Group controlId="exampleForm.ControlInput1">
-                <Form.Label>Onde usado</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Digite onde é usado"
-                  onChange={(e) => setCriticalItems_used_obs(e.target.value)}
-                />
-              </Form.Group>
-            </Form>
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>Onde usado</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite onde é usado"
+                onChange={(e) => setCriticalItems_used_obs(e.target.value)}
+              />
+            </Form.Group>
           </Modal.Body>
           <p
             style={{
@@ -63,7 +92,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
               textAlign: 'center'
             }}
           >
-            {error.message}
+            {error}
           </p>
           <Modal.Footer>
             <Button variant="warning" onClick={handleClose}>

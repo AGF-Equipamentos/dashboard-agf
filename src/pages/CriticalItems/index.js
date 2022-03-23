@@ -145,21 +145,23 @@ export default function CriticalItems() {
               type="submit"
               variant="outline-warning"
             >
-              Procurar
+              Enviar
             </Button>
           </InputGroup.Append>
           <InputGroup.Append>
+            <Col></Col>
+
             <Button
               onClick={handleOpenNewCriticalItemsModal}
               type="submit"
               variant="outline-warning"
             >
-              Iniciar
+              Novo
             </Button>
           </InputGroup.Append>
         </InputGroup>
 
-        <Table responsive striped bordered houver>
+        <Table responsive striped bordered hover>
           <thead>
             <tr>
               <th>NÚMERO DA PEÇA</th>
@@ -167,7 +169,7 @@ export default function CriticalItems() {
               <th>OBSERVAÇÃO DO ESTOQUE</th>
               <th>OBSERVAÇÃO DE COMPRAS</th>
               <th>USADO</th>
-              <th>RESPONSAVEL</th>
+              <th>RESPONSÁVEL</th>
               <th>CRIADO:</th>
               <th>ULT. ATUAL.</th>
               <th>AÇÕES</th>
@@ -177,7 +179,7 @@ export default function CriticalItems() {
           <tbody>
             {items.length !== 0 ? (
               items.map((ci) => (
-                <tr key={ci.part_number}>
+                <tr key={ci.id}>
                   <td>{ci.part_number}</td>
                   <td>{ci.description}</td>
                   <td>{ci.stock_obs}</td>
