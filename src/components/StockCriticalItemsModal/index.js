@@ -16,6 +16,7 @@ const UpdateStockCriticalItemsModal = ({
     setStockCriticalItem(criticalItem.stock_obs)
     setUsedCriticalItem(criticalItem.used_obs)
   }, [criticalItem])
+
   const handleSaveStockSubmit = async () => {
     try {
       const updateStockBody = {}
@@ -30,6 +31,7 @@ const UpdateStockCriticalItemsModal = ({
           used_obs: usedCriticalItem
         })
       }
+
       await axios.put(
         `http://localhost:3334/critical-items/stock/${criticalItem.id}`,
         updateStockBody
@@ -41,11 +43,12 @@ const UpdateStockCriticalItemsModal = ({
       setError('Algo deu errado, tente novamente')
     }
   }
+
   return (
     <>
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Estoque</Modal.Title>
+          <Modal.Title>Almoxarifado</Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleSaveStockSubmit}>
           <Modal.Body>
@@ -71,10 +74,10 @@ const UpdateStockCriticalItemsModal = ({
           </Modal.Body>
           <p style={{ color: 'red', textAling: 'center' }}>{error}</p>
           <Modal.Footer>
-            <Button variant="warning" onClick={handleClose}>
+            <Button variant="outline-warning" onClick={handleClose}>
               Fechar
             </Button>
-            <Button variant="warning" onClick={handleSaveStockSubmit}>
+            <Button variant="outline-warning" onClick={handleSaveStockSubmit}>
               Salvar
             </Button>
           </Modal.Footer>

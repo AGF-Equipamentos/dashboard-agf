@@ -42,7 +42,6 @@ const UpdatePurchaseCriticalItemsModal = ({
       setError('Algo deu errro, tente novamente')
     }
   }
-
   return (
     <>
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
@@ -80,10 +79,13 @@ const UpdatePurchaseCriticalItemsModal = ({
             {error}
           </p>
           <Modal.Footer>
-            <Button variant="warning" onClick={handleClose}>
+            <Button variant="outline-warning" onClick={handleClose}>
               Fechar
             </Button>
-            <Button variant="warning" onClick={handleSavePurchaseSubmit}>
+            <Button
+              variant="outline-warning"
+              onClick={handleSavePurchaseSubmit}
+            >
               Salvar
             </Button>
           </Modal.Footer>

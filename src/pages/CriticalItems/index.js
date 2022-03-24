@@ -96,6 +96,7 @@ export default function CriticalItems() {
   async function handleCloseUpdateTypeCriticalItemsModal() {
     setShowUpdateTypeCriticalItemsModal(false)
   }
+
   function keyPressed(event) {
     if (event.key === 'Enter') {
       handleSubmit()

@@ -44,16 +44,19 @@ const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
         <Modal.Header closeButton>
           <Modal.Title>Escolha o tipo de atualização</Modal.Title>
         </Modal.Header>
-        {/* AJEITAR OS FORMULARIOS */}
         <Form>
           <Modal.Body>
             <Form.Group>
-              <Button variant="warning" onClick={handleOpenUpdatePurchase}>
+              <Button
+                variant="outline-warning"
+                onClick={handleOpenUpdatePurchase}
+              >
                 Compras
               </Button>
             </Form.Group>
+
             <Form.Group>
-              <Button variant="warning" onClick={handleOpenUpdateStock}>
+              <Button variant="outline-warning" onClick={handleOpenUpdateStock}>
                 Almoxarifado
               </Button>
             </Form.Group>

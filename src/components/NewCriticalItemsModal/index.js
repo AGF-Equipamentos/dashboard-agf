@@ -30,12 +30,10 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
           used_obs: criticalitems_used_obs
         })
       }
-
       await axios.post(
         `http://localhost:3334/critical-items`,
 
         createNewCriticalItems
-        // tratar o codigo trim e uppercase
       )
       setError('')
       handleClose()
@@ -52,6 +50,12 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
       setError('Algo deu errado, tente novamente')
     }
   }
+  // function KeyPressed(event) {
+  //   if (event.Key === 'Enter') {
+  //     handleNewCriticalItemsSubmit()
+  //   }
+  // }
+
   return (
     <>
       <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
@@ -74,6 +78,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
                 type="text"
                 placeholder="Digite uma observação"
                 onChange={(e) => setCriticalItems_stock_obs(e.target.value)}
+                // onKeyPress={KeyPressed}
               />
             </Form.Group>
 
@@ -95,10 +100,13 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
             {error}
           </p>
           <Modal.Footer>
-            <Button variant="warning" onClick={handleClose}>
+            <Button variant="outline-warning" onClick={handleClose}>
               Fechar
             </Button>
-            <Button variant="warning" onClick={handleNewCriticalItemsSubmit}>
+            <Button
+              variant="outline-warning"
+              onClick={handleNewCriticalItemsSubmit}
+            >
               Salvar
             </Button>
           </Modal.Footer>
