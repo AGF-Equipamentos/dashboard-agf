@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
+// import { Title } from './styles'
 
 const UpdatePurchaseCriticalItemsModal = ({
   isOpen,
   handleClose,
   criticalItem
 }) => {
+  function KeyPressd(event) {
+    if (event.key === 'Enter') {
+      handleSavePurchaseSubmit()
+    }
+  }
+
   const [purchaseCriticalItem, setPurchaseCriticalItem] = useState('')
   const [responsableCriticalItem, setResponsableCriticalItem] = useState('')
   const [error, setError] = useState('')
@@ -57,6 +64,7 @@ const UpdatePurchaseCriticalItemsModal = ({
                 placeholder="Digite observação..."
                 defaultValue={purchaseCriticalItem}
                 onChange={(e) => setPurchaseCriticalItem(e.target.value)}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
 
@@ -67,6 +75,7 @@ const UpdatePurchaseCriticalItemsModal = ({
                 placeholder="Digite o responsavel..."
                 defaultValue={responsableCriticalItem}
                 onChange={(e) => setResponsableCriticalItem(e.target.value)}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
           </Modal.Body>

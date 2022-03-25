@@ -5,3 +5,6 @@ export const Title = styled.h4`
   text-align: center;
   color: ${(props) => props.theme.colors.primary};
 `
+export const Body = styled.h4`
+  justify-content: center;
+`

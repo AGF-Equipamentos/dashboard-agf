@@ -2,6 +2,7 @@ import { Button, Form, Modal } from 'react-bootstrap'
 import React, { useState } from 'react'
 import UpdatePurchaseCriticalItemsModal from '../PurchaseCriticalItemsModal'
 import UpdateStockCriticalItemsModal from '../StockCriticalItemsModal'
+import { Title } from './styles'
 
 const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   const [showPurchaseCriticalItemsModal, setShowPurchaseCritiicalItemsModal] =
@@ -40,7 +41,7 @@ const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
         criticalItem={criticalItem}
       />
 
-      <Modal styles={{ color: 'black' }} show={isOpen} onHide={handleClose}>
+      <Modal style={{ color: 'black' }} show={isOpen} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Escolha o tipo de atualização</Modal.Title>
         </Modal.Header>

@@ -9,7 +9,8 @@ import {
   InputGroup,
   Table,
   Form,
-  Spinner
+  Spinner,
+  Badge
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -102,7 +103,6 @@ export default function CriticalItems() {
       handleSubmit()
     }
   }
-
   return (
     <Cont>
       <NewCriticalItemsModal
@@ -186,7 +186,12 @@ export default function CriticalItems() {
                   <td>{ci.stock_obs}</td>
                   <td>{ci.purchase_obs}</td>
                   <td>{ci.used_obs}</td>
-                  <td>{ci.responsable}</td>
+                  <td>
+                    <Badge pill variant="danger">
+                      {ci.responsable}
+                    </Badge>{' '}
+                  </td>
+
                   <td>
                     {new Intl.DateTimeFormat('pt-BR').format(
                       new Date(ci.created_at)
@@ -197,7 +202,6 @@ export default function CriticalItems() {
                       new Date(ci.updated_at)
                     )}
                   </td>
-
                   <td>
                     <Button
                       block={false}

@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
+//import { Title } from './styles'
 
 const UpdateStockCriticalItemsModal = ({
   isOpen,
   handleClose,
   criticalItem
 }) => {
+  function KeyPressd(event) {
+    if (event.key === 'Enter') {
+      handleSaveStockSubmit()
+    }
+  }
   const [stockCriticalItem, setStockCriticalItem] = useState('')
   const [usedCriticalItem, setUsedCriticalItem] = useState('')
   const [error, setError] = useState('')
@@ -59,6 +65,7 @@ const UpdateStockCriticalItemsModal = ({
                 placeholder="Digite a observação"
                 defaultValue={stockCriticalItem}
                 onChange={(e) => setStockCriticalItem(e.target.value)}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
 
@@ -69,6 +76,7 @@ const UpdateStockCriticalItemsModal = ({
                 placeholder="Digite onde é usado..."
                 defaultValue={usedCriticalItem}
                 onChange={(e) => setUsedCriticalItem(e.target.value)}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
           </Modal.Body>

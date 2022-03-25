@@ -2,8 +2,15 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
+// import { Title } from './styles'
 
 const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
+  function KeyPressd(event) {
+    if (event.key === 'Enter') {
+      handleNewCriticalItemsSubmit()
+    }
+  }
+
   const [criticalitems_part_number, setPartNumber] = useState('')
   const [criticalitems_stock_obs, setCriticalItems_stock_obs] = useState('')
   const [criticalitems_used_obs, setCriticalItems_used_obs] = useState('')
@@ -50,11 +57,6 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
       setError('Algo deu errado, tente novamente')
     }
   }
-  // function KeyPressed(event) {
-  //   if (event.Key === 'Enter') {
-  //     handleNewCriticalItemsSubmit()
-  //   }
-  // }
 
   return (
     <>
@@ -70,6 +72,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
                 type="text"
                 placeholder="Digite o código"
                 onChange={(e) => setPartNumber(e.target.value)}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlInput1">
@@ -78,7 +81,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
                 type="text"
                 placeholder="Digite uma observação"
                 onChange={(e) => setCriticalItems_stock_obs(e.target.value)}
-                // onKeyPress={KeyPressed}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
 
@@ -88,6 +91,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
                 type="text"
                 placeholder="Digite onde é usado"
                 onChange={(e) => setCriticalItems_used_obs(e.target.value)}
+                onKeyPress={KeyPressd}
               />
             </Form.Group>
           </Modal.Body>
