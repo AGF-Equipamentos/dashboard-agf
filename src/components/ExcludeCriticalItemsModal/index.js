@@ -26,10 +26,10 @@ const ExcludeCriticalItemsModal = ({ isOpen, handleClose, criticalItem }) => {
         </Modal.Header>
         <Form onSubmit={handleExcludeSubmit}>
           <Modal.Footer>
-            <Button variant="outline-warning" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button variant="outline-warning" onClick={handleExcludeSubmit}>
+            <Button variant="danger" onClick={handleExcludeSubmit}>
               Excluir
             </Button>
           </Modal.Footer>

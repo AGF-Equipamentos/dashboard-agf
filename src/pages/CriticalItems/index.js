@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FiEdit, FiXOctagon } from 'react-icons/fi'
+import { FiEdit, FiXOctagon, FiDownload } from 'react-icons/fi'
 
 import {
   Col,
@@ -19,6 +19,7 @@ import axios from 'axios'
 import NewCriticalItemsModal from '../../components/NewCriticalItemsModal'
 import ExcludeCriticalItemsModal from '../../components/ExcludeCriticalItemsModal'
 import UpdateTypeCritialItemsModal from '../../components/UpdateTypeCriticaItemsModal'
+import DownloadExcelCriticalItemsModal from '../../components/DownloadCriticalItemsModal'
 
 export default function CriticalItems() {
   const [showNewCriticalItemsModal, setShowNewCriticalItemsModal] =
@@ -36,6 +37,10 @@ export default function CriticalItems() {
   )
   const [items, setItems] = useState([])
   const [searchValue, setSearchValue] = useState('')
+  const [
+    showDownloadExcelCriticalItemsModal,
+    setShowDownloadExcelCriticalItemsModal
+  ] = useState(false)
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -97,6 +102,12 @@ export default function CriticalItems() {
   async function handleCloseUpdateTypeCriticalItemsModal() {
     setShowUpdateTypeCriticalItemsModal(false)
   }
+  async function handleOpenDownloadExcelCriticalItems() {
+    setShowDownloadExcelCriticalItemsModal(true)
+  }
+  async function handleCloseDownloadExcelCriticalItems() {
+    setShowDownloadExcelCriticalItemsModal(false)()
+  }
 
   function keyPressed(event) {
     if (event.key === 'Enter') {
@@ -119,6 +130,12 @@ export default function CriticalItems() {
         handleClose={handleCloseUpdateTypeCriticalItemsModal}
         criticalItem={ciSelected}
       />
+      <DownloadExcelCriticalItemsModal
+        isOpen={showDownloadExcelCriticalItemsModal}
+        handleClose={handleCloseDownloadExcelCriticalItems}
+        criticalItems={ciSelected}
+      />
+
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
@@ -140,6 +157,7 @@ export default function CriticalItems() {
             onChange={(e) => setSearchValue(e.target.value)}
             onKeyPress={keyPressed}
           />
+
           <InputGroup.Append>
             <Button
               onClick={handleSubmit}
@@ -149,15 +167,24 @@ export default function CriticalItems() {
               Enviar
             </Button>
           </InputGroup.Append>
-          <InputGroup.Append>
-            <Col></Col>
 
+          <InputGroup.Append>
             <Button
               onClick={handleOpenNewCriticalItemsModal}
               type="submit"
               variant="outline-warning"
             >
               Novo
+            </Button>
+          </InputGroup.Append>
+
+          <InputGroup.Append>
+            <Button
+              onClick={handleOpenDownloadExcelCriticalItems}
+              type="submit"
+              variant="outline-warning"
+            >
+              Download
             </Button>
           </InputGroup.Append>
         </InputGroup>

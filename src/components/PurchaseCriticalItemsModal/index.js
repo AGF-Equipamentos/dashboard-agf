@@ -17,10 +17,13 @@ const UpdatePurchaseCriticalItemsModal = ({
 
   const [purchaseCriticalItem, setPurchaseCriticalItem] = useState('')
   const [responsableCriticalItem, setResponsableCriticalItem] = useState('')
+  const [descriptionCriticalItem, setDescriptionCriticalItem] = useState('')
   const [error, setError] = useState('')
+
   useEffect(() => {
     setPurchaseCriticalItem(criticalItem.purchase_obs)
     setResponsableCriticalItem(criticalItem.responsable)
+    setDescriptionCriticalItem(criticalItem.description)
   }, [criticalItem])
   const handleSavePurchaseSubmit = async () => {
     try {
@@ -37,6 +40,12 @@ const UpdatePurchaseCriticalItemsModal = ({
           responsable: responsableCriticalItem
         })
       }
+      if (descriptionCriticalItem !== '') {
+        Object.assign(updatePurchaseBody, {
+          description: descriptionCriticalItem
+        })
+      }
+      // console.log(updatePurchaseBody)
 
       await axios.put(
         `http://localhost:3334/critical-items/purchase/${criticalItem.id}`,
@@ -57,7 +66,7 @@ const UpdatePurchaseCriticalItemsModal = ({
         </Modal.Header>
         <Form onSubmit={handleSavePurchaseSubmit}>
           <Modal.Body>
-            <Form.Group controlId="exapleForm.ControlInput1">
+            <Form.Group controlId="exampleForm.ControlInput1">
               <Form.Label>Observação Compras</Form.Label>
               <Form.Control
                 type="text"
@@ -66,6 +75,17 @@ const UpdatePurchaseCriticalItemsModal = ({
                 onChange={(e) => setPurchaseCriticalItem(e.target.value)}
                 onKeyPress={KeyPressd}
               />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Descrição</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite a descrição..."
+                defaultValue={descriptionCriticalItem}
+                onChange={(e) => setDescriptionCriticalItem(e.target.value)}
+                onKeyPress={KeyPressd}
+              ></Form.Control>
             </Form.Group>
 
             <Form.Group controlId="exapleForm.ControlInput1">
@@ -88,13 +108,10 @@ const UpdatePurchaseCriticalItemsModal = ({
             {error}
           </p>
           <Modal.Footer>
-            <Button variant="outline-warning" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleClose}>
               Fechar
             </Button>
-            <Button
-              variant="outline-warning"
-              onClick={handleSavePurchaseSubmit}
-            >
+            <Button variant="warning" onClick={handleSavePurchaseSubmit}>
               Salvar
             </Button>
           </Modal.Footer>

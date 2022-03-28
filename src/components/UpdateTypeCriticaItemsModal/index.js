@@ -1,8 +1,9 @@
 import { Button, Form, Modal } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import React, { useState } from 'react'
 import UpdatePurchaseCriticalItemsModal from '../PurchaseCriticalItemsModal'
 import UpdateStockCriticalItemsModal from '../StockCriticalItemsModal'
-import { Title } from './styles'
+// import { Title } from './styles'
 
 const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   const [showPurchaseCriticalItemsModal, setShowPurchaseCritiicalItemsModal] =
@@ -24,6 +25,7 @@ const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
     handleClose()
   }
   async function handleCloseUpdateStock() {
+    handleClose()
     setShowStockCriticalItemsModal(false)
   }
 
@@ -40,27 +42,48 @@ const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
         handleClose={handleCloseUpdateStock}
         criticalItem={criticalItem}
       />
-
-      <Modal style={{ color: 'black' }} show={isOpen} onHide={handleClose}>
+      <Modal show={isOpen} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Escolha o tipo de atualização</Modal.Title>
         </Modal.Header>
         <Form>
           <Modal.Body>
-            <Form.Group>
-              <Button
-                variant="outline-warning"
-                onClick={handleOpenUpdatePurchase}
-              >
-                Compras
-              </Button>
-            </Form.Group>
+            <Row className="justfy-content-center">
+              <Col className=" justfy-content-center aling-items-center">
+                <Form.Group>
+                  <Row className="aling-items-center">
+                    <Col></Col>
+                    <Col>
+                      <Button
+                        block
+                        type="button"
+                        variant="outline-warning"
+                        onClick={handleOpenUpdatePurchase}
+                      >
+                        Compras
+                      </Button>
+                    </Col>
+                    <Col></Col>
+                  </Row>
+                </Form.Group>
 
-            <Form.Group>
-              <Button variant="outline-warning" onClick={handleOpenUpdateStock}>
-                Almoxarifado
-              </Button>
-            </Form.Group>
+                <Form.Group>
+                  <Row className="aling-items-center">
+                    <Col></Col>
+                    <Col>
+                      <Button
+                        block
+                        variant="outline-warning"
+                        onClick={handleOpenUpdateStock}
+                      >
+                        Almoxarifado
+                      </Button>
+                    </Col>
+                    <Col></Col>
+                  </Row>
+                </Form.Group>
+              </Col>
+            </Row>
           </Modal.Body>
           <Modal.Footer></Modal.Footer>
         </Form>

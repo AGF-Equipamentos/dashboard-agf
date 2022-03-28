@@ -16,11 +16,13 @@ const UpdateStockCriticalItemsModal = ({
   }
   const [stockCriticalItem, setStockCriticalItem] = useState('')
   const [usedCriticalItem, setUsedCriticalItem] = useState('')
+  const [descriptionCriticalItem, setDescriptionCriticalItem] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {
     setStockCriticalItem(criticalItem.stock_obs)
     setUsedCriticalItem(criticalItem.used_obs)
+    setDescriptionCriticalItem(criticalItem.description)
   }, [criticalItem])
 
   const handleSaveStockSubmit = async () => {
@@ -37,6 +39,12 @@ const UpdateStockCriticalItemsModal = ({
           used_obs: usedCriticalItem
         })
       }
+      if (descriptionCriticalItem !== '') {
+        Object.assign(updateStockBody, {
+          description: descriptionCriticalItem
+        })
+      }
+      console.log(updateStockBody)
 
       await axios.put(
         `http://localhost:3334/critical-items/stock/${criticalItem.id}`,
@@ -62,11 +70,22 @@ const UpdateStockCriticalItemsModal = ({
               <Form.Label>Observação Estoque</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Digite a observação"
+                placeholder="Digite a observação..."
                 defaultValue={stockCriticalItem}
                 onChange={(e) => setStockCriticalItem(e.target.value)}
                 onKeyPress={KeyPressd}
               />
+            </Form.Group>
+
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>Descrição do Item</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Digite descrição..."
+                defaultValue={descriptionCriticalItem}
+                onChange={(e) => setDescriptionCriticalItem(e.target.value)}
+                onKeyPress={KeyPressd}
+              ></Form.Control>
             </Form.Group>
 
             <Form.Group controlId="exapleForm.ControlInput1">
@@ -82,10 +101,10 @@ const UpdateStockCriticalItemsModal = ({
           </Modal.Body>
           <p style={{ color: 'red', textAling: 'center' }}>{error}</p>
           <Modal.Footer>
-            <Button variant="outline-warning" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleClose}>
               Fechar
             </Button>
-            <Button variant="outline-warning" onClick={handleSaveStockSubmit}>
+            <Button variant="warning" onClick={handleSaveStockSubmit}>
               Salvar
             </Button>
           </Modal.Footer>

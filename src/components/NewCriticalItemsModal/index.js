@@ -104,13 +104,10 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
             {error}
           </p>
           <Modal.Footer>
-            <Button variant="outline-warning" onClick={handleClose}>
+            <Button variant="secondary" onClick={handleClose}>
               Fechar
             </Button>
-            <Button
-              variant="outline-warning"
-              onClick={handleNewCriticalItemsSubmit}
-            >
+            <Button variant="warning" onClick={handleNewCriticalItemsSubmit}>
               Salvar
             </Button>
           </Modal.Footer>
