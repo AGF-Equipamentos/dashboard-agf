@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FiEdit, FiXOctagon, FiDownload } from 'react-icons/fi'
+import { FiEdit, FiXOctagon } from 'react-icons/fi'
 
 import {
   Col,
@@ -10,7 +10,9 @@ import {
   Table,
   Form,
   Spinner,
-  Badge
+  Badge,
+  DropdownButton,
+  Dropdown
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -42,6 +44,8 @@ export default function CriticalItems() {
     setShowDownloadExcelCriticalItemsModal
   ] = useState(false)
 
+  const [filter, setFilter] = useState('procure por ...')
+
   useEffect(() => {
     const fetchItems = async () => {
       const response = await axios.get(
@@ -61,6 +65,7 @@ export default function CriticalItems() {
     setSearchPlaceholder(
       <Spinner animation="border" size="sm" variant="warning" />
     )
+
     part_numberInformation = await axios.get(
       `${process.env.REACT_APP_LOCALHOST}/critical-items`,
       {
@@ -78,6 +83,20 @@ export default function CriticalItems() {
     }
 
     setItems(part_numberInformation.data)
+
+    // if (filter === 'codigo') {
+    //   part_numberInformation = await axios.get(
+    //     `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+    //     {
+    //       params: {
+    //         responsable: search
+    //       }
+    //     }
+    //   )
+    // } else {
+    //   setSearchPlaceholder('Não encontramos nenhuma peça')
+    // }
+    // setItems(part_numberInformation.data)
   }
 
   async function handleOpenNewCriticalItemsModal() {
@@ -133,7 +152,6 @@ export default function CriticalItems() {
       <DownloadExcelCriticalItemsModal
         isOpen={showDownloadExcelCriticalItemsModal}
         handleClose={handleCloseDownloadExcelCriticalItems}
-        criticalItems={ciSelected}
       />
 
       <Container fluid className="justify-content-center">
@@ -157,36 +175,60 @@ export default function CriticalItems() {
             onChange={(e) => setSearchValue(e.target.value)}
             onKeyPress={keyPressed}
           />
+          <Row>
+            <Col>
+              <DropdownButton
+                as={InputGroup.Append}
+                variant="outline-warning"
+                title={filter}
+                id="input-group-dropdown-1"
+              >
+                <Dropdown.Item onClick={() => setFilter('codigo')}>
+                  Código
+                </Dropdown.Item>
+                {/* <Dropdown.Item onClick={() => setFilter('Descrição')}>
+                  Descrição
+                </Dropdown.Item> */}
 
-          <InputGroup.Append>
-            <Button
-              onClick={handleSubmit}
-              type="submit"
-              variant="outline-warning"
-            >
-              Enviar
-            </Button>
-          </InputGroup.Append>
-
-          <InputGroup.Append>
-            <Button
-              onClick={handleOpenNewCriticalItemsModal}
-              type="submit"
-              variant="outline-warning"
-            >
-              Novo
-            </Button>
-          </InputGroup.Append>
-
-          <InputGroup.Append>
-            <Button
-              onClick={handleOpenDownloadExcelCriticalItems}
-              type="submit"
-              variant="outline-warning"
-            >
-              Download
-            </Button>
-          </InputGroup.Append>
+                <Dropdown.Item onClick={() => setFilter('responsavel')}>
+                  Responsavél
+                </Dropdown.Item>
+              </DropdownButton>
+            </Col>
+            <Col>
+              <InputGroup.Append>
+                <Button
+                  onClick={handleSubmit}
+                  type="submit"
+                  variant="outline-warning"
+                >
+                  Enviar
+                </Button>
+              </InputGroup.Append>
+            </Col>
+            <Col>
+              <InputGroup.Append>
+                <Button
+                  onClick={handleOpenNewCriticalItemsModal}
+                  type="submit"
+                  variant="outline-warning"
+                >
+                  Novo
+                </Button>
+              </InputGroup.Append>
+            </Col>
+            <Col>
+              <InputGroup.Append>
+                <Button
+                  onClick={handleOpenDownloadExcelCriticalItems}
+                  type="submit"
+                  variant="outline-warning"
+                >
+                  Download
+                </Button>
+              </InputGroup.Append>
+            </Col>
+          </Row>
         </InputGroup>
 
         <Table responsive striped bordered hover>
