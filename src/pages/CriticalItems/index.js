@@ -61,42 +61,49 @@ export default function CriticalItems() {
   async function handleSubmit() {
     let part_numberInformation
     const search = searchValue.toUpperCase().trim()
+
     setItems([])
     setSearchPlaceholder(
       <Spinner animation="border" size="sm" variant="warning" />
     )
 
-    part_numberInformation = await axios.get(
-      `${process.env.REACT_APP_LOCALHOST}/critical-items`,
-      {
-        params: {
-          part_number: search
-        }
-      }
-    )
-    if (searchValue === '') {
+    if (filter === 'Código') {
       part_numberInformation = await axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items`
+        `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+        {
+          params: {
+            part_number: search
+          }
+        }
       )
     } else {
-      setSearchPlaceholder('Não encontramos a peça...')
+      setSearchPlaceholder('Não encontramos a peça')
+    }
+    if (filter === 'Descrição') {
+      part_numberInformation = await axios.get(
+        `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+        {
+          params: {
+            description: search
+          }
+        }
+      )
+    } else setSearchPlaceholder('Não encontramos a descrição ')
+
+    if (filter === 'Responsável') {
+      part_numberInformation = await axios.get(
+        `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+        {
+          params: {
+            responsable: search
+          }
+        }
+      )
+    } else {
+      setSearchPlaceholder('Não encontramos o Responsável')
     }
 
     setItems(part_numberInformation.data)
-
-    // if (filter === 'codigo') {
-    //   part_numberInformation = await axios.get(
-    //     `${process.env.REACT_APP_LOCALHOST}/critical-items`,
-    //     {
-    //       params: {
-    //         responsable: search
-    //       }
-    //     }
-    //   )
-    // } else {
-    //   setSearchPlaceholder('Não encontramos nenhuma peça')
-    // }
-    // setItems(part_numberInformation.data)
   }
 
   async function handleOpenNewCriticalItemsModal() {
@@ -183,14 +190,14 @@ export default function CriticalItems() {
                 title={filter}
                 id="input-group-dropdown-1"
               >
-                <Dropdown.Item onClick={() => setFilter('codigo')}>
+                <Dropdown.Item onClick={() => setFilter('Código')}>
                   Código
                 </Dropdown.Item>
-                {/* <Dropdown.Item onClick={() => setFilter('Descrição')}>
+                <Dropdown.Item onClick={() => setFilter('Descrição')}>
                   Descrição
-                </Dropdown.Item> */}
+                </Dropdown.Item>
 
-                <Dropdown.Item onClick={() => setFilter('responsavel')}>
+                <Dropdown.Item onClick={() => setFilter('Responsável')}>
                   Responsavél
                 </Dropdown.Item>
               </DropdownButton>
