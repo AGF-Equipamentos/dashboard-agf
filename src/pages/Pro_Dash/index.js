@@ -680,7 +680,7 @@ export default function Pro_Dash() {
               onClick={handlePCModal}
               type="submit"
             >
-              Ultimos pedidos
+              Ultimas entradas
             </Button>
             <LastPCsModal
               isOpen={isPCModalOpen}

@@ -8,7 +8,7 @@ export default function LastPCsModal({ isOpen, handleClose, pcsData }) {
     <Cont>
       <Modal size="xl" show={isOpen} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Útimos pedidos de compra</Modal.Title>
+          <Modal.Title>Útimos documentos de entrada</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Table responsive striped bordered hover>
