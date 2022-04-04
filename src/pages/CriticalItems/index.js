@@ -44,7 +44,7 @@ export default function CriticalItems() {
     setShowDownloadExcelCriticalItemsModal
   ] = useState(false)
 
-  const [filter, setFilter] = useState('procure por ...')
+  const [filter, setFilter] = useState('Código')
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -76,8 +76,9 @@ export default function CriticalItems() {
           }
         }
       )
-    } else {
-      setSearchPlaceholder('Não encontramos a peça')
+      if (part_numberInformation.data.length === 0) {
+        setSearchPlaceholder('Não encontramos a Peça ')
+      }
     }
     if (filter === 'Descrição') {
       part_numberInformation = await axios.get(
@@ -88,7 +89,10 @@ export default function CriticalItems() {
           }
         }
       )
-    } else setSearchPlaceholder('Não encontramos a descrição ')
+      if (part_numberInformation.data.length === 0) {
+        setSearchPlaceholder('Não encontramos a Descrição')
+      }
+    }
 
     if (filter === 'Responsável') {
       part_numberInformation = await axios.get(
@@ -99,8 +103,9 @@ export default function CriticalItems() {
           }
         }
       )
-    } else {
-      setSearchPlaceholder('Não encontramos o Responsável')
+      if (part_numberInformation.data.length === 0) {
+        setSearchPlaceholder('Não encontramos o Responsável ')
+      }
     }
 
     setItems(part_numberInformation.data)
@@ -267,7 +272,6 @@ export default function CriticalItems() {
                       {ci.responsable}
                     </Badge>{' '}
                   </td>
-
                   <td>
                     {new Intl.DateTimeFormat('pt-BR').format(
                       new Date(ci.created_at)
