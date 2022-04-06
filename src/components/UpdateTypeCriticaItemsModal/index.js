@@ -3,7 +3,6 @@ import { Row, Col } from 'react-bootstrap'
 import React, { useState } from 'react'
 import UpdatePurchaseCriticalItemsModal from '../PurchaseCriticalItemsModal'
 import UpdateStockCriticalItemsModal from '../StockCriticalItemsModal'
-// import { Title } from './styles'
 
 const UpdateTypeCritialItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   const [showPurchaseCriticalItemsModal, setShowPurchaseCritiicalItemsModal] =
