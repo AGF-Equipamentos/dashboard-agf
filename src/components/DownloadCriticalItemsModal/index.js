@@ -8,27 +8,27 @@ const DownloadExcelCriticalItemsModal = ({
   filter
 }) => {
   async function handleDownloadExcel() {
-    if (filter === 'Código') {
-      await axios.get(`${process.env.REACT_APP_LOCALHOST}/critical-items/`, {
-        params: {
-          part_number: searchValue
-        }
-      })
-    }
-    if (filter === 'Descrição') {
-      await axios.get(`${process.env.REACT_APP_LOCALHOST}/critical-items`, {
-        params: {
-          description: searchValue
-        }
-      })
-    }
-    if (filter === 'Responsável') {
-      await axios.get(`${process.env.REACT_APP_LOCALHOST}/critical-items`, {
-        params: {
-          responsable: searchValue
-        }
-      })
-    }
+    // if (filter === 'Código') {
+    //   await axios.get(`${process.env.REACT_APP_LOCALHOST}/critical-items/`, {
+    //     params: {
+    //       part_number: searchValue
+    //     }
+    //   })
+    // }
+    // if (filter === 'Descrição') {
+    //   await axios.get(`${process.env.REACT_APP_LOCALHOST}/critical-items`, {
+    //     params: {
+    //       description: searchValue
+    //     }
+    //   })
+    // }
+    // if (filter === 'Responsável') {
+    //   await axios.get(`${process.env.REACT_APP_LOCALHOST}/critical-items`, {
+    //     params: {
+    //       responsable: searchValue
+    //     }
+    //   })
+    // }
   }
   return (
     <>
