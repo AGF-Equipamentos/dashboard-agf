@@ -137,7 +137,7 @@ export default function CriticalItems() {
     setShowDownloadExcelCriticalItemsModal(true)
   }
   async function handleCloseDownloadExcelCriticalItems() {
-    setShowDownloadExcelCriticalItemsModal(false)()
+    setShowDownloadExcelCriticalItemsModal(false)
   }
 
   function keyPressed(event) {
@@ -203,7 +203,7 @@ export default function CriticalItems() {
                 </Dropdown.Item>
 
                 <Dropdown.Item onClick={() => setFilter('Responsável')}>
-                  Responsavél
+                  Responsável
                 </Dropdown.Item>
               </DropdownButton>
             </Col>
