@@ -67,44 +67,53 @@ export default function CriticalItems() {
       <Spinner animation="border" size="sm" variant="warning" />
     )
 
-    if (filter === 'Código') {
+    if (search === '') {
       part_numberInformation = await axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items`,
-        {
-          params: {
-            part_number: search
-          }
-        }
+        `${process.env.REACT_APP_LOCALHOST}/critical-items`
       )
       if (part_numberInformation.data.length === 0) {
-        setSearchPlaceholder('Não encontramos a Peça ')
+        setSearchPlaceholder('Não encontramos nenhum item...')
       }
-    }
-    if (filter === 'Descrição') {
-      part_numberInformation = await axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items`,
-        {
-          params: {
-            description: search
+    } else {
+      if (filter === 'Código') {
+        part_numberInformation = await axios.get(
+          `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+          {
+            params: {
+              part_number: search
+            }
           }
+        )
+        if (part_numberInformation.data.length === 0) {
+          setSearchPlaceholder('Não encontramos nenhum item...')
         }
-      )
-      if (part_numberInformation.data.length === 0) {
-        setSearchPlaceholder('Não encontramos a Descrição')
       }
-    }
+      if (filter === 'Descrição') {
+        part_numberInformation = await axios.get(
+          `${process.env.REACT_APP_LOCALHOST}/critical-item`,
+          {
+            params: {
+              description: search
+            }
+          }
+        )
+        if (part_numberInformation.data.length === 0) {
+          setSearchPlaceholder('Não encontramos nenhum item...')
+        }
+      }
 
-    if (filter === 'Responsável') {
-      part_numberInformation = await axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items`,
-        {
-          params: {
-            responsable: search
+      if (filter === 'Responsável') {
+        part_numberInformation = await axios.get(
+          `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+          {
+            params: {
+              responsable: search
+            }
           }
+        )
+        if (part_numberInformation.data.length === 0) {
+          setSearchPlaceholder('Não encontramos nenhum item...')
         }
-      )
-      if (part_numberInformation.data.length === 0) {
-        setSearchPlaceholder('Não encontramos o Responsável ')
       }
     }
 
@@ -164,6 +173,8 @@ export default function CriticalItems() {
       <DownloadExcelCriticalItemsModal
         isOpen={showDownloadExcelCriticalItemsModal}
         handleClose={handleCloseDownloadExcelCriticalItems}
+        filter={filter}
+        searchValue={searchValue}
       />
 
       <Container fluid className="justify-content-center">

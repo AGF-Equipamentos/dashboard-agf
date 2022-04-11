@@ -52,7 +52,7 @@ const UpdatePurchaseCriticalItemsModal = ({
       )
       setError('')
       handleClose()
-      window.location.reload()
+      // window.location.reload()
     } catch (error) {
       setError('Algo deu errro, tente novamente')
     }

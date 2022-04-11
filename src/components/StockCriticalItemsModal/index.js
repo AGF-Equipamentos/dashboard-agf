@@ -52,7 +52,7 @@ const UpdateStockCriticalItemsModal = ({
       )
       setError('')
       handleClose()
-      window.location.reload()
+      // window.location.reload()
     } catch (error) {
       setError('Algo deu errado, tente novamente')
     }
