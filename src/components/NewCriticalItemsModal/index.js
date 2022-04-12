@@ -43,7 +43,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
       )
       setError('')
       handleClose()
-      // window.location.reload()
+      window.location.reload()
     } catch (error) {
       const errorMessage = error.response.data.message
       if (errorMessage === '"part_number" is not allowed to be empty') {

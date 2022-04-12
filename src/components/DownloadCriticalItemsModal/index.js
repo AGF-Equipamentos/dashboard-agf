@@ -87,7 +87,9 @@ const DownloadExcelCriticalItemsModal = ({
               Cancelar
             </Button>
             <a href={url} download="items.xlsx" className="hidden" ref={ref} />
-            <Button onClick={download}>Download</Button>
+            <Button variant="warning" onClick={download}>
+              Download
+            </Button>
           </Modal.Footer>
         </Form>
       </Modal>

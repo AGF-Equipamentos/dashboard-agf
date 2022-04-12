@@ -90,7 +90,7 @@ export default function CriticalItems() {
       }
       if (filter === 'Descrição') {
         part_numberInformation = await axios.get(
-          `${process.env.REACT_APP_LOCALHOST}/critical-item`,
+          `${process.env.REACT_APP_LOCALHOST}/critical-items`,
           {
             params: {
               description: search

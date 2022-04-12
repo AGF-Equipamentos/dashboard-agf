@@ -12,7 +12,7 @@ const ExcludeCriticalItemsModal = ({ isOpen, handleClose, criticalItem }) => {
       )
 
       handleClose()
-      // window.location.reload()
+      window.location.reload()
     } catch (error) {
       setError(error)
     }
