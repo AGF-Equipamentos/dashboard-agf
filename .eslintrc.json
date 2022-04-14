@@ -32,6 +32,7 @@
       "react-hooks/exhaustive-deps": "warn",
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
-      "no-irregular-whitespace": "off"
+      "no-irregular-whitespace": "off",
+      "no-unused-vars": "warn"
     }
 }
