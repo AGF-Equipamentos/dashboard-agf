@@ -56,15 +56,12 @@ const DownloadExcelCriticalItemsModal = ({
       )
     }
 
-    return axios.get(
-      `${process.env.REACT_APP_OPMS}/critical-items/download`,
-      {
-        responseType: 'blob',
-        params: {
-          part_number: searchValue
-        }
+    return axios.get(`${process.env.REACT_APP_OPMS}/critical-items/download`, {
+      responseType: 'blob',
+      params: {
+        part_number: searchValue
       }
-    )
+    })
   }, [filter, searchValue])
 
   const { ref, url, download } = useDownloadFile({
