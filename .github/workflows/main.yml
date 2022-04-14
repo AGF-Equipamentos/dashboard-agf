@@ -48,4 +48,4 @@ jobs:
         script: |
           cd ~/app/dashboard-agf
           yarn
-          pm2 restart dashboard-agf
+          pm2 restart agf-dash
