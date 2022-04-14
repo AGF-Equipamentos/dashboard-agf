@@ -25,7 +25,7 @@ const DownloadExcelCriticalItemsModal = ({
 
     if (search === '') {
       return axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items/download`,
+        `${process.env.REACT_APP_OPMS}/critical-items/download`,
         {
           responseType: 'blob'
         }
@@ -34,7 +34,7 @@ const DownloadExcelCriticalItemsModal = ({
 
     if (filter === 'Descrição') {
       return axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items/download`,
+        `${process.env.REACT_APP_OPMS}/critical-items/download`,
         {
           responseType: 'blob',
           params: {
@@ -46,7 +46,7 @@ const DownloadExcelCriticalItemsModal = ({
 
     if (filter === 'Responsável') {
       return axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items/download`,
+        `${process.env.REACT_APP_OPMS}/critical-items/download`,
         {
           responseType: 'blob',
           params: {
@@ -57,7 +57,7 @@ const DownloadExcelCriticalItemsModal = ({
     }
 
     return axios.get(
-      `${process.env.REACT_APP_LOCALHOST}/critical-items/download`,
+      `${process.env.REACT_APP_OPMS}/critical-items/download`,
       {
         responseType: 'blob',
         params: {

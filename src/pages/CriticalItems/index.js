@@ -49,7 +49,7 @@ export default function CriticalItems() {
   useEffect(() => {
     const fetchItems = async () => {
       const response = await axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items`
+        `${process.env.REACT_APP_OPMS}/critical-items`
       )
 
       setItems(response.data)
@@ -69,7 +69,7 @@ export default function CriticalItems() {
 
     if (search === '') {
       part_numberInformation = await axios.get(
-        `${process.env.REACT_APP_LOCALHOST}/critical-items`
+        `${process.env.REACT_APP_OPMS}/critical-items`
       )
       if (part_numberInformation.data.length === 0) {
         setSearchPlaceholder('Não encontramos nenhum item...')
@@ -77,7 +77,7 @@ export default function CriticalItems() {
     } else {
       if (filter === 'Código') {
         part_numberInformation = await axios.get(
-          `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+          `${process.env.REACT_APP_OPMS}/critical-items`,
           {
             params: {
               part_number: search
@@ -90,7 +90,7 @@ export default function CriticalItems() {
       }
       if (filter === 'Descrição') {
         part_numberInformation = await axios.get(
-          `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+          `${process.env.REACT_APP_OPMS}/critical-items`,
           {
             params: {
               description: search
@@ -104,7 +104,7 @@ export default function CriticalItems() {
 
       if (filter === 'Responsável') {
         part_numberInformation = await axios.get(
-          `${process.env.REACT_APP_LOCALHOST}/critical-items`,
+          `${process.env.REACT_APP_OPMS}/critical-items`,
           {
             params: {
               responsable: search
