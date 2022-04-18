@@ -47,7 +47,7 @@ const UpdatePurchaseCriticalItemsModal = ({
       // console.log(updatePurchaseBody)
 
       await axios.put(
-        `http://localhost:3334/critical-items/purchase/${criticalItem.id}`,
+        `${process.env.REACT_APP_OPMS}/critical-items/purchase/${criticalItem.id}`,
         updatePurchaseBody
       )
       setError('')

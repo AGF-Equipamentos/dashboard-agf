@@ -8,7 +8,7 @@ const ExcludeCriticalItemsModal = ({ isOpen, handleClose, criticalItem }) => {
   const handleExcludeSubmit = async () => {
     try {
       await axios.delete(
-        `http://localhost:3334/critical-items/${criticalItem.id}`
+        `${process.env.REACT_APP_OPMS}/critical-items/${criticalItem.id}`
       )
 
       handleClose()

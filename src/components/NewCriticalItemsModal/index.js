@@ -37,7 +37,7 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
         })
       }
       await axios.post(
-        `http://localhost:3334/critical-items`,
+        `${process.env.REACT_APP_OPMS}/critical-items`,
 
         createNewCriticalItems
       )

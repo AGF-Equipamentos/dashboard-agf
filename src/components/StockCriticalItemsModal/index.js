@@ -47,7 +47,7 @@ const UpdateStockCriticalItemsModal = ({
       console.log(updateStockBody)
 
       await axios.put(
-        `http://localhost:3334/critical-items/stock/${criticalItem.id}`,
+        `${process.env.REACT_APP_OPMS}/critical-items/stock/${criticalItem.id}`,
         updateStockBody
       )
       setError('')
