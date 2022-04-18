@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   Table,
   Button,
@@ -12,13 +12,14 @@ import {
   Spinner,
   Container
 } from 'react-bootstrap'
-import { useLocation, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import { generatePrintCode } from '../../utils/generatePrintCode'
 
 import api from '../../services/api'
 import PrintModal from '../../components/PrintModal'
+import { ButtonBase } from '@material-ui/core'
 
 export default function PCs() {
   const [searchValue, setSearchValue] = useState('')
@@ -28,7 +29,7 @@ export default function PCs() {
   const [pcsPlaceholder, setPcsPlaceholder] = useState('Pesquise por um PC...')
   const [filter, setFilter] = useState('Pesquisar por número do PC')
   const [filial, setFilial] = useState('0101')
-  const location = useLocation()
+  const history = useHistory()
 
   const handleSubmit = useCallback(
     async (searchInput, filterInput) => {
@@ -88,13 +89,16 @@ export default function PCs() {
   }
 
   useEffect(() => {
-    if (location.state) {
-      setFilter(location.state[1])
-      setSearchValue(location.state[0])
-      handleSubmit(location.state[0], location.state[1])
+    if (history.location.state) {
+      setFilter(history.location.state.pc_filter)
+      setSearchValue(history.location.state.pc_number)
+      handleSubmit(
+        history.location.state.pc_number,
+        history.location.state.pc_filter
+      )
     }
     // eslint-disable-next-line
-  }, [location.state]);
+  }, [history.location.state]);
 
   const handlePC = useCallback(
     async (pcInput) => {
@@ -145,32 +149,13 @@ export default function PCs() {
         pcsData={formattedPCs}
       />
       <Container fluid className="justify-content-center">
-        {location.state ? (
-          <Row>
-            <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-              <Link
-                to={{
-                  pathname: '/prodash',
-                  state: location.state[1]
-                }}
-              >
-                <FiArrowLeft color="#999" />
-              </Link>
-            </Col>
-          </Row>
-        ) : (
-          <Row>
-            <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-              <Link
-                to={{
-                  pathname: '/'
-                }}
-              >
-                <FiArrowLeft color="#999" />
-              </Link>
-            </Col>
-          </Row>
-        )}
+        <Row>
+          <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
+            <ButtonBase onClick={() => history.go(-1)}>
+              <FiArrowLeft color="#999" />
+            </ButtonBase>
+          </Col>
+        </Row>
         <h1>Pedidos de Compra</h1>
         <InputGroup className="mb-3" onSubmit={handleSubmit}>
           <FormControl
@@ -264,21 +249,34 @@ export default function PCs() {
                     )}
                   </td>
                   <td>
-                    <Button variant="link" onClick={() => handlePC(pcs.PEDIDO)}>
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => handlePC(pcs.PEDIDO)}
+                    >
                       {pcs.PEDIDO}
                     </Button>
                   </td>
                   <td>{pcs.EMISSAO}</td>
                   <td>{pcs.ITEM}</td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: '/prodash',
-                        state: pcs.PRODUTO
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => {
+                        history.replace('/pcs', {
+                          ...history.location.state,
+                          pc_number: searchValue,
+                          pc_filter: filter
+                        })
+                        history.push('/prodash', {
+                          ...history.location.state,
+                          product: pcs.PRODUTO
+                        })
                       }}
                     >
                       {pcs.PRODUTO}
-                    </Link>
+                    </Button>
                   </td>
                   <td>{pcs.DESCRICAO}</td>
                   <td>{pcs.UM}</td>
@@ -287,14 +285,25 @@ export default function PCs() {
                   <td>{pcs.SALDO}</td>
                   <td>R${pcs.PRECO}</td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: '/scs',
-                        state: [pcs.NUMSC, pcs.PRODUTO]
-                      }}
-                    >
-                      {pcs.NUMSC}
-                    </Link>
+                    {pcs.NUMSC.trim() && (
+                      <Button
+                        variant="outline-info"
+                        size="sm"
+                        onClick={() => {
+                          history.replace('/pcs', {
+                            ...history.location.state,
+                            pc_number: searchValue,
+                            pc_filter: filter
+                          })
+                          history.push('/scs', {
+                            ...history.location.state,
+                            sc_number: pcs.NUMSC
+                          })
+                        }}
+                      >
+                        {pcs.NUMSC}
+                      </Button>
+                    )}
                   </td>
                   <td>{pcs.OBS}</td>
                   <td>{pcs.ENTREGA}</td>

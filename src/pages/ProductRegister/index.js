@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Table,
   Button,
@@ -12,7 +12,8 @@ import {
   Container,
   Badge
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { ButtonBase } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 import { FiLogIn, FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
@@ -25,28 +26,51 @@ export default function ProductRegister() {
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     'Pesquise por um produto...'
   )
+  const history = useHistory()
 
-  async function handleSubmit() {
-    const search = searchValue.toUpperCase().trim()
+  async function handleSubmit(searchParam = '', filterParam = '') {
+    const search = searchParam || searchValue.toUpperCase().trim()
+    const filterHandler = filterParam || filter
+    console.log(filterHandler)
     let response
     setProducts([])
     setSearchPlaceholder(
       <Spinner animation="border" size="sm" variant="warning" />
     )
-    if (filter === 'Código') {
-      response = await api.get(
-        `/register?filial=0101&busca_cod_produto=${search}`
-      )
+    if (filterHandler === 'Código') {
+      response = await api.get(`/register`, {
+        params: {
+          filial: '0101',
+          busca_cod_produto: search || '',
+          top: 200
+        }
+      })
     } else {
-      response = await api.get(
-        `/register?filial=0101&busca_desc_produto=${search}`
-      )
+      response = await api.get(`/register`, {
+        params: {
+          filial: '0101',
+          busca_desc_produto: search,
+          top: 200
+        }
+      })
     }
     if (response.data.length === 0) {
       setSearchPlaceholder('Não encontramos nenhum produto...')
     }
     setProducts(response.data)
   }
+
+  useEffect(() => {
+    if (history.location.state) {
+      setFilter(history.location.state.pr_filter)
+      setSearchValue(history.location.state.pr_search)
+      handleSubmit(
+        history.location.state.pr_search,
+        history.location.state.pr_filter
+      )
+    }
+    // eslint-disable-next-line
+  }, [history.location.state]);
 
   // submit on press Enter
   function keyPressed(event) {
@@ -60,13 +84,9 @@ export default function ProductRegister() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <Link
-              to={{
-                pathname: '/'
-              }}
-            >
+            <ButtonBase onClick={() => history.go(-1)}>
               <FiArrowLeft color="#999" />
-            </Link>
+            </ButtonBase>
           </Col>
         </Row>
         <h1>Cadastro de Produtos</h1>
@@ -96,7 +116,7 @@ export default function ProductRegister() {
           <InputGroup.Append>
             <Button
               variant="outline-warning"
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
               type="submit"
             >
               Enviar
@@ -125,14 +145,22 @@ export default function ProductRegister() {
                   </td>
                   <td>{product.UM}</td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: '/prodash',
-                        state: product.CODIGO
+                    <ButtonBase
+                      onClick={() => {
+                        history.replace('/productregister', {
+                          ...history.location.state,
+                          product: product.CODIGO,
+                          pr_search: searchValue,
+                          pr_filter: filter
+                        })
+                        history.push('/prodash', {
+                          ...history.location.state,
+                          product: product.CODIGO
+                        })
                       }}
                     >
                       <FiLogIn color="#999" />
-                    </Link>
+                    </ButtonBase>
                   </td>
                 </tr>
               ))

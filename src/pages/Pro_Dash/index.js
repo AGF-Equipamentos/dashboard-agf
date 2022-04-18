@@ -13,9 +13,8 @@ import {
   Tooltip,
   Alert
 } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
 import {
   addWeeks,
   format,
@@ -32,6 +31,7 @@ import LastPCsModal from '../../components/LastPCsModal'
 
 import api from '../../services/api'
 import { average3Months } from '../../utils/average'
+import { ButtonBase } from '@material-ui/core'
 
 export default function Pro_Dash() {
   const [productNumber, setProductNumber] = useState('')
@@ -95,7 +95,7 @@ export default function Pro_Dash() {
   const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0)
   const [lastThreeMonthAverage02, setlastThreeMonthAverage02] = useState(0)
   const [lastThreeMonthAverage03, setlastThreeMonthAverage03] = useState(0)
-  const location = useLocation()
+  const history = useHistory()
   const completeDate = new Date()
 
   // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
@@ -579,13 +579,13 @@ export default function Pro_Dash() {
   }
 
   useEffect(() => {
-    if (location.state) {
-      setProductNumber(location.state)
-      handleSubmit(location.state)
+    if (history.location.state) {
+      setProductNumber(history.location.state.product)
+      handleSubmit(history.location.state.product)
     }
 
     // eslint-disable-next-line
-  }, [location.state]);
+  }, [history.location.state]);
 
   const [show, setShow] = useState(false)
   const [printQtd, setPrintQtd] = useState(1)
@@ -640,13 +640,9 @@ export default function Pro_Dash() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <Link
-              to={{
-                pathname: '/'
-              }}
-            >
+            <ButtonBase onClick={() => history.go(-1)}>
               <FiArrowLeft color="#999" />
-            </Link>
+            </ButtonBase>
           </Col>
         </Row>
         <h1>Produtos</h1>
@@ -1384,14 +1380,23 @@ export default function Pro_Dash() {
                         )}
                       </td>
                       <td>
-                        <Link
-                          to={{
-                            pathname: '/pcs',
-                            state: [pc.PEDIDO, 'Número']
+                        <Button
+                          variant="outline-info"
+                          size="sm"
+                          onClick={() => {
+                            history.replace('/prodash', {
+                              ...history.location.state,
+                              product: productNumber
+                            })
+                            history.push('/pcs', {
+                              ...history.location.state,
+                              pc_number: pc.PEDIDO,
+                              pc_filter: 'Número'
+                            })
                           }}
                         >
                           {pc.PEDIDO}
-                        </Link>
+                        </Button>
                       </td>
                       <td>{pc.QTD}</td>
                       <td>{pc.QTD_ENT}</td>
@@ -1429,14 +1434,22 @@ export default function Pro_Dash() {
                     <tr key={i}>
                       <td>{sc.EMISSAO}</td>
                       <td>
-                        <Link
-                          to={{
-                            pathname: '/scs',
-                            state: [sc.SC, productNumber]
+                        <Button
+                          variant="outline-info"
+                          size="sm"
+                          onClick={() => {
+                            history.replace('/prodash', {
+                              ...history.location.state,
+                              product: productNumber
+                            })
+                            history.push('/scs', {
+                              ...history.location.state,
+                              sc_number: sc.SC
+                            })
                           }}
                         >
                           {sc.SC}
-                        </Link>
+                        </Button>
                       </td>
                       <td>{sc.QTD}</td>
                       <td>{sc.QTD_ENT}</td>

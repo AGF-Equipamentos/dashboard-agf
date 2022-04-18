@@ -14,7 +14,7 @@ import {
   DropdownButton,
   Dropdown
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import axios from 'axios'
@@ -22,6 +22,7 @@ import NewCriticalItemsModal from '../../components/NewCriticalItemsModal'
 import ExcludeCriticalItemsModal from '../../components/ExcludeCriticalItemsModal'
 import UpdateTypeCritialItemsModal from '../../components/UpdateTypeCriticaItemsModal'
 import DownloadExcelCriticalItemsModal from '../../components/DownloadCriticalItemsModal'
+import { ButtonBase } from '@material-ui/core'
 
 export default function CriticalItems() {
   const [showNewCriticalItemsModal, setShowNewCriticalItemsModal] =
@@ -43,6 +44,7 @@ export default function CriticalItems() {
     showDownloadExcelCriticalItemsModal,
     setShowDownloadExcelCriticalItemsModal
   ] = useState(false)
+  const history = useHistory()
 
   const [filter, setFilter] = useState('Código')
 
@@ -58,9 +60,23 @@ export default function CriticalItems() {
     fetchItems()
   }, [])
 
-  async function handleSubmit() {
+  // handle redirecting from other pages
+  useEffect(() => {
+    if (history.location.state) {
+      setSearchValue(history.location.state.ci_part_number)
+      setFilter(history.location.state.ci_filter)
+      handleSubmit(
+        history.location.state.ci_part_number,
+        history.location.state.ci_filter
+      )
+    }
+    // eslint-disable-next-line
+  }, [history.location.state]);
+
+  async function handleSubmit(searchParam = '', filterParam = 'Código') {
     let part_numberInformation
-    const search = searchValue.toUpperCase().trim()
+    const search = searchParam || searchValue.toUpperCase().trim()
+    const filterHandler = filterParam || searchValue.toUpperCase().trim()
 
     setItems([])
     setSearchPlaceholder(
@@ -75,7 +91,7 @@ export default function CriticalItems() {
         setSearchPlaceholder('Não encontramos nenhum item...')
       }
     } else {
-      if (filter === 'Código') {
+      if (filterHandler === 'Código') {
         part_numberInformation = await axios.get(
           `${process.env.REACT_APP_OPMS}/critical-items`,
           {
@@ -154,6 +170,7 @@ export default function CriticalItems() {
       handleSubmit()
     }
   }
+
   return (
     <Cont>
       <NewCriticalItemsModal
@@ -180,13 +197,9 @@ export default function CriticalItems() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <Link
-              to={{
-                pathname: '/'
-              }}
-            >
+            <ButtonBase onClick={() => history.go(-1)}>
               <FiArrowLeft color="#999" />
-            </Link>
+            </ButtonBase>
           </Col>
         </Row>
         <h1>Itens Críticos</h1>
@@ -257,11 +270,11 @@ export default function CriticalItems() {
         <Table responsive striped bordered hover>
           <thead>
             <tr>
-              <th>NÚMERO DA PEÇA</th>
-              <th>DESCRIÇÃO DO ITEM</th>
-              <th>OBSERVAÇÃO DO ESTOQUE</th>
-              <th>OBSERVAÇÃO DE COMPRAS</th>
-              <th>USADO</th>
+              <th>CÓDIGO</th>
+              <th>DESCRIÇÃO</th>
+              <th>OBS ESTOQUE</th>
+              <th>OBS COMPRAS</th>
+              <th>ONDE USADO</th>
               <th>RESPONSÁVEL</th>
               <th>CRIADO:</th>
               <th>ULT. ATUAL.</th>
@@ -273,7 +286,25 @@ export default function CriticalItems() {
             {items.length !== 0 ? (
               items.map((ci) => (
                 <tr key={ci.id}>
-                  <td>{ci.part_number}</td>
+                  <td>
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => {
+                        history.replace('/critical-items', {
+                          ...history.location.state,
+                          ci_part_number: searchValue,
+                          ci_filter: filter
+                        })
+                        history.push('/prodash', {
+                          ...history.location.state,
+                          product: ci.part_number
+                        })
+                      }}
+                    >
+                      {ci.part_number}
+                    </Button>
+                  </td>
                   <td>{ci.description}</td>
                   <td>{ci.stock_obs}</td>
                   <td>{ci.purchase_obs}</td>

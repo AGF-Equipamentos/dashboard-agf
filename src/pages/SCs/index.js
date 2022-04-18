@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   Table,
   Button,
@@ -11,7 +11,8 @@ import {
   Dropdown,
   DropdownButton
 } from 'react-bootstrap'
-import { useLocation, Link } from 'react-router-dom'
+import { ButtonBase } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
@@ -22,7 +23,7 @@ export default function SCs() {
   const [dataSCs, setDataSCs] = useState([])
   const [scsPlaceholder, setScsPlaceholder] = useState('Pesquise por uma SC...')
   const [filial, setFilial] = useState('0101')
-  const location = useLocation()
+  const history = useHistory()
 
   const handleSubmit = useCallback(
     async (search) => {
@@ -71,42 +72,23 @@ export default function SCs() {
   }
 
   useEffect(() => {
-    if (location.state) {
-      setScNumber(location.state[0])
-      handleSubmit(location.state[0])
+    if (history.location.state) {
+      setScNumber(history.location.state.sc_number)
+      handleSubmit(history.location.state.sc_number)
     }
     // eslint-disable-next-line
-  }, [location.state]);
+  }, [history.location.state]);
 
   return (
     <Cont>
       <Container fluid className="justify-content-center">
-        {location.state ? (
-          <Row>
-            <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-              <Link
-                to={{
-                  pathname: '/prodash',
-                  state: location.state[1]
-                }}
-              >
-                <FiArrowLeft color="#999" />
-              </Link>
-            </Col>
-          </Row>
-        ) : (
-          <Row>
-            <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-              <Link
-                to={{
-                  pathname: '/'
-                }}
-              >
-                <FiArrowLeft color="#999" />
-              </Link>
-            </Col>
-          </Row>
-        )}
+        <Row>
+          <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
+            <ButtonBase onClick={() => history.go(-1)}>
+              <FiArrowLeft color="#999" />
+            </ButtonBase>
+          </Col>
+        </Row>
 
         <h1>Solicitações de Compra</h1>
         <InputGroup className="mb-3" onSubmit={handleSubmit}>
@@ -169,14 +151,22 @@ export default function SCs() {
                 <tr key={i}>
                   <td>{scs.ITEM}</td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: '/prodash',
-                        state: scs.PRODUTO
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => {
+                        history.replace('/scs', {
+                          ...history.location.state,
+                          sc_number: scNumber
+                        })
+                        history.push('/prodash', {
+                          ...history.location.state,
+                          product: scs.PRODUTO
+                        })
                       }}
                     >
                       {scs.PRODUTO}
-                    </Link>
+                    </Button>
                   </td>
                   <td>{scs.DESCRICAO}</td>
                   <td>{scs.EMISSAO}</td>
@@ -187,14 +177,25 @@ export default function SCs() {
                   <td>{scs.SALDO}</td>
                   <td>{scs.OBS}</td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: '/pcs',
-                        state: [scs.PC, 'Número']
-                      }}
-                    >
-                      {scs.PC}
-                    </Link>
+                    {scs.PC.trim() && (
+                      <Button
+                        variant="outline-info"
+                        size="sm"
+                        onClick={() => {
+                          history.replace('/scs', {
+                            ...history.location.state,
+                            sc_number: scNumber
+                          })
+                          history.push('/pcs', {
+                            ...history.location.state,
+                            pc_number: scs.PC,
+                            pc_filter: 'Número'
+                          })
+                        }}
+                      >
+                        {scs.PC}
+                      </Button>
+                    )}
                   </td>
                   <td>{scs.PC_ENTREGA}</td>
                 </tr>
