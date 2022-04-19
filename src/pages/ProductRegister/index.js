@@ -169,6 +169,15 @@ export default function ProductRegister() {
                 <td colSpan="5">{searchPlaceholder}</td>
               </tr>
             )}
+            {products.length > 199 && (
+              <tr>
+                <td colSpan="5">
+                  <strong>
+                    Para mais resultados, faça uma pesquisa mais especifica...
+                  </strong>
+                </td>
+              </tr>
+            )}
           </tbody>
         </Table>
       </Container>
