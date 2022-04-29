@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Form, Modal } from 'react-bootstrap'
 import { Button } from 'react-bootstrap'
 import axios from 'axios'
-//import { Title } from './styles'
 
 const UpdateStockCriticalItemsModal = ({
   isOpen,
@@ -29,22 +28,21 @@ const UpdateStockCriticalItemsModal = ({
     try {
       const updateStockBody = {}
 
-      if (stockCriticalItem !== '') {
+      if (stockCriticalItem) {
         Object.assign(updateStockBody, {
           stock_obs: stockCriticalItem
         })
       }
-      if (usedCriticalItem !== '') {
+      if (usedCriticalItem) {
         Object.assign(updateStockBody, {
           used_obs: usedCriticalItem
         })
       }
-      if (descriptionCriticalItem !== '') {
+      if (descriptionCriticalItem) {
         Object.assign(updateStockBody, {
           description: descriptionCriticalItem
         })
       }
-      console.log(updateStockBody)
 
       await axios.put(
         `http://localhost:3334/critical-items/stock/${criticalItem.id}`,

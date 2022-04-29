@@ -19,19 +19,19 @@ const NewCriticalItemsModal = ({ isOpen, handleClose }) => {
     try {
       const createNewCriticalItems = {}
 
-      if (criticalitems_part_number !== '') {
+      if (criticalitems_part_number) {
         Object.assign(createNewCriticalItems, {
           part_number: criticalitems_part_number.toLocaleUpperCase().trim()
         })
       }
 
-      if (criticalitems_stock_obs !== '') {
+      if (criticalitems_stock_obs) {
         Object.assign(createNewCriticalItems, {
           stock_obs: criticalitems_stock_obs
         })
       }
 
-      if (criticalitems_used_obs !== '') {
+      if (criticalitems_used_obs) {
         Object.assign(createNewCriticalItems, {
           used_obs: criticalitems_used_obs
         })
