@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Spinner, Container } from 'react-bootstrap'
 import { Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
+import { ButtonBase } from '@material-ui/core'
 
 import api from '../../services/api'
 
@@ -12,6 +13,8 @@ export default function OPsPosVendas() {
   const [opsPlaceholder, setOpsPlaceholder] = useState(
     <Spinner animation="border" size="sm" variant="warning" />
   )
+  const history = useHistory()
+
   useEffect(() => {
     async function loadOPs() {
       const response = await api.get('/ops?filial=0101&obs=POS&fechado=false')
@@ -28,13 +31,9 @@ export default function OPsPosVendas() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <Link
-              to={{
-                pathname: '/'
-              }}
-            >
+            <ButtonBase onClick={() => history.go(-1)}>
               <FiArrowLeft color="#999" />
-            </Link>
+            </ButtonBase>
           </Col>
         </Row>
         <h1>OPs para o Pós Vendas</h1>

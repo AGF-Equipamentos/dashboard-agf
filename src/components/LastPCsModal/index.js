@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, Modal, Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Container as Cont } from './styles'
 
 export default function LastPCsModal({ isOpen, handleClose, pcsData }) {
+  const history = useHistory()
   return (
     <Cont>
       <Modal size="xl" show={isOpen} onHide={handleClose}>
@@ -26,14 +27,23 @@ export default function LastPCsModal({ isOpen, handleClose, pcsData }) {
                 pcsData.map((pc, index) => (
                   <tr key={index}>
                     <td>
-                      <Link
-                        to={{
-                          pathname: '/pcs',
-                          state: [pc.PEDIDO, 'Número']
+                      <Button
+                        variant="outline-info"
+                        size="sm"
+                        onClick={() => {
+                          history.replace('/prodash', {
+                            ...history.location.state,
+                            product: pc.PRODUTO
+                          })
+                          history.push('/pcs', {
+                            ...history.location.state,
+                            pc_number: pc.PEDIDO,
+                            pc_filter: 'Número'
+                          })
                         }}
                       >
                         {pc.PEDIDO}
-                      </Link>
+                      </Button>
                     </td>
                     <td>{pc.QTD}</td>
                     <td>{pc.PRECO}</td>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Spinner, Container } from 'react-bootstrap'
+import { ButtonBase } from '@material-ui/core'
 
 import { Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
@@ -13,6 +14,7 @@ export default function OPsFilial() {
   const [opsPlaceholder, setOpsPlaceholder] = useState(
     <Spinner animation="border" size="sm" variant="warning" />
   )
+  const history = useHistory()
 
   useEffect(() => {
     async function loadOPs() {
@@ -32,13 +34,9 @@ export default function OPsFilial() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <Link
-              to={{
-                pathname: '/'
-              }}
-            >
+            <ButtonBase onClick={() => history.go(-1)}>
               <FiArrowLeft color="#999" />
-            </Link>
+            </ButtonBase>
           </Col>
         </Row>
         <h1>OPs para a Filial</h1>

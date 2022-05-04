@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Row, Col, Spinner, Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
+import { ButtonBase } from '@material-ui/core'
 
 import api from '../../services/api'
 
@@ -11,6 +12,7 @@ export default function EstoquesMaq() {
   const [estoquesPlaceholder, setEstoquesPlaceholder] = useState(
     <Spinner animation="border" size="sm" variant="warning" />
   )
+  const history = useHistory()
 
   useEffect(() => {
     async function loadEstoques() {
@@ -30,13 +32,9 @@ export default function EstoquesMaq() {
       <Container fluid className="justify-content-center">
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <Link
-              to={{
-                pathname: '/'
-              }}
-            >
+            <ButtonBase onClick={() => history.go(-1)}>
               <FiArrowLeft color="#999" />
-            </Link>
+            </ButtonBase>
           </Col>
         </Row>
         <h1>Estoque de Máquinas</h1>
