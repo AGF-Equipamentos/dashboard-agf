@@ -14,13 +14,13 @@ const UpdatePurchaseCriticalItemsModal = ({
     }
   }
 
-  const [purchaseCriticalItem, setPurchaseCriticalItem] = useState('')
+  const [purchaseObsCriticalItem, setPurchaseObsCriticalItem] = useState('')
   const [responsableCriticalItem, setResponsableCriticalItem] = useState('')
   const [descriptionCriticalItem, setDescriptionCriticalItem] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {
-    setPurchaseCriticalItem(criticalItem.purchase_obs)
+    setPurchaseObsCriticalItem(criticalItem.purchase_obs)
     setResponsableCriticalItem(criticalItem.responsable)
     setDescriptionCriticalItem(criticalItem.description)
   }, [criticalItem])
@@ -28,23 +28,21 @@ const UpdatePurchaseCriticalItemsModal = ({
     try {
       const updatePurchaseBody = {}
 
-      if (purchaseCriticalItem !== '') {
+      if (purchaseObsCriticalItem) {
         Object.assign(updatePurchaseBody, {
-          purchase_obs: purchaseCriticalItem
+          purchase_obs: purchaseObsCriticalItem
         })
       }
-
-      if (responsableCriticalItem !== '') {
+      if (responsableCriticalItem) {
         Object.assign(updatePurchaseBody, {
           responsable: responsableCriticalItem
         })
       }
-      if (descriptionCriticalItem !== '') {
+      if (descriptionCriticalItem) {
         Object.assign(updatePurchaseBody, {
           description: descriptionCriticalItem
         })
       }
-      // console.log(updatePurchaseBody)
 
       await axios.put(
         `${process.env.REACT_APP_OPMS}/critical-items/purchase/${criticalItem.id}`,
@@ -70,8 +68,8 @@ const UpdatePurchaseCriticalItemsModal = ({
               <Form.Control
                 type="text"
                 placeholder="Digite observação..."
-                defaultValue={purchaseCriticalItem}
-                onChange={(e) => setPurchaseCriticalItem(e.target.value)}
+                defaultValue={purchaseObsCriticalItem}
+                onChange={(e) => setPurchaseObsCriticalItem(e.target.value)}
                 onKeyPress={KeyPressd}
               />
             </Form.Group>
