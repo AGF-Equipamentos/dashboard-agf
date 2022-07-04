@@ -191,103 +191,6 @@ export default function EstoquesGer() {
 
         <Row>
           <Col>
-            <h5>Pedidos de Compra</h5>
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>PC</th>
-                  <th>COD</th>
-                  <th>QTD</th>
-                  <th>QTD_ENT</th>
-                  <th>DATA</th>
-                  <th>FORN</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PCs.length > 0 ? (
-                  PCs.map((pc) => (
-                    <tr key={pc.PEDIDO.concat('', pc.PRODUTO)}>
-                      <td>{pc.PEDIDO}</td>
-                      <td>
-                        <Button
-                          variant="outline-info"
-                          size="sm"
-                          onClick={() =>
-                            history.push('/prodash', {
-                              ...history.location.state,
-                              product: pc.PRODUTO
-                            })
-                          }
-                        >
-                          {pc.PRODUTO}
-                        </Button>
-                      </td>
-                      <td>{pc.QTD}</td>
-                      <td>{pc.QTD_ENT}</td>
-                      <td>{pc.ENTREGA}</td>
-                      <td>{pc.DESC_FORN}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6">{pcPlaceholder}</td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <h5>Solicitações de Compra</h5>
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>SC</th>
-                  <th>COD</th>
-                  <th>QTD</th>
-                  <th>QTD_ENT</th>
-                  <th>DATA</th>
-                  <th>OBS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {SCs.length > 0 ? (
-                  SCs.map((sc) => (
-                    <tr key={sc.SC.concat('', sc.PRODUTO)}>
-                      <td>{sc.SC}</td>
-                      <td>
-                        <Button
-                          variant="outline-info"
-                          size="sm"
-                          onClick={() =>
-                            history.push('/prodash', {
-                              ...history.location.state,
-                              product: sc.PRODUTO
-                            })
-                          }
-                        >
-                          {sc.PRODUTO}
-                        </Button>
-                      </td>
-                      <td>{sc.QTD}</td>
-                      <td>{sc.QTD_ENT}</td>
-                      <td>{sc.ENTREGA}</td>
-                      <td>{sc.OBS}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6">{scPlaceholder}</td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
             <h5>ESTOQUE MOTORES</h5>
             <Table responsive striped bordered hover>
               <thead>
@@ -539,6 +442,104 @@ export default function EstoquesGer() {
                     </td>
                   )}
                 </tr>
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <h5>Pedidos de Compra</h5>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>PC</th>
+                  <th>COD</th>
+                  <th>QTD</th>
+                  <th>QTD_ENT</th>
+                  <th>DATA</th>
+                  <th>FORN</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PCs.length > 0 ? (
+                  PCs.map((pc) => (
+                    <tr key={pc.PEDIDO.concat('', pc.PRODUTO)}>
+                      <td>{pc.PEDIDO}</td>
+                      <td>
+                        <Button
+                          variant="outline-info"
+                          size="sm"
+                          onClick={() =>
+                            history.push('/prodash', {
+                              ...history.location.state,
+                              product: pc.PRODUTO
+                            })
+                          }
+                        >
+                          {pc.PRODUTO}
+                        </Button>
+                      </td>
+                      <td>{pc.QTD}</td>
+                      <td>{pc.QTD_ENT}</td>
+                      <td>{pc.ENTREGA}</td>
+                      <td>{pc.DESC_FORN}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">{pcPlaceholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <h5>Solicitações de Compra</h5>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>SC</th>
+                  <th>COD</th>
+                  <th>QTD</th>
+                  <th>QTD_ENT</th>
+                  <th>DATA</th>
+                  <th>OBS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {SCs.length > 0 ? (
+                  SCs.map((sc) => (
+                    <tr key={sc.SC.concat('', sc.PRODUTO)}>
+                      <td>{sc.SC}</td>
+                      <td>
+                        <Button
+                          variant="outline-info"
+                          size="sm"
+                          onClick={() =>
+                            history.push('/prodash', {
+                              ...history.location.state,
+                              product: sc.PRODUTO
+                            })
+                          }
+                        >
+                          {sc.PRODUTO}
+                        </Button>
+                      </td>
+                      <td>{sc.QTD}</td>
+                      <td>{sc.QTD_ENT}</td>
+                      <td>{sc.ENTREGA}</td>
+                      <td>{sc.OBS}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">{scPlaceholder}</td>
+                  </tr>
+                )}
               </tbody>
             </Table>
           </Col>
