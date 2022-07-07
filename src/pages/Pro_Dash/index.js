@@ -254,165 +254,176 @@ export default function Pro_Dash() {
         <Spinner animation="border" size="sm" variant="warning" />
       )
 
-      const productInfoResponse = await api.get(
-        `/register?filial=0101&produto=${product}`
-      )
+      const [
+        productInfoResponse,
+        stock01,
+        stock03,
+        stock04,
+        stock06,
+        stock99,
+        stockBranchES,
+        stockBranchBA,
+        purchaseOrders,
+        purchaseRequests,
+        pos,
+        usedBy,
+        commits,
+        average0101,
+        average0102,
+        average0103
+      ] = await Promise.all([
+        api.get(`/register?filial=0101&produto=${product}`),
+        api.get(`/estoques?filial=0101&produto=${product}&armazem=01`),
+        api.get(`/estoques?filial=0101&produto=${product}&armazem=03`),
+        api.get(`/estoques?filial=0101&produto=${product}&armazem=04`),
+        api.get(`/estoques?filial=0101&produto=${product}&armazem=06`),
+        api.get(`/estoques?filial=0101&produto=${product}&armazem=99`),
+        api.get(`/estoques?filial=0102&produto=${product}`),
+        api.get(`/estoques?filial=0103&produto=${product}`),
+        api.get(
+          `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=${product}`
+        ),
+        api.get(`/scs?filial=0101&aberto=true&produto=${product}`),
+        api.get(`/ops?filial=0101&produto=${product}&fechado=false`),
+        api.get(`/ou?filial=0101&produto=${product}`),
+        api.get(`/emp?filial=0101&produto=${product}`),
+        api.get(`/average?filial=0101&produto=${product}`),
+        api.get(`/average?filial=0102&produto=${product}`),
+        api.get(`/average?filial=0103&produto=${product}`)
+      ])
+
+      // Product Info Call
       if (productInfoResponse.data.length === 0) {
         setCodigoPlaceholder('Parece que esse código não existe...')
+      } else {
+        setProductInfo(productInfoResponse.data)
       }
-      setProductInfo(productInfoResponse.data)
 
-      const response = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=01`
-      )
-      if (response.data.length === 0) {
+      // Stocks Calls
+      if (stock01.data.length === 0) {
         setAlmoxarifados([{ SALDO: 0 }])
       } else {
-        setAlmoxarifados(response.data)
+        setAlmoxarifados(stock01.data)
       }
 
-      const response2 = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=99`
-      )
-      if (response2.data.length === 0) {
-        setSupermercados([{ SALDO: 0 }])
-      } else {
-        setSupermercados(response2.data)
-      }
-
-      const response3 = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=04`
-      )
-      if (response3.data.length === 0) {
-        setQuebrados([{ SALDO: 0 }])
-      } else {
-        setQuebrados(response3.data)
-      }
-
-      const response4 = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=03`
-      )
-      if (response4.data.length === 0) {
+      if (stock03.data.length === 0) {
         setPos([{ SALDO: 0 }])
       } else {
-        setPos(response4.data)
+        setPos(stock03.data)
       }
 
-      const response5 = await api.get(
-        `/estoques?filial=0102&produto=${product}`
-      )
-      if (response5.data.length === 0) {
+      if (stock04.data.length === 0) {
+        setQuebrados([{ SALDO: 0 }])
+      } else {
+        setQuebrados(stock04.data)
+      }
+
+      if (stock06.data.length === 0) {
+        setStockWarehouse06([{ SALDO: 0 }])
+      } else {
+        setStockWarehouse06(stock06.data)
+      }
+
+      if (stock99.data.length === 0) {
+        setSupermercados([{ SALDO: 0 }])
+      } else {
+        setSupermercados(stock99.data)
+      }
+
+      if (stockBranchES.data.length === 0) {
         setVix([{ SALDO: 0 }])
       } else {
-        const totalStock = response5.data.reduce((acc, stock) => {
+        const totalStock = stockBranchES.data.reduce((acc, stock) => {
           return stock.SALDO + acc
         }, 0)
         setVix([{ SALDO: totalStock }])
       }
 
-      //formula com o estoque
-      const responsebahia = await api.get(
-        `/estoques?filial=0103&produto=${product}`
-      )
-      if (responsebahia.data.length === 0) {
+      if (stockBranchBA.data.length === 0) {
         setBahia([{ SALDO: 0 }])
       } else {
-        const totalStock = responsebahia.data.reduce((acc, stock) => {
+        const totalStock = stockBranchBA.data.reduce((acc, stock) => {
           return stock.SALDO + acc
         }, 0)
         setBahia([{ SALDO: totalStock }])
       }
 
-      const stockWarehouse06Data = await api.get(
-        `/estoques?filial=0101&produto=${product}&armazem=06`
-      )
-      if (stockWarehouse06Data.data.length === 0) {
-        setStockWarehouse06([{ SALDO: 0 }])
-      } else {
-        setStockWarehouse06(stockWarehouse06Data.data)
-      }
-
-      const response6 = await api.get(
-        `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=${product}`
-      )
-      if (response6.data.length === 0) {
+      // Purchase Orders
+      if (purchaseOrders.data.length === 0) {
         setPcPlaceholder('Parece que não há PCs...')
+      } else {
+        const purchaseOrdersUpdated = purchaseOrders.data.map((item) => {
+          const itemUpdated = {
+            ...item,
+            DATE: toISODate(item.ENTREGA),
+            WEEK:
+              toISODate(item.ENTREGA) < startOfWeek(new Date())
+                ? 'ATR'
+                : getWeek(toISODate(item.ENTREGA)),
+            YEAR:
+              toISODate(item.ENTREGA) < startOfWeek(new Date())
+                ? 'ATR'
+                : getYear(toISODate(item.ENTREGA))
+          }
+          return itemUpdated
+        })
+        setPCs(purchaseOrdersUpdated)
       }
-      const reponseUpdated6 = response6.data.map((item) => {
-        const itemUpdated = {
-          ...item,
-          DATE: toISODate(item.ENTREGA),
-          WEEK:
-            toISODate(item.ENTREGA) < startOfWeek(new Date())
-              ? 'ATR'
-              : getWeek(toISODate(item.ENTREGA)),
-          YEAR:
-            toISODate(item.ENTREGA) < startOfWeek(new Date())
-              ? 'ATR'
-              : getYear(toISODate(item.ENTREGA))
-        }
-        return itemUpdated
-      })
-      setPCs(reponseUpdated6)
 
-      const response7 = await api.get(
-        `/scs?filial=0101&aberto=true&produto=${product}`
-      )
-      if (response7.data.length === 0) {
+      // Purchase Requests
+      if (purchaseRequests.data.length === 0) {
         setScPlaceholder('Parece que não há SCs...')
+      } else {
+        const purchaseRequestsUpdated = purchaseRequests.data.map((item) => {
+          const date = toISODate(item.ENTREGA)
+          const itemUpdated = {
+            ...item,
+            DATE: date,
+            WEEK: date < startOfWeek(new Date()) ? 'ATR' : getWeek(date),
+            YEAR: date < startOfWeek(new Date()) ? 'ATR' : date
+          }
+          return itemUpdated
+        })
+        setSCs(purchaseRequestsUpdated)
       }
-      const reponseUpdated7 = response7.data.map((item) => {
-        const date = toISODate(item.ENTREGA)
-        const itemUpdated = {
-          ...item,
-          DATE: date,
-          WEEK: date < startOfWeek(new Date()) ? 'ATR' : getWeek(date),
-          YEAR: date < startOfWeek(new Date()) ? 'ATR' : date
-        }
-        return itemUpdated
-      })
-      setSCs(reponseUpdated7)
 
-      const opsRecieved = await api.get(
-        `/ops?filial=0101&produto=${product}&fechado=false`,
-        {}
-      )
-      if (opsRecieved.data.length === 0) {
+      // Production Orders
+      if (pos.data.length === 0) {
         setOpPlaceholder('Parece que não há OPs...')
+      } else {
+        setOPs(pos.data)
       }
-      setOPs(opsRecieved.data)
 
-      const response9 = await api.get(`/ou?filial=0101&produto=${product}`, {})
-      if (response9.data.length === 0) {
+      // Used By
+      if (usedBy.data.length === 0) {
         setOuPlaceholder('Parece que não é usado em nenhum lugar...')
+      } else {
+        setOUs(usedBy.data)
       }
-      setOUs(response9.data)
 
-      const response8 = await api.get(`/emp?filial=0101&produto=${product}`, {})
-      if (response8.data.length === 0) {
+      // Commits
+      if (commits.data.length === 0) {
         setEmpPlaceholder('Parece que não há empenhos...')
+      } else {
+        const reponseUpdated8 = commits.data.map((item) => {
+          const date = toISODate(item.ENTREGA)
+          const itemUpdated = {
+            ...item,
+            DATE: date,
+            WEEK: date < startOfWeek(new Date()) ? 'ATR' : getWeek(date),
+            YEAR: date < startOfWeek(new Date()) ? 'ATR' : getYear(date)
+          }
+          return itemUpdated
+        })
+        setEMPs(reponseUpdated8)
       }
-      const reponseUpdated8 = response8.data.map((item) => {
-        const date = toISODate(item.ENTREGA)
-        const itemUpdated = {
-          ...item,
-          DATE: date,
-          WEEK: date < startOfWeek(new Date()) ? 'ATR' : getWeek(date),
-          YEAR: date < startOfWeek(new Date()) ? 'ATR' : getYear(date)
-        }
-        return itemUpdated
-      })
-      setEMPs(reponseUpdated8)
 
-      // start filial 0101
-      const response10 = await api.get(
-        `/average?filial=0101&produto=${product}`
-      )
-
-      if (response10.data.length === 0) {
+      // Last 12 Month Average
+      // Average 0101
+      if (average0101.data.length === 0) {
         setAveragePlaceholder('Parece que não há consumo...')
       } else {
-        const reponseUpdated10 = response10.data.map((item) => {
+        const reponseUpdated10 = average0101.data.map((item) => {
           const itemUpdated = {
             ...item,
             average:
@@ -455,15 +466,10 @@ export default function Pro_Dash() {
         )
 
         setlastThreeMonthAverage(lastThreeMonthAverageReduce)
-
         setAverage(reponseUpdated10[0])
       }
-      // finish filial 0101
-      // start filial 0102
-      const average0102 = await api.get(
-        `/average?filial=0102&produto=${product}`
-      )
 
+      // Average 0102
       if (average0102.data.length === 0) {
         setAverage02Placeholder('Parece que não há consumo...')
       } else {
@@ -512,12 +518,8 @@ export default function Pro_Dash() {
         setlastThreeMonthAverage02(lastThreeMonthAverageReduce)
         setAverage02(averageUpdated0102[0])
       }
-      // start filial 02
-      // start filial 03
-      const average0103 = await api.get(
-        `/average?filial=0103&produto=${product}`
-      )
 
+      // Average 0103
       if (average0103.data.length === 0) {
         setAverage03Placeholder('Parece que não há consumo...')
       } else {
