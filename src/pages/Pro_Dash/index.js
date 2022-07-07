@@ -255,23 +255,23 @@ export default function Pro_Dash() {
       )
 
       const [
-        productInfoResponse,
-        stock01,
-        stock03,
-        stock04,
-        stock06,
-        stock99,
-        stockBranchES,
-        stockBranchBA,
-        purchaseOrders,
-        purchaseRequests,
-        pos,
-        usedBy,
-        commits,
-        average0101,
-        average0102,
-        average0103
-      ] = await Promise.all([
+        { value: productInfoResponse },
+        { value: stock01 },
+        { value: stock03 },
+        { value: stock04 },
+        { value: stock06 },
+        { value: stock99 },
+        { value: stockBranchES },
+        { value: stockBranchBA },
+        { value: purchaseOrders },
+        { value: purchaseRequests },
+        { value: pos },
+        { value: usedBy },
+        { value: commits },
+        { value: average0101 },
+        { value: average0102 },
+        { value: average0103 }
+      ] = await Promise.allSettled([
         api.get(`/register?filial=0101&produto=${product}`),
         api.get(`/estoques?filial=0101&produto=${product}&armazem=01`),
         api.get(`/estoques?filial=0101&produto=${product}&armazem=03`),
@@ -291,6 +291,7 @@ export default function Pro_Dash() {
         api.get(`/average?filial=0102&produto=${product}`),
         api.get(`/average?filial=0103&produto=${product}`)
       ])
+      console.log(productInfoResponse)
 
       // Product Info Call
       if (productInfoResponse.data.length === 0) {
