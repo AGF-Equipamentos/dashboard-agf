@@ -27,6 +27,7 @@ jobs:
       env:
         REACT_APP_SERVER: ${{ secrets.REACT_APP_SERVER }}
         REACT_APP_OPMS: ${{ secrets.REACT_APP_OPMS }}
+        REACT_APP_GA_TRACKING: ${{ secrets.REACT_APP_GA_TRACKING }}
 
     - name: Copy project to AGF
       uses: appleboy/scp-action@master

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, Modal, Table } from 'react-bootstrap'
 import { Container as Cont } from './styles'
 import { getMonth } from 'date-fns'
