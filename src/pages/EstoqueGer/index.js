@@ -147,7 +147,7 @@ export default function EstoquesGer() {
             </ButtonBase>
           </Col>
         </Row>
-        <h1>Estoque de Geradores</h1>
+        <h1>Geradores</h1>
         <Table responsive striped bordered hover>
           <thead>
             <tr>

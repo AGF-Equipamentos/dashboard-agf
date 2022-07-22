@@ -648,7 +648,7 @@ export default function Pro_Dash() {
             </ButtonBase>
           </Col>
         </Row>
-        <h1>Produtos</h1>
+        <h1>Consulta de Produtos</h1>
         <Row>
           <Col xs={8}>
             <InputGroup className="mb-3">
