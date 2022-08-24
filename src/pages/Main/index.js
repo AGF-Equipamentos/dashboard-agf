@@ -73,6 +73,11 @@ export default function Main() {
                 <button type="button">Items Críticos</button>
               </Link>
             </Col>
+            <Col>
+              <Link to="/kardex">
+                <button type="button">Kardex</button>
+              </Link>
+            </Col>
           </Row>
         </Col>
       </Container>

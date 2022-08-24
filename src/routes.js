@@ -12,6 +12,7 @@ import OPsFilial from './pages/OPsFilial'
 import OPsPP from './pages/OPsPP'
 import ProductRegister from './pages/ProductRegister'
 import CriticalItems from './pages/CriticalItems'
+import Kardex from './pages/Kardex'
 
 export default function Routes() {
   return (
@@ -102,6 +103,14 @@ export default function Routes() {
         render={(props) => (
           <Page title="Itens Críticos | Dash">
             <CriticalItems {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/kardex"
+        render={(props) => (
+          <Page title="Kardex | Dash">
+            <Kardex {...props} />
           </Page>
         )}
       />
