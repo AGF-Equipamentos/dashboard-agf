@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Table, Row, Col, Spinner, Container } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
