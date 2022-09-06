@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Button, Col, Container, Row, Spinner, Table } from 'react-bootstrap'
+import { Col, Container, Row, Spinner } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
 import api from '../../services/api'
 import { ButtonBase } from '@material-ui/core'
+import MaqFioTable from '../../components/MaqFioTable'
 
 export default function MaqFio() {
   const [estoques, setEstoques] = useState([])
@@ -42,46 +43,7 @@ export default function MaqFio() {
           </Col>
         </Row>
         <h1>Máquina de Fio</h1>
-        <Table responsive striped bordered hover>
-          <thead>
-            <tr>
-              <th>FILIAL</th>
-              <th>CÓDIGO</th>
-              <th>SALDO</th>
-              <th>ARMAZEM</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {estoques.length > 0 ? (
-              estoques.map((estoque) => (
-                <tr key={estoque.FILIAL.concat('', estoque.PRODUTO)}>
-                  <td>{estoque.FILIAL}</td>
-                  <td>
-                    <Button
-                      variant="outline-info"
-                      size="sm"
-                      onClick={() =>
-                        history.push('/prodash', {
-                          ...history.location.state,
-                          product: estoque.PRODUTO
-                        })
-                      }
-                    >
-                      {estoque.PRODUTO}
-                    </Button>
-                  </td>
-                  <td>{estoque.SALDO}</td>
-                  <td>{estoque.ARMAZEM}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">{saldosPlaceholder}</td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
+        <MaqFioTable />
       </Container>
     </Cont>
   )
