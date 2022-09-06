@@ -32,12 +32,15 @@ export default function EstoquesGer() {
 
   useEffect(() => {
     async function loadEstoques() {
-      const saldos = await api.get(
-        `/estoques?produto=GS125',%20'GS165',%20'GS230',%20'GS260`
-      )
+      const saldos = await api.get(`/estoques`, {
+        params: {
+          produto: ['GS125', 'GS165', 'GS230', 'GS260']
+        }
+      })
       if (saldos.data.length === 0) {
         setSaldosPlaceholder('Parece que não há saldo...')
       } else {
+        console.log(saldos.data)
         setEstoques(saldos.data)
       }
 

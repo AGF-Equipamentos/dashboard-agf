@@ -13,6 +13,7 @@ import OPsPP from './pages/OPsPP'
 import ProductRegister from './pages/ProductRegister'
 import CriticalItems from './pages/CriticalItems'
 import Kardex from './pages/Kardex'
+import MaqFio from './pages/MaqFio'
 
 export default function Routes() {
   return (
@@ -65,12 +66,20 @@ export default function Routes() {
             <ProductRegister {...props} />
           </Page>
         )}
-      />
+      />{' '}
       <Route
         path="/estoqueger"
         render={(props) => (
           <Page title="Geradores | Dash">
             <EstoquesGer {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/maqfio"
+        render={(props) => (
+          <Page title="Maquina de Fio | Dash">
+            <MaqFio {...props} />
           </Page>
         )}
       />

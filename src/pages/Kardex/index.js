@@ -5,7 +5,6 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
 import api from '../../services/api'
-import { red } from '@material-ui/core/colors'
 
 export default function Kardex() {
   const [filialValue, setFilialValue] = useState('')
@@ -20,9 +19,6 @@ export default function Kardex() {
   )
 
   async function handleSubmit() {
-    /* console.log({
-      ...(productValue && { produto: productValue.toUpperCase().trim() })
-     }) */
     const kardexRowsData = await api.get(`/kardex`, {
       params: {
         ...(filialValue && { filial: filialValue.toUpperCase().trim() }),
@@ -75,7 +71,7 @@ export default function Kardex() {
                 <Form.Control
                   name="filial"
                   onKeyPress={keyPressed}
-                  placeholder="Digite uma filial..."
+                  placeholder="0101"
                   onChange={(e) => setFilialValue(e.target.value)}
                 />
               </Form.Group>
@@ -93,8 +89,9 @@ export default function Kardex() {
               <Form.Group>
                 <Form.Label>Data Inicio</Form.Label>
                 <Form.Control
-                  type="date"
-                  placeholder="Digite uma data inicio..."
+                  type="text"
+                  onFocus={(e) => (e.target.type = 'date')}
+                  placeholder="01/01/2000"
                   onChange={(e) => setDataInicioValue(e.target.value)}
                 />
               </Form.Group>
@@ -105,8 +102,9 @@ export default function Kardex() {
               <Form.Group>
                 <Form.Label>Data Fim</Form.Label>
                 <Form.Control
-                  type="date"
-                  placeholder="Digite uma data fim..."
+                  type="text"
+                  onFocus={(e) => (e.target.type = 'date')}
+                  placeholder="01/01/2099"
                   onChange={(e) => setDataFimValue(e.target.value)}
                 />
               </Form.Group>
@@ -115,7 +113,7 @@ export default function Kardex() {
               <Form.Group>
                 <Form.Label>Armazem Inicio</Form.Label>
                 <Form.Control
-                  placeholder="Digite um armazem inicio..."
+                  placeholder="01"
                   onChange={(e) => setArmazemInicioValue(e.target.value)}
                 />
               </Form.Group>
@@ -124,7 +122,7 @@ export default function Kardex() {
               <Form.Group>
                 <Form.Label>Armazem Fim</Form.Label>
                 <Form.Control
-                  placeholder="Digite um armazem inicio..."
+                  placeholder="01"
                   onChange={(e) => setArmazemFimValue(e.target.value)}
                 />
               </Form.Group>
@@ -155,17 +153,17 @@ export default function Kardex() {
                 <th>TES/TM</th>
                 <th>CFOP</th>
                 <th>ARMAZEM</th>
-                <th>SERIE</th>
-                <th>DOCUMENTO</th>
-                <th>CODIGO</th>
-                <th>LOJA</th>
-                <th>NOME</th>
-                <th>NF ORIGEM</th>
+                {/* <th>SERIE</th> */}
+                <th>DOCUMENTO / SERIE</th>
+                {/* <th>CODIGO</th> */}
+                {/* <th>LOJA</th> */}
+                {/* <th>NOME</th> */}
+                {/* <th>NF ORIGEM</th> */}
                 <th>QTDE.</th>
                 <th>CUSTO UNITARIO</th>
                 <th>CUSTO TOTAL</th>
-                <th>SEQUENCIA</th>
-                <th>SEQUEN. CALC.</th>
+                {/* <th>SEQUENCIA</th> */}
+                {/* <th>SEQUEN. CALC.</th> */}
                 <th>USUARIO</th>
                 <th>SALDO QTDE.</th>
                 <th>SALDO CUSTO TOTAL</th>
@@ -187,27 +185,53 @@ export default function Kardex() {
                     <td>{product['TES/TM']}</td>
                     <td>{product['CFOP']}</td>
                     <td>{product['Armazem']}</td>
-                    <td>{product['Serie']}</td>
-                    <td>{product['Documento']}</td>
-                    <td>{product['Codigo']}</td>
-                    <td>{product['Loja']}</td>
-                    <td>{product['Nome']}</td>
-                    <td>{product['NF Origem']}</td>
-                    <td>{product['Qtde.']}</td>
+                    {/*<td>{product['Serie']}</td>*/}
                     <td>
-                      {new Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }).format(new Number(product['Custo Unitario']))}
+                      {product['Documento']} / {product['Serie']}
+                    </td>
+                    {/* <td>{product['Codigo']}</td> */}
+                    {/* <td>{product['Loja']}</td> */}
+                    {/* <td>{product['Nome']}</td> */}
+                    {/* <td>{product['NF Origem']}</td> */}
+                    <td>
+                      {product['Qtde.'] < 0 ? (
+                        <p className="text-danger">{product['Qtde.']}</p>
+                      ) : (
+                        product['Qtde.']
+                      )}
                     </td>
                     <td>
-                      {new Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }).format(new Number(product['Custo Total']))}
+                      {product['Custo Unitario'] < 0 ? (
+                        <p className="text-danger">
+                          {new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(new Number(product['Custo Unitario']) * -1)}
+                        </p>
+                      ) : (
+                        new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(new Number(product['Custo Unitario']))
+                      )}
                     </td>
-                    <td>{product['Sequencia']}</td>
-                    <td>{product['Seq. Calc.']}</td>
+                    <td>
+                      {product['Custo Unitario'] < 0 ? (
+                        <p className="text-danger">
+                          {new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          }).format(new Number(product['Custo Total']) * -1)}
+                        </p>
+                      ) : (
+                        new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(new Number(product['Custo Total']))
+                      )}
+                    </td>
+                    {/* <td>{product['Sequencia']}</td> */}
+                    {/* <td>{product['Seq. Calc.']}</td> */}
                     <td>{product['Usuario']}</td>
                     <td>{product['saldoQtde']}</td>
                     <td>
@@ -220,7 +244,7 @@ export default function Kardex() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="22">{searchPlaceholder}</td>
+                  <td colSpan="15">{searchPlaceholder}</td>
                 </tr>
               )}
             </tbody>
