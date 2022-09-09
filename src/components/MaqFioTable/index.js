@@ -1,9 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Spinner, Table } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import api from '../../services/api'
 
-export default function MaqFioTable({ estoques, saldosPlaceholder }) {
+export default function MaqFioTable({ products }) {
   const history = useHistory()
+  const [estoques, setEstoques] = useState([])
+  const [saldosPlaceholder, setSaldosPlaceholder] = useState(
+    <Spinner animation="border" size="sm" variant="warning" />
+  )
+
+  useEffect(() => {
+    async function loadEstoques() {
+      const saldos = await api.get(`/estoques`, {
+        params: {
+          produto: products
+        }
+      })
+      if (saldos.data.lenght === 0) {
+        setSaldosPlaceholder('Parece que não há saldo...')
+      } else {
+        setEstoques(saldos.data)
+      }
+    }
+    loadEstoques()
+  }, [])
 
   return (
     <Table responsive striped bordered hover>

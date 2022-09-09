@@ -1,36 +1,14 @@
-import { useEffect, useState } from 'react'
-import { Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
-import api from '../../services/api'
 import { ButtonBase } from '@material-ui/core'
 import MaqFioTable from '../../components/MaqFioTable'
+import MaqFioTableMotor from '../../components/MaqFioTableMotor'
 
 export default function MaqFio() {
-  const [estoques, setEstoques] = useState([])
-  const [saldosPlaceholder, setSaldosPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />
-  )
   const history = useHistory()
-
-  useEffect(() => {
-    async function loadEstoques() {
-      const saldos = await api.get(`/estoques`, {
-        params: {
-          produto: ['MF25P2P', 'MF40P2', 'MF75P2', 'VB45E']
-        }
-      })
-      if (saldos.data.lenght === 0) {
-        setSaldosPlaceholder('Parece que não há saldo...')
-      } else {
-        console.log(saldos.data)
-        setEstoques(saldos.data)
-      }
-    }
-    loadEstoques()
-  }, [])
 
   return (
     <Cont>
@@ -43,7 +21,14 @@ export default function MaqFio() {
           </Col>
         </Row>
         <h1>Máquina de Fio</h1>
-        <MaqFioTable />
+        <MaqFioTable products={['MF25P2P', 'MF40P2', 'MF75P2']} />
+        <h4>ESTOQUE MOTORES</h4>
+        <MaqFioTableMotor
+          products={[
+            { product: 'MF25P2P', partNumber: '6800000334' },
+            { product: 'MF25P2P', partNumber: 'VIXMOT0004' }
+          ]}
+        />
       </Container>
     </Cont>
   )

@@ -172,7 +172,10 @@ export default function Kardex() {
             <tbody>
               {kardexRows.length !== 0 ? (
                 kardexRows.map((product) => (
-                  <tr key={product.PRODUTO}>
+                  <tr
+                    style={product['Qtde.'] < 0 ? { color: 'red' } : {}}
+                    key={product.PRODUTO}
+                  >
                     <td>{product['Filial']}</td>
                     <td>
                       {new Intl.DateTimeFormat('pt-BR').format(
@@ -187,7 +190,8 @@ export default function Kardex() {
                     <td>{product['Armazem']}</td>
                     {/*<td>{product['Serie']}</td>*/}
                     <td>
-                      {product['Documento']} / {product['Serie']}
+                      {product['Documento']}
+                      {product['Serie'] && `/ ${product['Serie']}`}
                     </td>
                     {/* <td>{product['Codigo']}</td> */}
                     {/* <td>{product['Loja']}</td> */}
