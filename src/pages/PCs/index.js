@@ -100,6 +100,17 @@ export default function PCs() {
     // eslint-disable-next-line
   }, [history.location.state]);
 
+  useEffect(() => {
+    const pcParam = new URLSearchParams(history.location.search).get('pc')
+    if (pcParam) {
+      setFilter('Número')
+      setSearchValue(pcParam)
+      handleSubmit(pcParam, 'Número')
+    }
+
+    // eslint-disable-next-line
+  }, [history.location.search]);
+
   const handlePC = useCallback(
     async (pcInput) => {
       handleSubmit(pcInput, 'Número')
