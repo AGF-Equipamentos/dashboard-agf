@@ -56,7 +56,7 @@ export default function EstoquesGer() {
         `/scs?filial=0101&aberto=true&produto=9900001327',%20'9900000777',%20'9900000778',%20'9900001100',%20'9900001718',%20'9900000786',%20'9900000821',%20'9900001101`
       )
       if (scs.data.length === 0) {
-        setScPlaceholder('Parece que não há PCs...')
+        setScPlaceholder('Parece que não há SCs...')
       } else {
         setSCs(scs.data)
       }
