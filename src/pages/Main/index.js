@@ -35,6 +35,11 @@ export default function Main() {
           </Row>
           <Row className="align-items-center">
             <Col>
+              <Link to="/politriz">
+                <button type="button">Politriz</button>
+              </Link>
+            </Col>
+            <Col>
               <Link to="/pcs">
                 <button type="button">Pedidos de Compras</button>
               </Link>
@@ -44,13 +49,13 @@ export default function Main() {
                 <button type="button">Solicitações de Compras</button>
               </Link>
             </Col>
+          </Row>
+          <Row className="align-items-center">
             <Col>
               <Link to="/prodash">
                 <button type="button">Consulta de Produto</button>
               </Link>
             </Col>
-          </Row>
-          <Row className="align-items-center">
             <Col>
               <Link to="/productregister">
                 <button type="button">Cadastro de Produtos</button>
@@ -61,13 +66,13 @@ export default function Main() {
                 <button type="button">OPs para o Pós Vendas</button>
               </Link>
             </Col>
+          </Row>
+          <Row className="align-items-center">
             <Col>
               <Link to="/opsfilial">
                 <button type="button">OPs para a Filial</button>
               </Link>
             </Col>
-          </Row>
-          <Row className="align-items-center">
             <Col>
               <Link to="/opspp">
                 <button type="button">OPs por Ponto de Pedido</button>
@@ -78,6 +83,8 @@ export default function Main() {
                 <button type="button">Items Críticos</button>
               </Link>
             </Col>
+          </Row>
+          <Row className="align-items-center">
             <Col>
               <Link to="/kardex">
                 <button type="button">Kardex</button>

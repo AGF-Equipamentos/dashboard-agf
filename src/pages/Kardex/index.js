@@ -39,8 +39,6 @@ export default function Kardex() {
     setKardexRows(kardexRowsData.data)
   }
 
-  console.log(handleSubmit)
-
   // submit on press Enter
   function keyPressed(event) {
     if (event.key === 'Enter') {

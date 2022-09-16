@@ -3,7 +3,7 @@ import { Button, Spinner, Table } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import api from '../../services/api'
 
-export default function MaqFioTableMotor({ products }) {
+export default function PartnumberStockTable({ products }) {
   const history = useHistory()
   const [estoques, setEstoques] = useState([])
   const [saldosPlaceholder, setSaldosPlaceholder] = useState(
@@ -22,7 +22,7 @@ export default function MaqFioTableMotor({ products }) {
         }
       })
 
-      if (balances.lenght === 0) {
+      if (balances.length === 0) {
         setSaldosPlaceholder('Parece que não há saldo...')
       } else {
         const stocks = products.map((product) => {
@@ -41,7 +41,7 @@ export default function MaqFioTableMotor({ products }) {
   }, [])
 
   return (
-    <Table>
+    <Table responsive striped bordered hover>
       <thead>
         <tr>
           <th>EQUIPAMENTO</th>
@@ -49,24 +49,34 @@ export default function MaqFioTableMotor({ products }) {
           <th>SALDO</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr>
-          <td>{}</td>
-          <td>
-            <Button
-              variant="outline-info"
-              size="sm"
-              onClick={() =>
-                history.push('/prodash', {
-                  ...history.location.state,
-                  product: products.PRODUTO
-                })
-              }
-            >
-              {products.partNumbers}
-            </Button>
-          </td>
-        </tr>
+        {estoques.length > 0 ? (
+          estoques.map((estoque) => (
+            <tr key={estoque.product.concat('', estoque.partNumber)}>
+              <td>{estoque.product}</td>
+              <td>
+                <Button
+                  variant="outline-info"
+                  size="sm"
+                  onClick={() =>
+                    history.push('/prodash', {
+                      ...history.location.state,
+                      product: estoque.partNumber
+                    })
+                  }
+                >
+                  {estoque.partNumber}
+                </Button>
+              </td>
+              <td>{estoque.balance}</td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="4">{saldosPlaceholder}</td>
+          </tr>
+        )}
       </tbody>
     </Table>
   )

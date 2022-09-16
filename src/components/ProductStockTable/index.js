@@ -3,7 +3,7 @@ import { Button, Spinner, Table } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import api from '../../services/api'
 
-export default function MaqFioTable({ products }) {
+export default function ProductStockTable({ products }) {
   const history = useHistory()
   const [estoques, setEstoques] = useState([])
   const [saldosPlaceholder, setSaldosPlaceholder] = useState(
@@ -17,7 +17,7 @@ export default function MaqFioTable({ products }) {
           produto: products
         }
       })
-      if (saldos.data.lenght === 0) {
+      if (saldos.data.length === 0) {
         setSaldosPlaceholder('Parece que não há saldo...')
       } else {
         setEstoques(saldos.data)

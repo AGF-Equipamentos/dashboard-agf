@@ -291,7 +291,6 @@ export default function Pro_Dash() {
         api.get(`/average?filial=0102&produto=${product}`),
         api.get(`/average?filial=0103&produto=${product}`)
       ])
-      console.log(productInfoResponse)
 
       // Product Info Call
       if (productInfoResponse.data.length === 0) {

@@ -20,7 +20,6 @@ const DownloadExcelCriticalItemsModal = ({
   }
 
   const downloadExcelFile = useCallback(() => {
-    console.log(searchValue, filter)
     const search = searchValue.toUpperCase().trim()
 
     if (search === '') {

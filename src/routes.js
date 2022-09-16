@@ -14,6 +14,7 @@ import ProductRegister from './pages/ProductRegister'
 import CriticalItems from './pages/CriticalItems'
 import Kardex from './pages/Kardex'
 import MaqFio from './pages/MaqFio'
+import Politriz from './pages/Politriz'
 
 export default function Routes() {
   return (
@@ -80,6 +81,14 @@ export default function Routes() {
         render={(props) => (
           <Page title="Maquina de Fio | Dash">
             <MaqFio {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/politriz"
+        render={(props) => (
+          <Page title="Politriz | Dash">
+            <Politriz {...props} />
           </Page>
         )}
       />

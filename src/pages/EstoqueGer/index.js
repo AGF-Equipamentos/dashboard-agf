@@ -40,7 +40,6 @@ export default function EstoquesGer() {
       if (saldos.data.length === 0) {
         setSaldosPlaceholder('Parece que não há saldo...')
       } else {
-        console.log(saldos.data)
         setEstoques(saldos.data)
       }
 
