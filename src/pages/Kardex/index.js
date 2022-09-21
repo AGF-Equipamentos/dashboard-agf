@@ -23,30 +23,38 @@ export default function Kardex() {
   const [armazemFimValue, setArmazemFimValue] = useState('')
   const [kardexRows, setKardexRows] = useState([])
   const [searchPlaceholder, setSearchPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />
+    'Pesquise por um código...'
   )
 
   async function handleSubmit() {
-    const kardexRowsData = await api.get(`/kardex`, {
-      params: {
-        ...(filialValue && { filial: filialValue.toUpperCase().trim() }),
-        ...(productValue && { produto: productValue.toUpperCase().trim() }),
-        ...(dataIniciolValue && {
-          data_inicio: dataIniciolValue.toUpperCase().trim()
-        }),
-        ...(dataFimValue && { data_fim: dataFimValue.toUpperCase().trim() }),
-        ...(armazemInicioValue && {
-          armazem_inicio: armazemInicioValue.toUpperCase().trim()
-        }),
-        ...(armazemFimValue && {
-          armazem_fim: armazemFimValue.toUpperCase().trim()
-        })
+    setSearchPlaceholder(
+      <Spinner animation="border" size="sm" variant="warning" />
+    )
+    try {
+      const kardexRowsData = await api.get(`/kardex`, {
+        params: {
+          ...(filialValue && { filial: filialValue.toUpperCase().trim() }),
+          ...(productValue && { produto: productValue.toUpperCase().trim() }),
+          ...(dataIniciolValue && {
+            data_inicio: dataIniciolValue.toUpperCase().trim()
+          }),
+          ...(dataFimValue && { data_fim: dataFimValue.toUpperCase().trim() }),
+          ...(armazemInicioValue && {
+            armazem_inicio: armazemInicioValue.toUpperCase().trim()
+          }),
+          ...(armazemFimValue && {
+            armazem_fim: armazemFimValue.toUpperCase().trim()
+          })
+        }
+      })
+      if (kardexRowsData.data.length === 0) {
+        setSearchPlaceholder('Parece que não há um movimentações...')
+      } else {
+        setKardexRows(kardexRowsData.data)
       }
-    })
-    if (kardexRowsData.data.length === 0) {
-      setSearchPlaceholder('Parece que não há movimentações...')
-    } else {
-      setKardexRows(kardexRowsData.data)
+    } catch (err) {
+      console.log(err)
+      setSearchPlaceholder('Houve um erro no servidor, tente novamente...')
     }
   }
 
