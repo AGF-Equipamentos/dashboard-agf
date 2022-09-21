@@ -108,7 +108,7 @@ export default function Kardex() {
                 <Form.Control
                   type="text"
                   onFocus={(e) => (e.target.type = 'date')}
-                  placeholder="01/01/2000"
+                  placeholder="01/01/2022"
                   onChange={(e) => setDataInicioValue(e.target.value)}
                 />
               </Form.Group>
