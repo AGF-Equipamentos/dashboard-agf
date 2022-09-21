@@ -42,7 +42,7 @@ export default function OrdersTable({ type, products }) {
       }
     }
     loadEstoques()
-  }, [])
+  }, [products, type])
 
   return (
     <Table responsive striped bordered hover>

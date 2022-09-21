@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { Table, Button, Row, Col, Container, Form } from 'react-bootstrap'
+import {
+  Table,
+  Button,
+  Row,
+  Col,
+  Container,
+  Form,
+  Spinner
+} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
@@ -15,7 +23,7 @@ export default function Kardex() {
   const [armazemFimValue, setArmazemFimValue] = useState('')
   const [kardexRows, setKardexRows] = useState([])
   const [searchPlaceholder, setSearchPlaceholder] = useState(
-    'Pesquise por um produto...'
+    <Spinner animation="border" size="sm" variant="warning" />
   )
 
   async function handleSubmit() {
@@ -35,8 +43,11 @@ export default function Kardex() {
         })
       }
     })
-
-    setKardexRows(kardexRowsData.data)
+    if (kardexRowsData.data.length === 0) {
+      setSearchPlaceholder('Parece que não há um produto...')
+    } else {
+      setKardexRows(kardexRowsData.data)
+    }
   }
 
   // submit on press Enter

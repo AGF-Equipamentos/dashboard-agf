@@ -24,7 +24,7 @@ export default function ProductStockTable({ products }) {
       }
     }
     loadEstoques()
-  }, [])
+  }, [products])
 
   return (
     <Table responsive striped bordered hover>

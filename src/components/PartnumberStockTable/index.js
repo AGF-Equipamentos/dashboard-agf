@@ -38,7 +38,7 @@ export default function PartnumberStockTable({ products }) {
       }
     }
     loadEstoques()
-  }, [])
+  }, [products])
 
   return (
     <Table responsive striped bordered hover>
