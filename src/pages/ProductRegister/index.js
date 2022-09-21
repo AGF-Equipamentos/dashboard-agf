@@ -31,7 +31,7 @@ export default function ProductRegister() {
   async function handleSubmit(searchParam = '', filterParam = '') {
     const search = searchParam || searchValue.toUpperCase().trim()
     const filterHandler = filterParam || filter
-    console.log(filterHandler)
+
     let response
     setProducts([])
     setSearchPlaceholder(

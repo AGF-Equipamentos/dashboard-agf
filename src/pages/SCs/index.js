@@ -143,6 +143,7 @@ export default function SCs() {
               <th>OBS</th>
               <th>PC</th>
               <th>ENTREGA</th>
+              <th>OP</th>
             </tr>
           </thead>
           <tbody>
@@ -198,11 +199,12 @@ export default function SCs() {
                     )}
                   </td>
                   <td>{scs.PC_ENTREGA}</td>
+                  <td>{scs.OP}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="12">{scsPlaceholder}</td>
+                <td colSpan="13">{scsPlaceholder}</td>
               </tr>
             )}
           </tbody>

@@ -6,12 +6,15 @@ import EstoquesMaq from './pages/EstoquesMaq'
 import PCs from './pages/PCs'
 import SCs from './pages/SCs'
 import Pro_Dash from './pages/Pro_Dash'
-import EstoquesGer from './pages/EstoqueGer'
 import OPsPosVendas from './pages/OPsPosVendas'
 import OPsFilial from './pages/OPsFilial'
 import OPsPP from './pages/OPsPP'
 import ProductRegister from './pages/ProductRegister'
 import CriticalItems from './pages/CriticalItems'
+import Kardex from './pages/Kardex'
+import MaqFio from './pages/MaqFio'
+import Politriz from './pages/Politriz'
+import EstoqueGerador from './pages/EstoqueGerador'
 
 export default function Routes() {
   return (
@@ -64,12 +67,28 @@ export default function Routes() {
             <ProductRegister {...props} />
           </Page>
         )}
-      />
+      />{' '}
       <Route
-        path="/estoqueger"
+        path="/estoquegerador"
         render={(props) => (
           <Page title="Geradores | Dash">
-            <EstoquesGer {...props} />
+            <EstoqueGerador {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/maqfio"
+        render={(props) => (
+          <Page title="Maquina de Fio | Dash">
+            <MaqFio {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/politriz"
+        render={(props) => (
+          <Page title="Politriz | Dash">
+            <Politriz {...props} />
           </Page>
         )}
       />
@@ -102,6 +121,14 @@ export default function Routes() {
         render={(props) => (
           <Page title="Itens Críticos | Dash">
             <CriticalItems {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/kardex"
+        render={(props) => (
+          <Page title="Kardex | Dash">
+            <Kardex {...props} />
           </Page>
         )}
       />

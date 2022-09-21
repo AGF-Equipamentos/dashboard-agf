@@ -246,6 +246,7 @@ export default function PCs() {
               <th>ENTREGA</th>
               <th>FORN</th>
               <th>DESC_FORN</th>
+              <th>OP</th>
             </tr>
           </thead>
           <tbody>
@@ -320,11 +321,12 @@ export default function PCs() {
                   <td>{pcs.ENTREGA}</td>
                   <td>{pcs.FORN}</td>
                   <td>{pcs.DESC_FORN}</td>
+                  <td>{pcs.OP}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="16">{pcsPlaceholder}</td>
+                <td colSpan="17">{pcsPlaceholder}</td>
               </tr>
             )}
           </tbody>
