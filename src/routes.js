@@ -6,7 +6,6 @@ import EstoquesMaq from './pages/EstoquesMaq'
 import PCs from './pages/PCs'
 import SCs from './pages/SCs'
 import Pro_Dash from './pages/Pro_Dash'
-import EstoquesGer from './pages/EstoqueGer'
 import OPsPosVendas from './pages/OPsPosVendas'
 import OPsFilial from './pages/OPsFilial'
 import OPsPP from './pages/OPsPP'
@@ -15,6 +14,7 @@ import CriticalItems from './pages/CriticalItems'
 import Kardex from './pages/Kardex'
 import MaqFio from './pages/MaqFio'
 import Politriz from './pages/Politriz'
+import EstoqueGerador from './pages/EstoqueGerador'
 
 export default function Routes() {
   return (
@@ -69,10 +69,10 @@ export default function Routes() {
         )}
       />{' '}
       <Route
-        path="/estoqueger"
+        path="/estoquegerador"
         render={(props) => (
           <Page title="Geradores | Dash">
-            <EstoquesGer {...props} />
+            <EstoqueGerador {...props} />
           </Page>
         )}
       />

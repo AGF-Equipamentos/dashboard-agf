@@ -16,9 +16,25 @@ export default function EstoquesMaq() {
 
   useEffect(() => {
     async function loadEstoques() {
-      const response = await api.get(
-        `/estoques?filial=0101,0102&grupo=0094','0500','0501','0502','0503','0510','0520','0530','0540','0550','0560','0570`
-      )
+      const response = await api.get(`/estoques`, {
+        params: {
+          filial: ['0101', '0102', '0103'],
+          grupo: [
+            '0094',
+            '0500',
+            '0501',
+            '0502',
+            '0503',
+            '0510',
+            '0520',
+            '0530',
+            '0540',
+            '0550',
+            '0560',
+            '0570'
+          ]
+        }
+      })
       if (response.data.length === 0) {
         setEstoquesPlaceholder('Parece que não há nada em estoque...')
       }

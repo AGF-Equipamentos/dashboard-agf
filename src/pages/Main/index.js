@@ -23,7 +23,7 @@ export default function Main() {
               </Link>
             </Col>
             <Col>
-              <Link to="/estoqueger">
+              <Link to="/estoquegerador">
                 <button type="button">Geradores</button>
               </Link>
             </Col>
