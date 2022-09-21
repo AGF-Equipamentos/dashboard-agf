@@ -104,7 +104,7 @@ export default function Politriz() {
             { product: 'MTL12', partNumber: '9900001908' }
           ]}
         />
-        <h5>Pedidos de Compra</h5>
+        <h5>Solicitação de Compra</h5>
         <OrdersTable
           type="purchase_requests"
           products={[

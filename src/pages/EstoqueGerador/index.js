@@ -55,7 +55,7 @@ export default function EstoqueGerador() {
             { product: 'GS260', partNumber: '9900001101' }
           ]}
         />
-        <h5>Pedidos de Compra</h5>
+        <h5>Solicitação de Compra</h5>
         <OrdersTable
           type="purchase_requests"
           products={[

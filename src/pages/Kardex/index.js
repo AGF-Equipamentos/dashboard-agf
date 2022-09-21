@@ -44,7 +44,7 @@ export default function Kardex() {
       }
     })
     if (kardexRowsData.data.length === 0) {
-      setSearchPlaceholder('Parece que não há um produto...')
+      setSearchPlaceholder('Parece que não há movimentações...')
     } else {
       setKardexRows(kardexRowsData.data)
     }
