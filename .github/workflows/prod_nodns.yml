@@ -1,4 +1,4 @@
-name: CI
+name: Production no DNS
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -25,8 +25,8 @@ jobs:
     - name: Run build
       run: yarn build
       env:
-        REACT_APP_SERVER: ${{ secrets.REACT_APP_SERVER }}
-        REACT_APP_OPMS: ${{ secrets.REACT_APP_OPMS }}
+        REACT_APP_SERVER: ${{ secrets.REACT_APP_SERVER_NODNS }}
+        REACT_APP_OPMS: ${{ secrets.REACT_APP_OPMS_NODNS }}
         REACT_APP_GA_TRACKING: ${{ secrets.REACT_APP_GA_TRACKING }}
 
     - name: Copy project to AGF
@@ -37,7 +37,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         password: ${{ secrets.SSH_PASS }}
         source: ".,!node_modules"
-        target: "~/app/dashboard-agf"
+        target: "~/app/agf-dash-nodns"
 
     - name: Run production scripts
       uses: appleboy/ssh-action@master
@@ -47,5 +47,5 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         password: ${{ secrets.SSH_PASS }}
         script: |
-          cd ~/app/dashboard-agf
+          cd ~/app/agf-dash
           pm2 restart agf-dash
