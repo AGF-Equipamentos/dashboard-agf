@@ -11,7 +11,8 @@ import {
   Container,
   Overlay,
   Tooltip,
-  Alert
+  Alert,
+  Form
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -51,6 +52,7 @@ export default function Pro_Dash() {
   const [Average, setAverage] = useState([])
   const [Average02, setAverage02] = useState([])
   const [Average03, setAverage03] = useState([])
+  const [useStore99OnWeekPlanning, setUseStore99OnWeekPlanning] = useState(true)
 
   const [codigoPlaceholder, setCodigoPlaceholder] = useState(
     'Pesquise por um código...'
@@ -1061,7 +1063,13 @@ export default function Pro_Dash() {
         <Row>
           <Col>
             <h5>Planejamento Semanal</h5>
-
+            <Form.Check
+              type="switch"
+              id="custom-switch"
+              label="Considera armazém 99?"
+              defaultChecked={useStore99OnWeekPlanning}
+              onChange={(e) => setUseStore99OnWeekPlanning(e.target.checked)}
+            />
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
@@ -1209,6 +1217,8 @@ export default function Pro_Dash() {
                             scWK -
                             empWK +
                             almoxarifados[0].SALDO +
+                            (useStore99OnWeekPlanning &&
+                              supermercados[0].SALDO) +
                             stockWarehouse06[0].SALDO <
                           0
                         ) {
@@ -1224,6 +1234,8 @@ export default function Pro_Dash() {
                                   scWK -
                                   empWK +
                                   almoxarifados[0].SALDO +
+                                  (useStore99OnWeekPlanning &&
+                                    supermercados[0].SALDO) +
                                   stockWarehouse06[0].SALDO +
                                   Number.EPSILON) *
                                   100
@@ -1237,6 +1249,8 @@ export default function Pro_Dash() {
                             scWK -
                             empWK +
                             almoxarifados[0].SALDO +
+                            (useStore99OnWeekPlanning &&
+                              supermercados[0].SALDO) +
                             stockWarehouse06[0].SALDO ===
                           0
                         ) {
@@ -1252,6 +1266,8 @@ export default function Pro_Dash() {
                                   scWK -
                                   empWK +
                                   almoxarifados[0].SALDO +
+                                  (useStore99OnWeekPlanning &&
+                                    supermercados[0].SALDO) +
                                   stockWarehouse06[0].SALDO +
                                   Number.EPSILON) *
                                   100
@@ -1273,6 +1289,8 @@ export default function Pro_Dash() {
                                 scWK -
                                 empWK +
                                 almoxarifados[0].SALDO +
+                                (useStore99OnWeekPlanning &&
+                                  supermercados[0].SALDO) +
                                 stockWarehouse06[0].SALDO +
                                 Number.EPSILON) *
                                 100
