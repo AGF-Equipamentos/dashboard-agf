@@ -175,7 +175,9 @@ export default function Pro_Dash() {
       (almoxarifados[0] !== undefined ? almoxarifados[0].SALDO : 0) +
       sumPCs +
       sumOPs +
-      (useStore99OnWeekPlanning && supermercados[0].SALDO) +
+      (useStore99OnWeekPlanning && almoxarifados[0] !== undefined
+        ? supermercados[0].SALDO
+        : 0) +
       sumSCs -
       sumEmp
     setSaldoPrev(Number(parseFloat(saldo).toFixed(2)))
