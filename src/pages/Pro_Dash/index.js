@@ -178,6 +178,7 @@ export default function Pro_Dash() {
       (supermercados[0] !== undefined
         ? useStore99OnWeekPlanning && supermercados[0].SALDO
         : 0) +
+      (stockWarehouse06[0] !== undefined ? stockWarehouse06[0].SALDO : 0) +
       sumSCs -
       sumEmp
     setSaldoPrev(Number(parseFloat(saldo).toFixed(2)))
@@ -192,7 +193,8 @@ export default function Pro_Dash() {
     OPs,
     sumOPs,
     useStore99OnWeekPlanning,
-    supermercados
+    supermercados,
+    stockWarehouse06
   ])
 
   // Colocar OPs, Onde Usado e opção matriz/filial
