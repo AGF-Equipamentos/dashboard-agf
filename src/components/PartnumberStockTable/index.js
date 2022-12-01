@@ -22,6 +22,20 @@ export default function PartnumberStockTable({ products }) {
         }
       })
 
+      const stocksBalance = balances.reduce((acc, stock) => {
+        if (!acc[stock.PRODUTO]) {
+          acc[stock.PRODUTO] = {
+            balanceStock: stock.SALDO
+          }
+          return acc
+        }
+
+        acc[stock.PRODUTO].balanceStock =
+          acc[stock.PRODUTO].balanceStock + stock.SALDO
+        return acc
+      }, {})
+      console.log(stocksBalance)
+
       const { data: pcs } = await api.get(`/pcs`, {
         params: {
           filial: '0101',
@@ -94,10 +108,6 @@ export default function PartnumberStockTable({ products }) {
         setSaldosPlaceholder('Parece que não há saldo...')
       } else {
         const stocks = products.map((product) => {
-          const saldoFinded = balances.find(
-            (balanceItem) => balanceItem['PRODUTO'] === product.partNumber
-          )
-
           const registerFinded = registers.find(
             (registerItem) => registerItem['CODIGO'] === product.partNumber
           )
@@ -105,7 +115,7 @@ export default function PartnumberStockTable({ products }) {
           return {
             ...product,
             description: registerFinded?.['DESCRICAO'] ?? '',
-            stockBalance: saldoFinded?.['SALDO'] ?? 0,
+            stockBalance: stocksBalance[product.partNumber]?.balanceStock ?? 0,
             pcsBalance: pcsBalance[product.partNumber]?.balancePC ?? 0,
             scsBalance: scsBalance[product.partNumber]?.balanceSC ?? 0,
             empsBalance: empsBalance[product.partNumber]?.balanceEMP ?? 0
