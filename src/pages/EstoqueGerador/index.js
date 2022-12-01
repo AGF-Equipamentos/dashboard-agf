@@ -41,7 +41,7 @@ export default function EstoqueGerador() {
             { product: 'GS260', partNumber: '9900001101' }
           ]}
         />
-        <h5>Pedidos de Compra</h5>
+        {/* <h5>Pedidos de Compra</h5>
         <OrdersTable
           type="purchases"
           products={[
@@ -68,7 +68,7 @@ export default function EstoqueGerador() {
             { product: 'GS230', partNumber: '9900000821' },
             { product: 'GS260', partNumber: '9900001101' }
           ]}
-        />
+        /> */}
       </Container>
     </Cont>
   )
