@@ -18,7 +18,7 @@ export default function PartnumberStockTable({ products }) {
         params: {
           produto: partNumbers,
           filial: '0101',
-          armazem: '01'
+          armazem: '01,99'
         }
       })
 
