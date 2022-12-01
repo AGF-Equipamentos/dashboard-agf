@@ -6,7 +6,7 @@ import { Container as Cont } from './styles'
 import { ButtonBase } from '@material-ui/core'
 import ProductStockTable from '../../components/ProductStockTable'
 import PartnumberStockTable from '../../components/PartnumberStockTable'
-import OrdersTable from '../../components/OrdersTable'
+// import OrdersTable from '../../components/OrdersTable'
 
 export default function Politriz() {
   const history = useHistory()
