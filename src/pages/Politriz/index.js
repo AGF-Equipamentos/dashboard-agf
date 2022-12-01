@@ -6,7 +6,7 @@ import { Container as Cont } from './styles'
 import { ButtonBase } from '@material-ui/core'
 import ProductStockTable from '../../components/ProductStockTable'
 import PartnumberStockTable from '../../components/PartnumberStockTable'
-import OrdersTable from '../../components/OrdersTable'
+// import OrdersTable from '../../components/OrdersTable'
 
 export default function Politriz() {
   const history = useHistory()
@@ -68,7 +68,7 @@ export default function Politriz() {
             { product: 'MTL12', partNumber: '9900001908' }
           ]}
         />
-        <h5>Pedidos de Compra</h5>
+        {/* <h5>Pedidos de Compra</h5>
         <OrdersTable
           type="purchases"
           products={[
@@ -139,7 +139,7 @@ export default function Politriz() {
             { product: 'MTL12', partNumber: '9900001903' },
             { product: 'MTL12', partNumber: '9900001908' }
           ]}
-        />
+        /> */}
       </Container>
     </Cont>
   )

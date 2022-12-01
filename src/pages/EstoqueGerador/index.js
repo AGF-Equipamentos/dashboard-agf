@@ -6,7 +6,7 @@ import { Container as Cont } from './styles'
 import { ButtonBase } from '@material-ui/core'
 import ProductStockTable from '../../components/ProductStockTable'
 import PartnumberStockTable from '../../components/PartnumberStockTable'
-import OrdersTable from '../../components/OrdersTable'
+// import OrdersTable from '../../components/OrdersTable'
 
 export default function EstoqueGerador() {
   const history = useHistory()
@@ -41,7 +41,7 @@ export default function EstoqueGerador() {
             { product: 'GS260', partNumber: '9900001101' }
           ]}
         />
-        <h5>Pedidos de Compra</h5>
+        {/* <h5>Pedidos de Compra</h5>
         <OrdersTable
           type="purchases"
           products={[
@@ -68,7 +68,7 @@ export default function EstoqueGerador() {
             { product: 'GS230', partNumber: '9900000821' },
             { product: 'GS260', partNumber: '9900001101' }
           ]}
-        />
+        /> */}
       </Container>
     </Cont>
   )
