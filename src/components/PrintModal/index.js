@@ -77,9 +77,10 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
                 checkboxSelection
                 disableSelectionOnClick
                 onSelectionModelChange={(newSelection) => {
-                  setSelectionModel(newSelection.selectionModel)
+                  console.log(rows)
+                  setSelectionModel(newSelection)
                   const newSelectionData = rows.filter((row) =>
-                    newSelection.selectionModel.includes(row.id)
+                    newSelection.includes(row.id)
                   )
                   setDataSelectionModel(newSelectionData)
                 }}
