@@ -42,13 +42,11 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
   ]
 
   const handleEditCellChangeCommitted = useCallback(
-    ({ id, field, props }) => {
+    ({ id, field, value }) => {
       if (field === 'SALDO') {
-        const data = props
-        const SALDO = data.value
         const updatedRows = rows.map((row) => {
           if (row.id === id) {
-            return { ...row, SALDO: Number(SALDO) }
+            return { ...row, SALDO: Number(value) }
           }
           return row
         })
@@ -77,7 +75,6 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
                 checkboxSelection
                 disableSelectionOnClick
                 onSelectionModelChange={(newSelection) => {
-                  console.log(rows)
                   setSelectionModel(newSelection)
                   const newSelectionData = rows.filter((row) =>
                     newSelection.includes(row.id)
@@ -85,7 +82,9 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
                   setDataSelectionModel(newSelectionData)
                 }}
                 selectionModel={selectionModel}
-                onEditCellChangeCommitted={handleEditCellChangeCommitted}
+                onCellEditCommit={(props) =>
+                  handleEditCellChangeCommitted(props)
+                }
               />
             </div>
           </div>
