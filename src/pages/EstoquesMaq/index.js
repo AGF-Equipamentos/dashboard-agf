@@ -60,6 +60,7 @@ export default function EstoquesMaq() {
             <tr>
               <th>FILIAL</th>
               <th>CÓDIGO</th>
+              <th>DESCRIÇÃO</th>
               <th>SALDO</th>
               <th>ARMAZEM</th>
             </tr>
@@ -71,13 +72,14 @@ export default function EstoquesMaq() {
                 <tr key={estoque.FILIAL.concat('', estoque.PRODUTO)}>
                   <td>{estoque.FILIAL}</td>
                   <td>{estoque.PRODUTO}</td>
+                  <td>{estoque.DESCRICAO}</td>
                   <td>{estoque.SALDO}</td>
                   <td>{estoque.ARMAZEM}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4">{estoquesPlaceholder}</td>
+                <td colSpan="5">{estoquesPlaceholder}</td>
               </tr>
             )}
           </tbody>
