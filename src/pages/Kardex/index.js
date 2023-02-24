@@ -172,7 +172,7 @@ export default function Kardex() {
                 <th>ARMAZEM</th>
                 {/* <th>SERIE</th> */}
                 <th>DOCUMENTO / SERIE</th>
-                {/* <th>CODIGO</th> */}
+                <th>IDENT</th>
                 {/* <th>LOJA</th> */}
                 {/* <th>NOME</th> */}
                 {/* <th>NF ORIGEM</th> */}
@@ -210,7 +210,7 @@ export default function Kardex() {
                       {product['Documento']}
                       {product['Serie'] && `/ ${product['Serie']}`}
                     </td>
-                    {/* <td>{product['Codigo']}</td> */}
+                    <td>{product['Ident']}</td>
                     {/* <td>{product['Loja']}</td> */}
                     {/* <td>{product['Nome']}</td> */}
                     {/* <td>{product['NF Origem']}</td> */}
