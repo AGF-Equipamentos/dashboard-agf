@@ -265,7 +265,7 @@ export default function Kardex() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="15">{searchPlaceholder}</td>
+                  <td colSpan="16">{searchPlaceholder}</td>
                 </tr>
               )}
             </tbody>
