@@ -3,6 +3,7 @@ import { Button, Modal, Overlay, Tooltip } from 'react-bootstrap'
 import { DataGrid } from '@material-ui/data-grid'
 import { Container as Cont } from './styles'
 import { generatePrintCode } from '../../utils/generatePrintCode'
+import { copyToClipboardWithoutHttps } from '../../utils/copyToClipboardWithoutHttps'
 
 export default function PrintModal({ isOpen, handleClose, pcsData }) {
   const [selectionModel, setSelectionModel] = useState([])
@@ -19,7 +20,9 @@ export default function PrintModal({ isOpen, handleClose, pcsData }) {
   }, [pcsData])
 
   const handlePrintPC = () => {
-    navigator.clipboard.writeText(generatePrintCode(dataSelectionModel))
+    copyToClipboardWithoutHttps(generatePrintCode(dataSelectionModel))
+    // only with https
+    // navigator.clipboard.writeText(generatePrintCode(dataSelectionModel))
     setShow(!show)
     setTimeout(() => {
       setShow(false)
