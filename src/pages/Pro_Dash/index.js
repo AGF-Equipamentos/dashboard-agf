@@ -291,14 +291,14 @@ export default function Pro_Dash() {
         { value: average0102 },
         { value: average0103 }
       ] = await Promise.allSettled([
-        api.get(`/register?filial=0101&produto=${product}`),
-        api.get(`/estoques?filial=0101&produto=${product}&armazem=01`),
-        api.get(`/estoques?filial=0101&produto=${product}&armazem=03`),
-        api.get(`/estoques?filial=0101&produto=${product}&armazem=04`),
-        api.get(`/estoques?filial=0101&produto=${product}&armazem=06`),
-        api.get(`/estoques?filial=0101&produto=${product}&armazem=99`),
-        api.get(`/estoques?filial=0102&produto=${product}`),
-        api.get(`/estoques?filial=0103&produto=${product}`),
+        api.get(`/register?filial[]=0101&produto[]=${product}`),
+        api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=01`),
+        api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=03`),
+        api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=04`),
+        api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=06`),
+        api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=99`),
+        api.get(`/estoques?filial[]=0102&produto[]=${product}`),
+        api.get(`/estoques?filial[]=0103&produto[]=${product}`),
         api.get(
           `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=${product}`
         ),

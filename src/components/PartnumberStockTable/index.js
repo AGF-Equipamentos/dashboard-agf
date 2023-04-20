@@ -17,8 +17,8 @@ export default function PartnumberStockTable({ products }) {
       const { data: balances } = await api.get(`/estoques`, {
         params: {
           produto: partNumbers,
-          filial: '0101',
-          armazem: '01,06,99'
+          filial: ['0101'],
+          armazem: ['01', '06', '99']
         }
       })
 
