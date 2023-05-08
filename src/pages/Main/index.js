@@ -80,7 +80,7 @@ export default function Main() {
             </Col>
             <Col>
               <Link to="/critical-items">
-                <button type="button">Items Críticos</button>
+                <button type="button">Itens Críticos</button>
               </Link>
             </Col>
           </Row>
