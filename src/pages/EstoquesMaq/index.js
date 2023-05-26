@@ -20,6 +20,7 @@ export default function EstoquesMaq() {
         params: {
           filial: ['0101', '0102', '0103'],
           grupo: [
+            '0060',
             '0080',
             '0094',
             '0500',
