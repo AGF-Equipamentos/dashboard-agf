@@ -741,7 +741,7 @@ export default function Pro_Dash() {
                   <th>UM</th>
                   <th>PP</th>
                   <th>LE</th>
-                  <th>EST_SEG</th>
+                  <th>FAMILIA</th>
                   <th>APRO</th>
                   <th>LOC</th>
                 </tr>
@@ -755,7 +755,7 @@ export default function Pro_Dash() {
                       <td>{product.UM}</td>
                       <td>{product.PP}</td>
                       <td>{product.LE}</td>
-                      <td>{product.ESTSEG}</td>
+                      <td>{product.FAMILIA}</td>
                       <td>{product.APROPRI !== 'I' ? 'D' : 'I'}</td>
                       <td>{product.LOCACAO}</td>
                     </tr>
