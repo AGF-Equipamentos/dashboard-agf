@@ -13,9 +13,10 @@ import {
   Container
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft, FiExternalLink } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import { generatePrintCode } from '../../utils/generatePrintCode'
+import LastPCsModal from '../../components/LastPCsModal'
 
 import api from '../../services/api'
 import PrintModal from '../../components/PrintModal'
@@ -30,6 +31,9 @@ export default function PCs() {
   const [filter, setFilter] = useState('Pesquisar por número do PC')
   const [filial, setFilial] = useState('0101')
   const history = useHistory()
+  // LastPCsModal
+  const [isPCModalOpen, setIsPCModalOpen] = useState(false)
+  const [pcsData, setPcsData] = useState([])
 
   const handleSubmit = useCallback(
     async (searchInput, filterInput) => {
@@ -76,7 +80,9 @@ export default function PCs() {
   )
 
   useEffect(() => {
-    const mapPCs = dataPCs.map((pc) => pc.PRECO * (pc.QTD - pc.QTD_ENT))
+    const mapPCs = dataPCs.map(
+      (pc) => pc.PRECO * (pc.QTD - pc.QTD_ENT) - pc.DESCONTO
+    )
     const totalSumPCs = mapPCs.length > 0 ? mapPCs.reduce((a, b) => a + b) : 0
     setSumPCs(totalSumPCs)
   }, [dataPCs])
@@ -151,6 +157,31 @@ export default function PCs() {
     }
   }, [])
 
+  function handlePCModalClose() {
+    setIsPCModalOpen(false)
+  }
+
+  const handlePCModal = async (partNumber) => {
+    let product = partNumber.toUpperCase().trim()
+
+    const response = await api.get(
+      `inputdocs?filial=0101&produto=${product}&top=10&desc=true`
+    )
+
+    const pcsFormatted = response.data.map((pc) => {
+      return {
+        ...pc,
+        PRECO: new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(pc.PRECO)
+      }
+    })
+
+    setPcsData(pcsFormatted)
+    setIsPCModalOpen(true)
+  }
+
   return (
     <Cont>
       <PrintModal
@@ -158,6 +189,11 @@ export default function PCs() {
         isOpen={isPrintModalOpen}
         handleClose={handleClose}
         pcsData={formattedPCs}
+      />
+      <LastPCsModal
+        isOpen={isPCModalOpen}
+        handleClose={handlePCModalClose}
+        pcsData={pcsData}
       />
       <Container fluid className="justify-content-center">
         <Row>
@@ -241,6 +277,7 @@ export default function PCs() {
               <th>QTD_ENT</th>
               <th>SALDO</th>
               <th>PREÇO</th>
+              <th>ULT_PCs</th>
               <th>NUM_SC</th>
               <th>OBS</th>
               <th>ENTREGA</th>
@@ -295,7 +332,16 @@ export default function PCs() {
                   <td>{pcs.QTD}</td>
                   <td>{pcs.QTD_ENT}</td>
                   <td>{pcs.SALDO}</td>
-                  <td>R${pcs.PRECO}</td>
+                  <td>R${pcs.PRECO - pcs.DESCONTO}</td>
+                  <td>
+                    <Button
+                      variant="outline-info"
+                      size="sm"
+                      onClick={() => handlePCModal(pcs.PRODUTO)}
+                    >
+                      <FiExternalLink />
+                    </Button>
+                  </td>
                   <td>
                     {pcs.NUMSC.trim() && (
                       <Button
@@ -326,7 +372,7 @@ export default function PCs() {
               ))
             ) : (
               <tr>
-                <td colSpan="17">{pcsPlaceholder}</td>
+                <td colSpan="18">{pcsPlaceholder}</td>
               </tr>
             )}
           </tbody>

@@ -34,7 +34,6 @@ export default function PartnumberStockTable({ products }) {
           acc[stock.PRODUTO].balanceStock + stock.SALDO
         return acc
       }, {})
-      console.log(stocksBalance)
 
       const { data: pcs } = await api.get(`/pcs`, {
         params: {
