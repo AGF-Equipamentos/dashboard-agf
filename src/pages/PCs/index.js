@@ -440,7 +440,7 @@ export default function PCs() {
                   <td>{pcs.QTD}</td>
                   <td>{pcs.QTD_ENT}</td>
                   <td>{pcs.SALDO}</td>
-                  <td>R${pcs.PRECO}</td>
+                  <td>R${pcs.PRECO - pcs.DESCONTO / pcs.QTD}</td>
                   <td>
                     <Button
                       variant="outline-info"
