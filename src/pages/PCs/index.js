@@ -23,6 +23,14 @@ import PrintModal from '../../components/PrintModal'
 import { ButtonBase } from '@material-ui/core'
 
 export default function PCs() {
+  const [pCHeader, setPCHeader] = useState(0)
+  const [issueHeader, setIssueHeader] = useState(0)
+  const [payCondHeader, setPayCondHeader] = useState(0)
+  const [payDescHeader, setPayDescHeader] = useState(0)
+  const [supplierHeader, setSupplierHeader] = useState(0)
+  const [supplierDescHeader, setSupplierDescHeader] = useState(0)
+  const [currencyHeader, setCurrencyHeader] = useState(0)
+  const [currencyDescHeader, setCurrencyDescHeader] = useState(0)
   const [searchValue, setSearchValue] = useState('')
   const [dataPCs, setDataPCs] = useState([])
   const [formattedPCs, setFormattedPCs] = useState([])
@@ -42,6 +50,26 @@ export default function PCs() {
       let response
       setDataPCs([])
       setPcsPlaceholder(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setPCHeader(<Spinner animation="border" size="sm" variant="warning" />)
+      setIssueHeader(<Spinner animation="border" size="sm" variant="warning" />)
+      setPayCondHeader(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setPayDescHeader(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setSupplierHeader(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setSupplierDescHeader(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setCurrencyHeader(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setCurrencyDescHeader(
         <Spinner animation="border" size="sm" variant="warning" />
       )
 
@@ -116,13 +144,6 @@ export default function PCs() {
 
     // eslint-disable-next-line
   }, [history.location.search]);
-
-  const handlePC = useCallback(
-    async (pcInput) => {
-      handleSubmit(pcInput, 'Número')
-    },
-    [handleSubmit]
-  )
 
   // modal handle
 
@@ -263,12 +284,111 @@ export default function PCs() {
             Gerar código para impressão
           </Button>
         </InputGroup>
+        <Row>
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <td>NUM PEDIDO</td>
+                  <td>DATA EMISSÃO</td>
+                </tr>
+              </thead>
+              <tbody>
+                {dataPCs.length !== 0 ? (
+                  <tr>
+                    <td>{dataPCs[0].PEDIDO}</td>
+                    <td>{dataPCs[0].EMISSAO}</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td>{pCHeader}</td>
+                    <td>{issueHeader}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <td>TIPO MOEDA</td>
+                  <td>DESCRIÇÃO MOEDA</td>
+                </tr>
+              </thead>
+              <tbody>
+                {dataPCs.length !== 0 ? (
+                  <>
+                    <tr>
+                      <td>{dataPCs[0].MOEDA}</td>
+                      <td>{dataPCs[0].DESC_MOEDA}</td>
+                    </tr>
+                  </>
+                ) : (
+                  <tr>
+                    <td>{currencyHeader}</td>
+                    <td>{currencyDescHeader}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <td>CONDIÇÃO PAGTO</td>
+                  <td>DESCRIÇÃO PAGTO</td>
+                </tr>
+              </thead>
+              <tbody>
+                {dataPCs.length !== 0 ? (
+                  <>
+                    <tr>
+                      <td>{dataPCs[0].COND_PAGTO}</td>
+                      <td>{dataPCs[0].DESC_PAGTO}</td>
+                    </tr>
+                  </>
+                ) : (
+                  <tr>
+                    <td>{payCondHeader}</td>
+                    <td>{payDescHeader}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <td>FORNECEDOR</td>
+                  <td>DESCRIÇÃO FORNECEDOR</td>
+                </tr>
+              </thead>
+              <tbody>
+                {dataPCs.length !== 0 ? (
+                  <tr>
+                    <td>{dataPCs[0].FORN}</td>
+                    <td>{dataPCs[0].DESC_FORN}</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td>{supplierHeader}</td>
+                    <td>{supplierDescHeader}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
         <Table responsive striped bordered hover>
           <thead>
             <tr>
               <th>APROVADO</th>
-              <th>PC</th>
-              <th>EMISSÃO</th>
               <th>ITEM</th>
               <th>PRODUTO</th>
               <th>DESCRIÇÃO</th>
@@ -281,8 +401,6 @@ export default function PCs() {
               <th>NUM_SC</th>
               <th>OBS</th>
               <th>ENTREGA</th>
-              <th>FORN</th>
-              <th>DESC_FORN</th>
               <th>OP</th>
             </tr>
           </thead>
@@ -297,16 +415,6 @@ export default function PCs() {
                       <Badge variant="danger">NÃO</Badge>
                     )}
                   </td>
-                  <td>
-                    <Button
-                      variant="outline-info"
-                      size="sm"
-                      onClick={() => handlePC(pcs.PEDIDO)}
-                    >
-                      {pcs.PEDIDO}
-                    </Button>
-                  </td>
-                  <td>{pcs.EMISSAO}</td>
                   <td>{pcs.ITEM}</td>
                   <td>
                     <Button
@@ -332,7 +440,7 @@ export default function PCs() {
                   <td>{pcs.QTD}</td>
                   <td>{pcs.QTD_ENT}</td>
                   <td>{pcs.SALDO}</td>
-                  <td>R${pcs.PRECO - pcs.DESCONTO}</td>
+                  <td>R${pcs.PRECO - pcs.DESCONTO / pcs.QTD}</td>
                   <td>
                     <Button
                       variant="outline-info"
@@ -365,14 +473,12 @@ export default function PCs() {
                   </td>
                   <td>{pcs.OBS}</td>
                   <td>{pcs.ENTREGA}</td>
-                  <td>{pcs.FORN}</td>
-                  <td>{pcs.DESC_FORN}</td>
                   <td>{pcs.OP}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="18">{pcsPlaceholder}</td>
+                <td colSpan="14">{pcsPlaceholder}</td>
               </tr>
             )}
           </tbody>
