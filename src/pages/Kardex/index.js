@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
+import DownloadExcelKardexModal from '../../components/DownloadKardexModal'
 
 import api from '../../services/api'
 
@@ -22,9 +23,20 @@ export default function Kardex() {
   const [armazemInicioValue, setArmazemInicioValue] = useState('')
   const [armazemFimValue, setArmazemFimValue] = useState('')
   const [kardexRows, setKardexRows] = useState([])
+  const [showDownloadExcelKardexModal, setShowDownloadExcelKardexModal] =
+    useState(false)
+  const [filter, setFilter] = useState('Código')
+  const [searchValue, setSearchValue] = useState('')
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     'Pesquise por um código...'
   )
+
+  async function handleOpenDownloadExcelKardex() {
+    setShowDownloadExcelKardexModal(true)
+  }
+  async function handleCloseDownloadExcelKardex() {
+    setShowDownloadExcelKardexModal(false)
+  }
 
   async function handleSubmit() {
     setSearchPlaceholder(
@@ -67,6 +79,12 @@ export default function Kardex() {
 
   return (
     <Cont>
+      <DownloadExcelKardexModal
+        isOpen={showDownloadExcelKardexModal}
+        handleClose={handleCloseDownloadExcelKardex}
+        filter={filter}
+        searchValue={searchValue}
+      />
       <Container fluid>
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
@@ -80,6 +98,17 @@ export default function Kardex() {
           </Col>
         </Row>
         <h1 className="text-center">Consulta Kardex</h1>
+        <Container fluid className="mb-4">
+          <Col className="d-flex justify-content-end">
+            <Button
+              onClick={handleOpenDownloadExcelKardex}
+              type="submit"
+              variant="outline-warning"
+            >
+              Download
+            </Button>
+          </Col>
+        </Container>
         <Container fluid className="mb-4">
           <Row>
             <Col>
