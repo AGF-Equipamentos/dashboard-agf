@@ -393,6 +393,7 @@ export default function PCs() {
               <th>PRODUTO</th>
               <th>DESCRIÇÃO</th>
               <th>UM</th>
+              <th>DESC_CENTRO_CUSTO</th>
               <th>QTD</th>
               <th>QTD_ENT</th>
               <th>SALDO</th>
@@ -437,6 +438,7 @@ export default function PCs() {
                   </td>
                   <td>{pcs.DESCRICAO}</td>
                   <td>{pcs.UM}</td>
+                  <td>{pcs.DESC_CENTRO_CUSTO}</td>
                   <td>{pcs.QTD}</td>
                   <td>{pcs.QTD_ENT}</td>
                   <td>{pcs.SALDO}</td>
@@ -478,7 +480,7 @@ export default function PCs() {
               ))
             ) : (
               <tr>
-                <td colSpan="14">{pcsPlaceholder}</td>
+                <td colSpan="15">{pcsPlaceholder}</td>
               </tr>
             )}
           </tbody>
