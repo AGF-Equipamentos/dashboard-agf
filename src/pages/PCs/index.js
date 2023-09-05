@@ -9,8 +9,10 @@ import {
   DropdownButton,
   Dropdown,
   Col,
+  Tooltip,
   Spinner,
-  Container
+  Container,
+  OverlayTrigger
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft, FiExternalLink } from 'react-icons/fi'
@@ -39,6 +41,7 @@ export default function PCs() {
   const [filter, setFilter] = useState('Pesquisar por número do PC')
   const [filial, setFilial] = useState('0101')
   const history = useHistory()
+
   // LastPCsModal
   const [isPCModalOpen, setIsPCModalOpen] = useState(false)
   const [pcsData, setPcsData] = useState([])
@@ -109,7 +112,7 @@ export default function PCs() {
 
   useEffect(() => {
     const mapPCs = dataPCs.map(
-      (pc) => pc.PRECO * (pc.QTD - pc.QTD_ENT) - pc.DESCONTO
+      (pc) => ((pc.PRECO - pc.DESCONTO) / pc.QTD) * (pc.QTD - pc.QTD_ENT)
     )
     const totalSumPCs = mapPCs.length > 0 ? mapPCs.reduce((a, b) => a + b) : 0
     setSumPCs(totalSumPCs)
@@ -120,6 +123,54 @@ export default function PCs() {
     if (event.key === 'Enter') {
       handleSubmit()
     }
+  }
+
+  //Calculate Value Itens Total
+  const calculateValueItensFooter = () => {
+    let valueItensFooter = 0
+    dataPCs.forEach((pc) => {
+      valueItensFooter += pc.PRECO * pc.QTD
+    })
+    return valueItensFooter.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+  }
+
+  //Calculate Value Frete
+  const calculateValueFreteFooter = () => {
+    let valueFreteFooter = 0
+    dataPCs.forEach((pc) => {
+      valueFreteFooter += pc.FRETE
+    })
+    return valueFreteFooter.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+  }
+
+  //Calculate Value Discounts
+  const calculateValueDiscountsFooter = () => {
+    let valueDiscountsFooter = 0
+    dataPCs.forEach((pc) => {
+      valueDiscountsFooter += pc.DESCONTO
+    })
+    return valueDiscountsFooter.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+  }
+
+  //Calculate Value Order Total
+  const calculateValueOrderTotalFooter = () => {
+    let valueOrderTotalFooter = 0
+    dataPCs.forEach((pc) => {
+      valueOrderTotalFooter += pc.PRECO * pc.QTD + pc.FRETE - pc.DESCONTO
+    })
+    return valueOrderTotalFooter.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
   }
 
   useEffect(() => {
@@ -393,7 +444,7 @@ export default function PCs() {
               <th>PRODUTO</th>
               <th>DESCRIÇÃO</th>
               <th>UM</th>
-              <th>DESC_CENTRO_CUSTO</th>
+              <th>CC</th>
               <th>QTD</th>
               <th>QTD_ENT</th>
               <th>SALDO</th>
@@ -438,11 +489,30 @@ export default function PCs() {
                   </td>
                   <td>{pcs.DESCRICAO}</td>
                   <td>{pcs.UM}</td>
-                  <td>{pcs.DESC_CENTRO_CUSTO}</td>
+                  <td>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id="button-tooltip-1">
+                          <span>{pcs.DESC_CENTRO_CUSTO}</span>
+                        </Tooltip>
+                      }
+                    >
+                      <span>{pcs.CENTRO_CUSTO}</span>
+                    </OverlayTrigger>
+                  </td>
                   <td>{pcs.QTD}</td>
                   <td>{pcs.QTD_ENT}</td>
                   <td>{pcs.SALDO}</td>
-                  <td>R${pcs.PRECO - pcs.DESCONTO / pcs.QTD}</td>
+                  <td>
+                    {(pcs.PRECO - pcs.DESCONTO / pcs.QTD).toLocaleString(
+                      'pt-br',
+                      {
+                        style: 'currency',
+                        currency: 'BRL'
+                      }
+                    )}
+                  </td>
                   <td>
                     <Button
                       variant="outline-info"
@@ -485,13 +555,30 @@ export default function PCs() {
             )}
           </tbody>
         </Table>
-        <h3>
-          Total do pedido:{' '}
-          {sumPCs.toLocaleString('pt-br', {
-            style: 'currency',
-            currency: 'BRL'
-          })}
-        </h3>
+        <Table responsive striped bordered hover>
+          <thead>
+            <tr>
+              <td>VALOR DA MERCADORIA</td>
+              <td>FRETE</td>
+              <td>DESCONTOS</td>
+              <td>TOTAL DO PEDIDO</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{calculateValueItensFooter()}</td>
+              <td>{calculateValueFreteFooter()}</td>
+              <td>{calculateValueDiscountsFooter()}</td>
+              <td>
+                {/* {calculateValueOrderTotalFooter()} */}
+                {sumPCs.toLocaleString('pt-br', {
+                  style: 'currency',
+                  currency: 'BRL'
+                })}
+              </td>
+            </tr>
+          </tbody>
+        </Table>
       </Container>
     </Cont>
   )
