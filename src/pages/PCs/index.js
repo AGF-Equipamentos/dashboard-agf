@@ -112,7 +112,8 @@ export default function PCs() {
 
   useEffect(() => {
     const mapPCs = dataPCs.map(
-      (pc) => ((pc.PRECO - pc.DESCONTO) / pc.QTD) * (pc.QTD - pc.QTD_ENT)
+      (pc) =>
+        (pc.PRECO - pc.DESCONTO / pc.QTD) * (pc.QTD - pc.QTD_ENT) + pc.FRETE
     )
     const totalSumPCs = mapPCs.length > 0 ? mapPCs.reduce((a, b) => a + b) : 0
     setSumPCs(totalSumPCs)
@@ -156,18 +157,6 @@ export default function PCs() {
       valueDiscountsFooter += pc.DESCONTO
     })
     return valueDiscountsFooter.toLocaleString('pt-br', {
-      style: 'currency',
-      currency: 'BRL'
-    })
-  }
-
-  //Calculate Value Order Total
-  const calculateValueOrderTotalFooter = () => {
-    let valueOrderTotalFooter = 0
-    dataPCs.forEach((pc) => {
-      valueOrderTotalFooter += pc.PRECO * pc.QTD + pc.FRETE - pc.DESCONTO
-    })
-    return valueOrderTotalFooter.toLocaleString('pt-br', {
       style: 'currency',
       currency: 'BRL'
     })
@@ -570,7 +559,6 @@ export default function PCs() {
               <td>{calculateValueFreteFooter()}</td>
               <td>{calculateValueDiscountsFooter()}</td>
               <td>
-                {/* {calculateValueOrderTotalFooter()} */}
                 {sumPCs.toLocaleString('pt-br', {
                   style: 'currency',
                   currency: 'BRL'
