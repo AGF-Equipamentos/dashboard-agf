@@ -46,8 +46,8 @@ export default function MaqFio() {
             { product: 'MF75P2', partNumber: 'VIXMOT0003' },
             { product: 'MF75P2 / MF75S2', partNumber: 'VIXMOT0011' },
             { product: 'MF100S2', partNumber: 'VIXMOT0017' },
-            { product: 'MF75S3', partNumber: '' },
-            { product: 'MF90S3', partNumber: '' }
+            { product: 'MF75S3', partNumber: '9900002513' },
+            { product: 'MF90S3', partNumber: '9900002643' }
           ]}
         />
         <h4>ESTOQUE REDUTORES</h4>
@@ -68,9 +68,7 @@ export default function MaqFio() {
             {
               product: 'MF100S2E / MF25S2 / MF75P2 / MF75S2',
               partNumber: 'VIXRED0083'
-            },
-            { product: 'MF75S3', partNumber: '' },
-            { product: 'MF90S3', partNumber: '' }
+            }
           ]}
         />
         <h4>ESTOQUE INVERSORES</h4>
@@ -82,8 +80,8 @@ export default function MaqFio() {
             { product: 'MF75P2', partNumber: '6800000699' },
             { product: 'MF75S2', partNumber: '6800000700' },
             { product: 'MF100S2', partNumber: '6800000701' },
-            { product: 'MF75S3', partNumber: '' },
-            { product: 'MF90S3', partNumber: '' }
+            { product: 'MF75S3', partNumber: '6800000849' },
+            { product: 'MF90S3', partNumber: '6800000850' }
           ]}
         />
       </Container>
