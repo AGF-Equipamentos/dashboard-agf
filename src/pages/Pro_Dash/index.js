@@ -38,7 +38,7 @@ export default function Pro_Dash() {
   const [productNumber, setProductNumber] = useState('')
   const [almoxarifados, setAlmoxarifados] = useState([])
   const [supermercados, setSupermercados] = useState([])
-  const [divergentes, setDivergentes] = useState([])
+  const [divergents, setDivergents] = useState([])
   const [pos, setPos] = useState([])
   const [vix, setVix] = useState([])
   const [bahia, setBahia] = useState([])
@@ -88,7 +88,7 @@ export default function Pro_Dash() {
   const [vixPlaceholder, setVixPlaceholder] = useState(0)
   const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0)
   const [stock06Placeholder, setStock06Placeholder] = useState(0)
-  const [divergentesPlaceholder, setDivergentesPlaceholder] = useState(0)
+  const [divergentsPlaceholder, setDivergentsPlaceholder] = useState(0)
   const [sumEmp, setSumEmp] = useState('')
   const [sumSCs, setSumSCs] = useState('')
   const [sumPCs, setSumPCs] = useState('')
@@ -210,7 +210,7 @@ export default function Pro_Dash() {
       setProductInfo([])
       setAlmoxarifados([])
       setSupermercados([])
-      setDivergentes([])
+      setDivergents([])
       setPos([])
       setVix([])
       setBahia([])
@@ -233,7 +233,7 @@ export default function Pro_Dash() {
       setSupermercadosPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
       )
-      setDivergentesPlaceholder(
+      setDivergentsPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
       )
       setPosPlaceholder(
@@ -332,9 +332,9 @@ export default function Pro_Dash() {
       }
 
       if (stock04.data.length === 0) {
-        setDivergentes([{ SALDO: 0 }])
+        setDivergents([{ SALDO: 0 }])
       } else {
-        setDivergentes(stock04.data)
+        setDivergents(stock04.data)
       }
 
       if (stock06.data.length === 0) {
@@ -854,15 +854,15 @@ export default function Pro_Dash() {
                 </tr>
               </thead>
               <tbody>
-                {divergentes.length !== 0 ? (
-                  divergentes.map((divergentes, i) => (
+                {divergents.length !== 0 ? (
+                  divergents.map((divergents, i) => (
                     <tr key={i}>
-                      <td>{divergentes.SALDO}</td>
+                      <td>{divergents.SALDO}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td>{divergentesPlaceholder}</td>
+                    <td>{divergentsPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
