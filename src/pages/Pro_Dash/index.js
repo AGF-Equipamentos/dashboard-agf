@@ -38,7 +38,7 @@ export default function Pro_Dash() {
   const [productNumber, setProductNumber] = useState('')
   const [almoxarifados, setAlmoxarifados] = useState([])
   const [supermercados, setSupermercados] = useState([])
-  const [quebrados, setQuebrados] = useState([])
+  const [divergents, setDivergents] = useState([])
   const [pos, setPos] = useState([])
   const [vix, setVix] = useState([])
   const [bahia, setBahia] = useState([])
@@ -88,7 +88,7 @@ export default function Pro_Dash() {
   const [vixPlaceholder, setVixPlaceholder] = useState(0)
   const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0)
   const [stock06Placeholder, setStock06Placeholder] = useState(0)
-  const [quebradosPlaceholder, setQuebradosPlaceholder] = useState(0)
+  const [divergentsPlaceholder, setDivergentsPlaceholder] = useState(0)
   const [sumEmp, setSumEmp] = useState('')
   const [sumSCs, setSumSCs] = useState('')
   const [sumPCs, setSumPCs] = useState('')
@@ -210,7 +210,7 @@ export default function Pro_Dash() {
       setProductInfo([])
       setAlmoxarifados([])
       setSupermercados([])
-      setQuebrados([])
+      setDivergents([])
       setPos([])
       setVix([])
       setBahia([])
@@ -233,7 +233,7 @@ export default function Pro_Dash() {
       setSupermercadosPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
       )
-      setQuebradosPlaceholder(
+      setDivergentsPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
       )
       setPosPlaceholder(
@@ -332,9 +332,9 @@ export default function Pro_Dash() {
       }
 
       if (stock04.data.length === 0) {
-        setQuebrados([{ SALDO: 0 }])
+        setDivergents([{ SALDO: 0 }])
       } else {
-        setQuebrados(stock04.data)
+        setDivergents(stock04.data)
       }
 
       if (stock06.data.length === 0) {
@@ -850,19 +850,19 @@ export default function Pro_Dash() {
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  <th>QUEBRADO</th>
+                  <th>DIVERGENTE</th>
                 </tr>
               </thead>
               <tbody>
-                {quebrados.length !== 0 ? (
-                  quebrados.map((quebrado, i) => (
+                {divergents.length !== 0 ? (
+                  divergents.map((divergents, i) => (
                     <tr key={i}>
-                      <td>{quebrado.SALDO}</td>
+                      <td>{divergents.SALDO}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td>{quebradosPlaceholder}</td>
+                    <td>{divergentsPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
