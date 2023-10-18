@@ -40,17 +40,22 @@ export default function Main() {
               </Link>
             </Col>
             <Col>
+              <Link to="/multifio">
+                <button type="button">Multifio</button>
+              </Link>
+            </Col>
+            <Col>
               <Link to="/pcs">
                 <button type="button">Pedidos de Compras</button>
               </Link>
             </Col>
+          </Row>
+          <Row className="align-items-center">
             <Col>
               <Link to="/scs">
                 <button type="button">Solicitações de Compras</button>
               </Link>
             </Col>
-          </Row>
-          <Row className="align-items-center">
             <Col>
               <Link to="/prodash">
                 <button type="button">Consulta de Produto</button>
@@ -61,13 +66,13 @@ export default function Main() {
                 <button type="button">Cadastro de Produtos</button>
               </Link>
             </Col>
+          </Row>
+          <Row className="align-items-center">
             <Col>
               <Link to="/opspos">
                 <button type="button">OPs para o Pós Vendas</button>
               </Link>
             </Col>
-          </Row>
-          <Row className="align-items-center">
             <Col>
               <Link to="/opsfilial">
                 <button type="button">OPs para a Filial</button>
@@ -78,13 +83,13 @@ export default function Main() {
                 <button type="button">OPs por Ponto de Pedido</button>
               </Link>
             </Col>
+          </Row>
+          <Row className="align-items-center">
             <Col>
               <Link to="/critical-items">
                 <button type="button">Itens Críticos</button>
               </Link>
             </Col>
-          </Row>
-          <Row className="align-items-center">
             <Col>
               <Link to="/kardex">
                 <button type="button">Kardex</button>
