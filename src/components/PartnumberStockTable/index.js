@@ -176,10 +176,12 @@ export default function PartnumberStockTable({ products }) {
                     backgroundColor: '#C6EFCE'
                   }}
                 >
-                  {estoque.pcsBalance +
+                  {(
+                    estoque.pcsBalance +
                     estoque.scsBalance +
                     estoque.stockBalance -
-                    estoque.empsBalance}
+                    estoque.empsBalance
+                  ).toFixed(2)}
                 </td>
               ) : (
                 <td
@@ -188,10 +190,12 @@ export default function PartnumberStockTable({ products }) {
                     backgroundColor: '#FFC7CE'
                   }}
                 >
-                  {estoque.pcsBalance +
+                  {(
+                    estoque.pcsBalance +
                     estoque.scsBalance +
                     estoque.stockBalance -
-                    estoque.empsBalance}
+                    estoque.empsBalance
+                  ).toFixed(2)}
                 </td>
               )}
             </tr>
