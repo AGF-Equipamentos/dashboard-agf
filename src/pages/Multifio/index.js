@@ -22,6 +22,18 @@ export default function Multifio() {
         </Row>
         <h1>Multifio</h1>
         <ProductStockTable products={['MW74V', 'MW86V', 'MW06V']} />
+        <h4>ESTOQUE REDUTORES E MOTORES</h4>
+        <PartnumberStockTable
+          products={[
+            { product: 'MW74V', partNumber: '9900002352' },
+            { product: 'MW74V', partNumber: '9900002353' },
+            { product: 'MW74V', partNumber: '9900002354' },
+            { product: 'MW74V', partNumber: '9900002355' },
+            { product: 'MW74V', partNumber: 'VIXMOT0003' },
+            { product: 'MW74V', partNumber: '6800000768' },
+            { product: 'MW74V', partNumber: '6800000771' }
+          ]}
+        />
         <h4>ESTOQUE FERRO FUNDIDO</h4>
         <PartnumberStockTable
           products={[
@@ -66,18 +78,6 @@ export default function Multifio() {
             { product: 'MW74V', partNumber: '1004000106' },
             { product: 'MW74V', partNumber: '1004000107' },
             { product: 'MW74V', partNumber: '1004000108' }
-          ]}
-        />
-        <h4>ESTOQUE REDUTORES & MOTORES</h4>
-        <PartnumberStockTable
-          products={[
-            { product: 'MW74V', partNumber: '9900002352' },
-            { product: 'MW74V', partNumber: '9900002353' },
-            { product: 'MW74V', partNumber: '9900002354' },
-            { product: 'MW74V', partNumber: '9900002355' },
-            { product: 'MW74V', partNumber: 'VIXMOT0003' },
-            { product: 'MW74V', partNumber: '6800000768' },
-            { product: 'MW74V', partNumber: '6800000771' }
           ]}
         />
         <h4>ESTOQUE OUTROS </h4>
