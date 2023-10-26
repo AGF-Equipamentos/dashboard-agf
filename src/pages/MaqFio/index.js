@@ -56,17 +56,19 @@ export default function MaqFio() {
             { product: 'MF25P2P / MF25S2', partNumber: '9900000567' },
             { product: 'MF25S2', partNumber: '9900000764' },
             {
-              product: 'MF100S2E / MF25S2 / MF75P2 / MF75S2',
-              partNumber: 'VIXRED0083'
-            },
-            {
-              product: 'MF100S2E / MF25S2 / MF75P2 / MF75S2',
+              product: 'MF100S2E / MF25S2 / MF75P2 / MF75S2 / MF90S3 / MF75S3',
               partNumber: 'VIXRED0080'
             },
-            { product: 'MF100S2E / MF75P2 / MF75S2', partNumber: 'VIXRED0081' },
-            { product: 'MF100S2E / MF75P2 / MF75S2', partNumber: 'VIXRED0082' },
             {
-              product: 'MF100S2E / MF25S2 / MF75P2 / MF75S2',
+              product: 'MF100S2E / MF75P2 / MF75S2 / MF90S3 / MF75S3',
+              partNumber: 'VIXRED0081'
+            },
+            {
+              product: 'MF100S2E / MF75P2 / MF75S2 / MF90S3 / MF75S3',
+              partNumber: 'VIXRED0082'
+            },
+            {
+              product: 'MF100S2E / MF25S2 / MF75P2 / MF75S2 / MF90S3 / MF75S3',
               partNumber: 'VIXRED0083'
             }
           ]}
