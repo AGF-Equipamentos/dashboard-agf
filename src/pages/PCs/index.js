@@ -213,6 +213,12 @@ export default function PCs() {
         return 'Filial ES'
       case '0103':
         return 'Filial BA'
+      case '0104':
+        return 'AGF Maquinas Agrícolas'
+      case '0105':
+        return 'Filial CE'
+      case '0106':
+        return 'Filial MT'
       default:
         return 'Matriz'
     }
