@@ -123,7 +123,7 @@ export default function CriticalItems() {
           `${process.env.REACT_APP_OPMS}/critical-items`,
           {
             params: {
-              responsable: search
+              responsible: search
             }
           }
         )
@@ -311,7 +311,7 @@ export default function CriticalItems() {
                   <td>{ci.used_obs}</td>
                   <td>
                     <Badge pill variant="danger">
-                      {ci.responsable}
+                      {ci.responsible}
                     </Badge>{' '}
                   </td>
                   <td>

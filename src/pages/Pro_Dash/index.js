@@ -101,7 +101,7 @@ export default function Pro_Dash() {
   const completeDate = new Date()
 
   // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
-  // Fazer um map, transformanda as 12 datas em 12 objetos.
+  // Fazer um map, transformada as 12 datas em 12 objetos.
 
   const dates = [
     'ATR',

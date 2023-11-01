@@ -41,34 +41,6 @@ export default function EstoqueGerador() {
             { product: 'GS260', partNumber: '9900001101' }
           ]}
         />
-        {/* <h5>Pedidos de Compra</h5>
-        <OrdersTable
-          type="purchases"
-          products={[
-            { product: 'GS125', partNumber: '9900001327' },
-            { product: 'GS165', partNumber: '9900000777' },
-            { product: 'GS230', partNumber: '9900000778' },
-            { product: 'GS260', partNumber: '9900001100' },
-            { product: 'GS125', partNumber: '9900001718' },
-            { product: 'GS165', partNumber: '9900000786' },
-            { product: 'GS230', partNumber: '9900000821' },
-            { product: 'GS260', partNumber: '9900001101' }
-          ]}
-        />
-        <h5>Solicitação de Compra</h5>
-        <OrdersTable
-          type="purchase_requests"
-          products={[
-            { product: 'GS125', partNumber: '9900001327' },
-            { product: 'GS165', partNumber: '9900000777' },
-            { product: 'GS230', partNumber: '9900000778' },
-            { product: 'GS260', partNumber: '9900001100' },
-            { product: 'GS125', partNumber: '9900001718' },
-            { product: 'GS165', partNumber: '9900000786' },
-            { product: 'GS230', partNumber: '9900000821' },
-            { product: 'GS260', partNumber: '9900001101' }
-          ]}
-        /> */}
       </Container>
     </Cont>
   )

@@ -13,6 +13,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 import api from '../../services/api'
 import { exportToXlsx } from '../../utils/exportToXlsx'
+import DownloadExcelKardexModal from '../../components/DownloadKardexModal'
 
 export default function Kardex() {
   const [filialValue, setFilialValue] = useState('')
@@ -25,6 +26,10 @@ export default function Kardex() {
   const [searchPlaceholder, setSearchPlaceholder] = useState(
     'Pesquise por um código...'
   )
+  const [showDownloadExcelKardexModal, setShowDownloadExcelKardexModal] =
+    useState(false)
+  const [filter, setFilter] = useState('Código')
+  const [searchValue, setSearchValue] = useState('')
 
   async function handleSubmit() {
     setSearchPlaceholder(
@@ -58,6 +63,13 @@ export default function Kardex() {
     }
   }
 
+  async function handleOpenDownloadExcelKardex() {
+    setShowDownloadExcelKardexModal(true)
+  }
+  async function handleCloseDownloadExcelKardex() {
+    setShowDownloadExcelKardexModal(false)
+  }
+
   // submit on press Enter
   function keyPressed(event) {
     if (event.key === 'Enter') {
@@ -67,6 +79,13 @@ export default function Kardex() {
 
   return (
     <Cont>
+      <DownloadExcelKardexModal
+        isOpen={showDownloadExcelKardexModal}
+        handleClose={handleCloseDownloadExcelKardex}
+        filter={filter}
+        searchValue={searchValue}
+      />
+
       <Container fluid>
         <Row>
           <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
@@ -83,9 +102,7 @@ export default function Kardex() {
         <Container fluid className="mb-4">
           <Col className="d-flex justify-content-end">
             <Button
-              onClick={() =>
-                exportToXlsx([{ nome: 'Arthur' }, { nome: 'Ronaldo' }], 'nomes')
-              }
+              onClick={handleOpenDownloadExcelKardex}
               type="submit"
               variant="outline-warning"
             >
@@ -186,9 +203,9 @@ export default function Kardex() {
                 <th>DOCUMENTO / SERIE</th>
                 <th>IDENT</th>
                 <th>QTDE.</th>
-                <th>CUSTO UNITARIO</th>
+                <th>CUSTO UNITÁRIO</th>
                 <th>CUSTO TOTAL</th>
-                <th>USUARIO</th>
+                <th>USUÁRIO</th>
                 <th>SALDO QTDE.</th>
                 <th>SALDO CUSTO TOTAL</th>
               </tr>
@@ -225,22 +242,22 @@ export default function Kardex() {
                       )}
                     </td>
                     <td>
-                      {product['Custo Unitario'] < 0 ? (
+                      {product['Custo Unitário'] < 0 ? (
                         <p className="text-danger">
                           {new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL'
-                          }).format(new Number(product['Custo Unitario']) * -1)}
+                          }).format(new Number(product['Custo Unitário']) * -1)}
                         </p>
                       ) : (
                         new Intl.NumberFormat('pt-BR', {
                           style: 'currency',
                           currency: 'BRL'
-                        }).format(new Number(product['Custo Unitario']))
+                        }).format(new Number(product['Custo Unitário']))
                       )}
                     </td>
                     <td>
-                      {product['Custo Unitario'] < 0 ? (
+                      {product['Custo Unitário'] < 0 ? (
                         <p className="text-danger">
                           {new Intl.NumberFormat('pt-BR', {
                             style: 'currency',
@@ -254,7 +271,7 @@ export default function Kardex() {
                         }).format(new Number(product['Custo Total']))
                       )}
                     </td>
-                    <td>{product['Usuario']}</td>
+                    <td>{product['Usuário']}</td>
                     <td>{product['saldoQtde']}</td>
                     <td>
                       {new Intl.NumberFormat('pt-BR', {
