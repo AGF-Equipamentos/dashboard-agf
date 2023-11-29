@@ -900,7 +900,7 @@ export default function Pro_Dash() {
                   <th>APRO</th>
                   <th>LOC</th>
                   <th>TIPO</th>
-                  <th>IPI/NCM</th>
+                  <th>NCM</th>
                 </tr>
               </thead>
               <tbody>
