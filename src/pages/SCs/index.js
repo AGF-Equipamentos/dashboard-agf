@@ -121,6 +121,12 @@ export default function SCs() {
             <Dropdown.Item onClick={() => setFilial('0103')}>
               Filial BA
             </Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilial('0105')}>
+              Filial CE
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilial('0106')}>
+              Filial MT
+            </Dropdown.Item>
           </DropdownButton>
 
           <InputGroup.Append>

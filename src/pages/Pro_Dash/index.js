@@ -42,6 +42,8 @@ export default function Pro_Dash() {
   const [pos, setPos] = useState([])
   const [vix, setVix] = useState([])
   const [bahia, setBahia] = useState([])
+  const [ceara, setCeara] = useState([])
+  const [matoGrosso, setMatoGrosso] = useState([])
   const [stockWarehouse06, setStockWarehouse06] = useState([])
   const [productInfo, setProductInfo] = useState([])
   const [PCs, setPCs] = useState([])
@@ -52,7 +54,11 @@ export default function Pro_Dash() {
   const [Average, setAverage] = useState([])
   const [Average02, setAverage02] = useState([])
   const [Average03, setAverage03] = useState([])
+  const [Average05, setAverage05] = useState([])
+  const [Average06, setAverage06] = useState([])
   const [useStore99OnWeekPlanning, setUseStore99OnWeekPlanning] = useState(true)
+
+  console.log(productInfo)
 
   const [codigoPlaceholder, setCodigoPlaceholder] = useState(
     'Pesquise por um código...'
@@ -81,12 +87,20 @@ export default function Pro_Dash() {
   const [average03Placeholder, setAverage03Placeholder] = useState(
     'Pesquise por um código...'
   )
+  const [average05Placeholder, setAverage05Placeholder] = useState(
+    'Pesquise por um código...'
+  )
+  const [average06Placeholder, setAverage06Placeholder] = useState(
+    'Pesquise por um código...'
+  )
 
   const [almoxarifadoPlaceholder, setAlmoxarifadoPlaceholder] = useState(0)
   const [supermercadosPlaceholder, setSupermercadosPlaceholder] = useState(0)
   const [posPlaceholder, setPosPlaceholder] = useState(0)
   const [vixPlaceholder, setVixPlaceholder] = useState(0)
   const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0)
+  const [cearaPlaceholder, setCearaPlaceholder] = useState(0)
+  const [matoGrossoPlaceholder, setMatoGrossoPlaceholder] = useState(0)
   const [stock06Placeholder, setStock06Placeholder] = useState(0)
   const [divergentsPlaceholder, setDivergentsPlaceholder] = useState(0)
   const [sumEmp, setSumEmp] = useState('')
@@ -97,11 +111,13 @@ export default function Pro_Dash() {
   const [lastThreeMonthAverage, setlastThreeMonthAverage] = useState(0)
   const [lastThreeMonthAverage02, setlastThreeMonthAverage02] = useState(0)
   const [lastThreeMonthAverage03, setlastThreeMonthAverage03] = useState(0)
+  const [lastThreeMonthAverage05, setlastThreeMonthAverage05] = useState(0)
+  const [lastThreeMonthAverage06, setlastThreeMonthAverage06] = useState(0)
   const history = useHistory()
   const completeDate = new Date()
 
   // array de datas ( data atual ) somando mais 7 dias => fazer isso 12 vezes => gerando 12 datas
-  // Fazer um map, transformanda as 12 datas em 12 objetos.
+  // Fazer um map, transformando as 12 datas em 12 objetos.
 
   const dates = [
     'ATR',
@@ -214,6 +230,8 @@ export default function Pro_Dash() {
       setPos([])
       setVix([])
       setBahia([])
+      setCeara([])
+      setMatoGrosso([])
       setStockWarehouse06([])
       setPCs([])
       setSCs([])
@@ -223,6 +241,8 @@ export default function Pro_Dash() {
       setAverage([])
       setAverage02([])
       setAverage03([])
+      setAverage05([])
+      setAverage06([])
 
       setCodigoPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
@@ -243,6 +263,12 @@ export default function Pro_Dash() {
         <Spinner animation="border" size="sm" variant="warning" />
       )
       setBahiaPlaceholder(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setCearaPlaceholder(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setMatoGrossoPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
       )
       setStock06Placeholder(
@@ -282,6 +308,8 @@ export default function Pro_Dash() {
         { value: stock99 },
         { value: stockBranchES },
         { value: stockBranchBA },
+        { value: stockBranchCE },
+        { value: stockBranchMT },
         { value: purchaseOrders },
         { value: purchaseRequests },
         { value: pos },
@@ -289,7 +317,9 @@ export default function Pro_Dash() {
         { value: commits },
         { value: average0101 },
         { value: average0102 },
-        { value: average0103 }
+        { value: average0103 },
+        { value: average0105 },
+        { value: average0106 }
       ] = await Promise.allSettled([
         api.get(`/register?filial=0101&produto=${product}`),
         api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=01`),
@@ -299,6 +329,8 @@ export default function Pro_Dash() {
         api.get(`/estoques?filial[]=0101&produto[]=${product}&armazem[]=99`),
         api.get(`/estoques?filial[]=0102&produto[]=${product}`),
         api.get(`/estoques?filial[]=0103&produto[]=${product}`),
+        api.get(`/estoques?filial[]=0105&produto[]=${product}`),
+        api.get(`/estoques?filial[]=0106&produto[]=${product}`),
         api.get(
           `/pcs?filial=0101&legenda=PENDENTE',%20'ATENDIDO%20PARCIALMENTE&produto=${product}`
         ),
@@ -308,11 +340,14 @@ export default function Pro_Dash() {
         api.get(`/emp?filial=0101&produto=${product}`),
         api.get(`/average?filial=0101&produto=${product}`),
         api.get(`/average?filial=0102&produto=${product}`),
-        api.get(`/average?filial=0103&produto=${product}`)
+        api.get(`/average?filial=0103&produto=${product}`),
+        api.get(`/average?filial=0105&produto=${product}`),
+        api.get(`/average?filial=0106&produto=${product}`)
       ])
 
       // Product Info Call
       if (productInfoResponse.data.length === 0) {
+        console.log(productInfoResponse)
         setCodigoPlaceholder('Parece que esse código não existe...')
       } else {
         setProductInfo(productInfoResponse.data)
@@ -365,6 +400,24 @@ export default function Pro_Dash() {
           return stock.SALDO + acc
         }, 0)
         setBahia([{ SALDO: totalStock }])
+      }
+
+      if (stockBranchCE.data.length === 0) {
+        setCeara([{ SALDO: 0 }])
+      } else {
+        const totalStock = stockBranchCE.data.reduce((acc, stock) => {
+          return stock.SALDO + acc
+        }, 0)
+        setCeara([{ SALDO: totalStock }])
+      }
+
+      if (stockBranchMT.data.length === 0) {
+        setMatoGrosso([{ SALDO: 0 }])
+      } else {
+        const totalStock = stockBranchMT.data.reduce((acc, stock) => {
+          return stock.SALDO + acc
+        }, 0)
+        setMatoGrosso([{ SALDO: totalStock }])
       }
 
       // Purchase Orders
@@ -588,6 +641,108 @@ export default function Pro_Dash() {
 
         setAverage03(averageUpdated0103[0])
       }
+
+      //Average0105
+      if (average0105.data.length === 0) {
+        setAverage05Placeholder('Parece que não há consumo...')
+      } else {
+        const averageUpdated0105 = average0105.data.map((item) => {
+          const itemUpdated = {
+            ...item,
+            average05:
+              Math.round(
+                ((item.Q01 +
+                  item.Q02 +
+                  item.Q03 +
+                  item.Q04 +
+                  item.Q05 +
+                  item.Q06 +
+                  item.Q07 +
+                  item.Q08 +
+                  item.Q09 +
+                  item.Q10 +
+                  item.Q11 +
+                  item.Q12) /
+                  12 +
+                  Number.EPSILON) *
+                  100
+              ) / 100,
+            total:
+              item.Q01 +
+              item.Q02 +
+              item.Q03 +
+              item.Q04 +
+              item.Q05 +
+              item.Q06 +
+              item.Q07 +
+              item.Q08 +
+              item.Q09 +
+              item.Q10 +
+              item.Q11 +
+              item.Q12
+          }
+          return itemUpdated
+        })
+
+        const lastThreeMonthAverageReduce = average3Months(
+          currentMonth,
+          averageUpdated0105[0]
+        )
+        setlastThreeMonthAverage05(lastThreeMonthAverageReduce)
+
+        setAverage05(averageUpdated0105[0])
+      }
+
+      //Average0106
+      if (average0106.data.length === 0) {
+        setAverage06Placeholder('Parece que não há consumo...')
+      } else {
+        const averageUpdated0106 = average0106.data.map((item) => {
+          const itemUpdated = {
+            ...item,
+            average06:
+              Math.round(
+                ((item.Q01 +
+                  item.Q02 +
+                  item.Q03 +
+                  item.Q04 +
+                  item.Q05 +
+                  item.Q06 +
+                  item.Q07 +
+                  item.Q08 +
+                  item.Q09 +
+                  item.Q10 +
+                  item.Q11 +
+                  item.Q12) /
+                  12 +
+                  Number.EPSILON) *
+                  100
+              ) / 100,
+            total:
+              item.Q01 +
+              item.Q02 +
+              item.Q03 +
+              item.Q04 +
+              item.Q05 +
+              item.Q06 +
+              item.Q07 +
+              item.Q08 +
+              item.Q09 +
+              item.Q10 +
+              item.Q11 +
+              item.Q12
+          }
+          return itemUpdated
+        })
+
+        const lastThreeMonthAverageReduce = average3Months(
+          currentMonth,
+          averageUpdated0106[0]
+        )
+        setlastThreeMonthAverage06(lastThreeMonthAverageReduce)
+
+        setAverage06(averageUpdated0106[0])
+      }
     },
     [productNumber, currentMonth]
   )
@@ -745,6 +900,7 @@ export default function Pro_Dash() {
                   <th>APRO</th>
                   <th>LOC</th>
                   <th>TIPO</th>
+                  <th>NCM</th>
                 </tr>
               </thead>
               <tbody>
@@ -760,11 +916,12 @@ export default function Pro_Dash() {
                       <td>{product.APROPRI !== 'I' ? 'D' : 'I'}</td>
                       <td>{product.LOCACAO}</td>
                       <td>{product.TIPO}</td>
+                      <td>{product.NCM}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="9">{codigoPlaceholder}</td>
+                    <td colSpan="10">{codigoPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
@@ -893,6 +1050,7 @@ export default function Pro_Dash() {
               </tbody>
             </Table>
           </Col>
+
           <Col>
             <Table responsive striped bordered hover>
               <thead>
@@ -915,6 +1073,7 @@ export default function Pro_Dash() {
               </tbody>
             </Table>
           </Col>
+
           <Col>
             <Table responsive striped bordered hover>
               <thead>
@@ -937,7 +1096,54 @@ export default function Pro_Dash() {
               </tbody>
             </Table>
           </Col>
+
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>FILIAL CE</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ceara.length !== 0 ? (
+                  ceara.map((cearaItem) => (
+                    <tr key={cearaItem.SALDO}>
+                      <td>{cearaItem.SALDO}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td>{cearaPlaceholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>FILIAL MT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matoGrosso.length !== 0 ? (
+                  matoGrosso.map((matoGrossoItem) => (
+                    <tr key={matoGrossoItem.SALDO}>
+                      <td>{matoGrossoItem.SALDO}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td>{matoGrossoPlaceholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
         </Row>
+
         <Row>
           <Col>
             <h5>Consumo últimos 12 meses - Filial SP</h5>
@@ -985,6 +1191,7 @@ export default function Pro_Dash() {
             </Table>
           </Col>
         </Row>
+
         <Row>
           <Col>
             <h5>Consumo últimos 12 meses - Filial ES</h5>
@@ -1032,6 +1239,7 @@ export default function Pro_Dash() {
             </Table>
           </Col>
         </Row>
+
         <Row>
           <Col>
             <h5>Consumo últimos 12 meses - Filial BA</h5>
@@ -1079,6 +1287,103 @@ export default function Pro_Dash() {
             </Table>
           </Col>
         </Row>
+
+        <Row>
+          <Col>
+            <h5>Consumo últimos 12 meses - Filial CE</h5>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  {monthArray.map((month, i) => {
+                    return (
+                      <th key={i}>
+                        {currentMonth + month - 1 > 12
+                          ? `${currentMonth + month - 13}`
+                          : `${currentMonth + month - 1}`}
+                      </th>
+                    )
+                  })}
+                  <th>MÉDIA ÚLT 3 MESES</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Average05?.length !== 0 ? (
+                  <tr>
+                    {monthArray.map((month, i) => {
+                      return (
+                        <td key={i}>
+                          {currentMonth + month - 1 > 12
+                            ? Average05?.[
+                                `Q${month2DigArray[currentMonth + month - 14]}`
+                              ]
+                            : Average05?.[
+                                `Q${month2DigArray[currentMonth + month - 2]}`
+                              ]}
+                        </td>
+                      )
+                    })}
+                    <td>{lastThreeMonthAverage05}</td>
+                    <td>{Average05.total}</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="14">{average05Placeholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <h5>Consumo últimos 12 meses - Filial MT</h5>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  {monthArray.map((month, i) => {
+                    return (
+                      <th key={i}>
+                        {currentMonth + month - 1 > 12
+                          ? `${currentMonth + month - 13}`
+                          : `${currentMonth + month - 1}`}
+                      </th>
+                    )
+                  })}
+                  <th>MÉDIA ÚLT 3 MESES</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Average06?.length !== 0 ? (
+                  <tr>
+                    {monthArray.map((month, i) => {
+                      return (
+                        <td key={i}>
+                          {currentMonth + month - 1 > 12
+                            ? Average06?.[
+                                `Q${month2DigArray[currentMonth + month - 14]}`
+                              ]
+                            : Average03?.[
+                                `Q${month2DigArray[currentMonth + month - 2]}`
+                              ]}
+                        </td>
+                      )
+                    })}
+                    <td>{lastThreeMonthAverage06}</td>
+                    <td>{Average06.total}</td>
+                  </tr>
+                ) : (
+                  <tr>
+                    <td colSpan="14">{average06Placeholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+
         <Row>
           <Col>
             <h5>Planejamento Semanal</h5>
