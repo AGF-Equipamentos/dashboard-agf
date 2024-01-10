@@ -1,5 +1,13 @@
-import { useEffect, useState } from 'react'
-import { Table, Row, Col, Spinner, Container } from 'react-bootstrap'
+import { useEffect, useState, useCallback } from 'react'
+import {
+  Table,
+  Row,
+  Col,
+  Container,
+  InputGroup,
+  Dropdown,
+  DropdownButton
+} from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
@@ -9,8 +17,9 @@ import api from '../../services/api'
 
 export default function EstoquesMaq() {
   const [estoques, setEstoques] = useState([])
+  const [filial, setFilial] = useState(['0101', '0102', '0103'])
   const [estoquesPlaceholder, setEstoquesPlaceholder] = useState(
-    <Spinner animation="border" size="sm" variant="warning" />
+    'Pesquise por uma filial...'
   )
   const history = useHistory()
 
@@ -18,7 +27,7 @@ export default function EstoquesMaq() {
     async function loadEstoques() {
       const response = await api.get(`/estoques`, {
         params: {
-          filial: ['0101', '0102', '0103'],
+          filial: filial,
           grupo: [
             '0060',
             '0080',
@@ -43,6 +52,25 @@ export default function EstoquesMaq() {
       setEstoques(response.data)
     }
     loadEstoques()
+  }, [filial])
+
+  const handleFilialPlaceholder = useCallback((filial) => {
+    switch (filial) {
+      case '0101':
+        return 'Matriz'
+      case '0102':
+        return 'Filial ES'
+      case '0103':
+        return 'Filial BA'
+      case '0104':
+        return 'AGF Máquinas Agrícolas'
+      case '0105':
+        return 'Filial CE'
+      case '0106':
+        return 'Filial MT'
+      default:
+        return 'Matriz'
+    }
   }, [])
 
   return (
@@ -56,6 +84,32 @@ export default function EstoquesMaq() {
           </Col>
         </Row>
         <h1>Estoque de Máquinas</h1>
+        <DropdownButton
+          as={InputGroup.Append}
+          className="mb-3"
+          variant="outline-warning"
+          title={handleFilialPlaceholder(filial)}
+        >
+          <Dropdown.Item onClick={() => setFilial('0101')}>
+            Matriz
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setFilial('0102')}>
+            Filial ES
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setFilial('0103')}>
+            Filial BA
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setFilial('0104')}>
+            Filial Máquinas Agrícolas
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setFilial('0105')}>
+            Filial CE
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => setFilial('0106')}>
+            Filial MT
+          </Dropdown.Item>
+        </DropdownButton>
+
         <Table responsive striped bordered hover>
           <thead>
             <tr>
@@ -70,7 +124,13 @@ export default function EstoquesMaq() {
           <tbody>
             {estoques.length > 0 ? (
               estoques.map((estoque) => (
-                <tr key={estoque.FILIAL.concat('', estoque.PRODUTO)}>
+                <tr
+                  key={estoque.FILIAL.concat(
+                    estoque.FILIAL,
+                    estoque.PRODUTO,
+                    estoque.ARMAZEM
+                  )}
+                >
                   <td>{estoque.FILIAL}</td>
                   <td>{estoque.PRODUTO}</td>
                   <td>{estoque.DESCRICAO}</td>
