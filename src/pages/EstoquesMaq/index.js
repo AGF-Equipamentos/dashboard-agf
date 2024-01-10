@@ -98,6 +98,13 @@ export default function EstoquesMaq() {
           variant="outline-warning"
           title={handleFilialPlaceholder(filial)}
         >
+          <Dropdown.Item
+            onClick={() =>
+              setFilial(['0101', '0102', '0103', '0104', '0105', '0106'])
+            }
+          >
+            Todas
+          </Dropdown.Item>
           <Dropdown.Item onClick={() => setFilial('0101')}>
             Matriz
           </Dropdown.Item>
