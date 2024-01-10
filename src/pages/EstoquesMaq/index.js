@@ -6,6 +6,7 @@ import {
   Container,
   InputGroup,
   Dropdown,
+  Spinner,
   DropdownButton
 } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
@@ -17,9 +18,16 @@ import api from '../../services/api'
 
 export default function EstoquesMaq() {
   const [estoques, setEstoques] = useState([])
-  const [filial, setFilial] = useState(['0101', '0102', '0103'])
+  const [filial, setFilial] = useState([
+    '0101',
+    '0102',
+    '0103',
+    '0104',
+    '0105',
+    '0106'
+  ])
   const [estoquesPlaceholder, setEstoquesPlaceholder] = useState(
-    'Pesquise por uma filial...'
+    <Spinner animation="border" size="sm" variant="warning" />
   )
   const history = useHistory()
 
