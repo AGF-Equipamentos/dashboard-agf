@@ -103,7 +103,7 @@ export default function EstoquesMaq() {
               setFilial(['0101', '0102', '0103', '0104', '0105', '0106'])
             }
           >
-            Todas Filiais
+            Todas
           </Dropdown.Item>
           <Dropdown.Item onClick={() => setFilial('0101')}>
             Matriz
