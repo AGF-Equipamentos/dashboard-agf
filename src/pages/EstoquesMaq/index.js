@@ -79,7 +79,7 @@ export default function EstoquesMaq() {
       case '0106':
         return 'Filial MT'
       default:
-        return 'Matriz'
+        return 'Todas'
     }
   }, [])
 
