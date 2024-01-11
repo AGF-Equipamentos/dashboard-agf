@@ -64,8 +64,6 @@ export default function EstoquesMaq() {
 
   const handleFilialPlaceholder = useCallback((filial) => {
     switch (filial) {
-      case ('0101', '0102', '0103', '0104', '0105', '0106'):
-        return 'Todas'
       case '0101':
         return 'Matriz'
       case '0102':
@@ -79,7 +77,7 @@ export default function EstoquesMaq() {
       case '0106':
         return 'Filial MT'
       default:
-        return 'Matriz'
+        return 'Todas'
     }
   }, [])
 
