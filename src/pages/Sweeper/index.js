@@ -22,91 +22,30 @@ export default function Sweeper() {
         </Row>
         <h1>Vassoura</h1>
         <ProductStockTable products={['VC66']} />
-        <h4>ESTOQUE MOTORES ELÉTRICOS</h4>
+        <h4>ESTOQUE ITENS HIDRÁULICOS</h4>
         <PartnumberStockTable
           products={[
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' }
+            { product: 'VC66', partNumber: '9900001378' },
+            { product: 'VC66', partNumber: '5102010101' },
+            { product: 'VC66', partNumber: '5102010102' },
+            { product: 'VC66', partNumber: '6300000057' },
+            { product: 'VC66', partNumber: '5600000404' },
+            { product: 'VC66', partNumber: '5600000371' }
           ]}
         />
-        <h4>ESTOQUE SERVOCONVERSORES</h4>
+        <h4>ESTOQUE CERDAS</h4>
         <PartnumberStockTable
           products={[
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' }
-          ]}
-        />
-        <h4>ESTOQUE REDUTORES</h4>
-        <PartnumberStockTable
-          products={[
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' }
-          ]}
-        />
-        <h4>ESTOQUE INVERSORES</h4>
-        <PartnumberStockTable
-          products={[
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' }
+            { product: 'VC66', partNumber: '15501158P' },
+            { product: 'VC66', partNumber: '15501158A' }
           ]}
         />
         <h4>ESTOQUE OUTROS </h4>
         <PartnumberStockTable
           products={[
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' },
-            { product: '', partNumber: '' }
+            { product: 'VC66', partNumber: '9900000077' },
+            { product: 'VC66', partNumber: '9900001059' },
+            { product: 'VC66', partNumber: '9900002994' }
           ]}
         />
       </Container>
