@@ -1057,7 +1057,7 @@ export default function Pro_Dash() {
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  <th>P/ TERCEIRO</th>
+                  <th>PODER TERCEIRO</th>
                 </tr>
               </thead>
               <tbody>
