@@ -77,8 +77,8 @@ export default function MaqFio() {
         <PartnumberStockTable
           products={[
             { product: 'MF25P2P / MF25S2 / MF75P2', partNumber: '6800000256' },
+            { product: 'MF25P2P / MF25S2 / MF40P2', partNumber: '6800000450' },
             { product: 'MF25P2P / MF25S2', partNumber: '6800000651' },
-            { product: 'MF25P2P / MF25S2', partNumber: '6800000450' },
             { product: 'MF75P2', partNumber: '6800000699' },
             { product: 'MF75S2', partNumber: '6800000700' },
             { product: 'MF100S2', partNumber: '6800000701' },
