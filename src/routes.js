@@ -16,6 +16,7 @@ import MaqFio from './pages/MaqFio'
 import Politriz from './pages/Politriz'
 import EstoqueGerador from './pages/EstoqueGerador'
 import Multifio from './pages/Multifio'
+import Sweeper from './pages/Sweeper'
 
 export default function Routes() {
   return (
@@ -98,6 +99,14 @@ export default function Routes() {
         render={(props) => (
           <Page title="Multifio | Dash">
             <Multifio {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/sweeper"
+        render={(props) => (
+          <Page title="Sweeper | Dash">
+            <Sweeper {...props} />
           </Page>
         )}
       />

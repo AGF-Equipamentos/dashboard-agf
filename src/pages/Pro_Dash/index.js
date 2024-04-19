@@ -58,8 +58,6 @@ export default function Pro_Dash() {
   const [Average06, setAverage06] = useState([])
   const [useStore99OnWeekPlanning, setUseStore99OnWeekPlanning] = useState(true)
 
-  console.log(productInfo)
-
   const [codigoPlaceholder, setCodigoPlaceholder] = useState(
     'Pesquise por um código...'
   )
@@ -96,6 +94,7 @@ export default function Pro_Dash() {
 
   const [almoxarifadoPlaceholder, setAlmoxarifadoPlaceholder] = useState(0)
   const [supermercadosPlaceholder, setSupermercadosPlaceholder] = useState(0)
+  const [balanceThirdPlaceholder, setBalanceThirdPlaceholder] = useState(0)
   const [posPlaceholder, setPosPlaceholder] = useState(0)
   const [vixPlaceholder, setVixPlaceholder] = useState(0)
   const [bahiaPlaceholder, setBahiaPlaceholder] = useState(0)
@@ -257,6 +256,9 @@ export default function Pro_Dash() {
         <Spinner animation="border" size="sm" variant="warning" />
       )
       setPosPlaceholder(
+        <Spinner animation="border" size="sm" variant="warning" />
+      )
+      setBalanceThirdPlaceholder(
         <Spinner animation="border" size="sm" variant="warning" />
       )
       setVixPlaceholder(
@@ -1045,6 +1047,29 @@ export default function Pro_Dash() {
                 ) : (
                   <tr>
                     <td>{posPlaceholder}</td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
+          </Col>
+
+          <Col>
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>PODER TERCEIRO</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productInfo.length !== 0 ? (
+                  productInfo.map((product, i) => (
+                    <tr key={i}>
+                      <td>{parseInt(product.SALDO_TERCEIRO).toFixed(2)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td>{balanceThirdPlaceholder}</td>
                   </tr>
                 )}
               </tbody>
