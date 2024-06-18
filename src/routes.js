@@ -17,6 +17,7 @@ import Politriz from './pages/Politriz'
 import EstoqueGerador from './pages/EstoqueGerador'
 import Multifio from './pages/Multifio'
 import Sweeper from './pages/Sweeper'
+import OPsProducao from './pages/OPsProd'
 
 export default function Routes() {
   return (
@@ -131,6 +132,14 @@ export default function Routes() {
         render={(props) => (
           <Page title="OPs Ponto de Pedido | Dash">
             <OPsPP {...props} />
+          </Page>
+        )}
+      />
+      <Route
+        path="/opsprod"
+        render={(props) => (
+          <Page title="OPs Produção | Dash">
+            <OPsProducao {...props} />
           </Page>
         )}
       />

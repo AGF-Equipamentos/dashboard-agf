@@ -101,6 +101,13 @@ export default function Main() {
               </Link>
             </Col>
           </Row>
+          <Row className="align-items-center">
+            <Col>
+              <Link to="/opsprod">
+                <button type="button">OPs Produção</button>
+              </Link>
+            </Col>
+          </Row>
         </Col>
       </Container>
     </Cont>
