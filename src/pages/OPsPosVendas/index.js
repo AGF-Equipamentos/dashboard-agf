@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Spinner, Container } from 'react-bootstrap'
+import { Row, Col, Spinner, Container, Button } from 'react-bootstrap'
 import { Table } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
@@ -7,6 +7,7 @@ import { Container as Cont } from './styles'
 import { ButtonBase } from '@material-ui/core'
 
 import api from '../../services/api'
+import { exportToXlsx } from '../../utils/exportToXlsx'
 
 export default function OPsPosVendas() {
   const [OPs, setOPs] = useState([])
@@ -37,6 +38,17 @@ export default function OPsPosVendas() {
           </Col>
         </Row>
         <h1>OPs para o Pós Vendas</h1>
+        <Row>
+          <Col align="right" style={{ marginBottom: -50, marginTop: -50 }}>
+            <Button
+              variant="warning"
+              onClick={() => exportToXlsx(OPs, 'OPs Pós-vendas')}
+            >
+              Exportar
+            </Button>
+          </Col>
+        </Row>
+
         <Table responsive striped bordered hover>
           <thead>
             <tr>

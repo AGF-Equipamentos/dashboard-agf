@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Spinner, Container } from 'react-bootstrap'
+import { Row, Col, Spinner, Container, Button } from 'react-bootstrap'
 import { ButtonBase } from '@material-ui/core'
 
 import { Table } from 'react-bootstrap'
@@ -8,6 +8,7 @@ import { FiArrowLeft } from 'react-icons/fi'
 import { Container as Cont } from './styles'
 
 import api from '../../services/api'
+import { exportToXlsx } from '../../utils/exportToXlsx'
 
 export default function OPsFilial() {
   const [OPs, setOPs] = useState([])
@@ -40,6 +41,17 @@ export default function OPsFilial() {
           </Col>
         </Row>
         <h1>OPs para a Filial</h1>
+        <Row>
+          <Col align="right" style={{ marginBottom: -50, marginTop: -50 }}>
+            <Button
+              variant="warning"
+              onClick={() => exportToXlsx(OPs, 'OPs Filial')}
+            >
+              Exportar
+            </Button>
+          </Col>
+        </Row>
+
         <Table responsive striped bordered hover>
           <thead>
             <tr>
