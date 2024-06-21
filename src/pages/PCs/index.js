@@ -23,6 +23,7 @@ import LastPCsModal from '../../components/LastPCsModal'
 import api from '../../services/api'
 import PrintModal from '../../components/PrintModal'
 import { ButtonBase } from '@material-ui/core'
+import { excludedCollaboratorSuppliers } from '../../utils/excludedCollaboratorSuppliers'
 
 export default function PCs() {
   const [pCHeader, setPCHeader] = useState(0)
@@ -105,7 +106,15 @@ export default function PCs() {
         }
       }
 
-      setDataPCs(response.data)
+      const filteredData = response.data.filter(
+        (pc) => !excludedCollaboratorSuppliers.includes(pc.FORN)
+      )
+
+      if (filteredData.length === 0) {
+        setPcsPlaceholder('Parece que não há um PC com esse número...')
+      }
+
+      setDataPCs(filteredData)
     },
     [searchValue, filter, filial]
   )
