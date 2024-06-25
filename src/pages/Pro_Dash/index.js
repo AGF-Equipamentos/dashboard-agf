@@ -421,7 +421,6 @@ export default function Pro_Dash() {
         }, 0)
         setMatoGrosso([{ SALDO: totalStock }])
       }
-      console.log(purchaseOrders)
 
       const filteredData = purchaseOrders.data.filter(
         (pc) => !excludedCollaboratorSuppliers.includes(pc.FORN)
