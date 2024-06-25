@@ -23,6 +23,7 @@ import LastPCsModal from '../../components/LastPCsModal'
 import api from '../../services/api'
 import PrintModal from '../../components/PrintModal'
 import { ButtonBase } from '@material-ui/core'
+import { excludedCollaboratorSuppliers } from '../../utils/excludedCollaboratorSuppliers'
 
 export default function PCs() {
   const [pCHeader, setPCHeader] = useState(0)
@@ -76,6 +77,17 @@ export default function PCs() {
         <Spinner animation="border" size="sm" variant="warning" />
       )
 
+      function setPlaceholder() {
+        setPCHeader(0)
+        setIssueHeader(0)
+        setPayCondHeader(0)
+        setPayDescHeader(0)
+        setSupplierHeader(0)
+        setSupplierDescHeader(0)
+        setCurrencyHeader(0)
+        setCurrencyDescHeader(0)
+      }
+
       if (searchInput > 0) {
         searchVar = searchInput.toUpperCase().trim()
       }
@@ -93,6 +105,7 @@ export default function PCs() {
         if (response.data.length === 0) {
           setPcsPlaceholder('Parece que não há um PC com esse CNPJ...')
         }
+        setPlaceholder()
       } else {
         response = await api.get(`/pcs`, {
           params: {
@@ -103,9 +116,18 @@ export default function PCs() {
         if (response.data.length === 0) {
           setPcsPlaceholder('Parece que não há um PC com esse número...')
         }
+        setPlaceholder()
       }
 
-      setDataPCs(response.data)
+      const filteredData = response.data.filter(
+        (pc) => !excludedCollaboratorSuppliers.includes(pc.FORN)
+      )
+
+      if (filteredData.length === 0) {
+        setPcsPlaceholder('Parece que não há um PC com esse número...')
+      }
+      setDataPCs(filteredData)
+      setPlaceholder()
     },
     [searchValue, filter, filial]
   )

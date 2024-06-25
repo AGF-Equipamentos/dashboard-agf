@@ -33,6 +33,7 @@ import LastPCsModal from '../../components/LastPCsModal'
 import api from '../../services/api'
 import { average3Months } from '../../utils/average'
 import { ButtonBase } from '@material-ui/core'
+import { excludedCollaboratorSuppliers } from '../../utils/excludedCollaboratorSuppliers'
 
 export default function Pro_Dash() {
   const [productNumber, setProductNumber] = useState('')
@@ -349,7 +350,6 @@ export default function Pro_Dash() {
 
       // Product Info Call
       if (productInfoResponse.data.length === 0) {
-        console.log(productInfoResponse)
         setCodigoPlaceholder('Parece que esse código não existe...')
       } else {
         setProductInfo(productInfoResponse.data)
@@ -422,11 +422,15 @@ export default function Pro_Dash() {
         setMatoGrosso([{ SALDO: totalStock }])
       }
 
+      const filteredData = purchaseOrders.data.filter(
+        (pc) => !excludedCollaboratorSuppliers.includes(pc.FORN)
+      )
+
       // Purchase Orders
-      if (purchaseOrders.data.length === 0) {
+      if (filteredData.length === 0) {
         setPcPlaceholder('Parece que não há PCs...')
       } else {
-        const purchaseOrdersUpdated = purchaseOrders.data.map((item) => {
+        const purchaseOrdersUpdated = filteredData.map((item) => {
           const itemUpdated = {
             ...item,
             DATE: toISODate(item.ENTREGA),
@@ -799,7 +803,11 @@ export default function Pro_Dash() {
       `inputdocs?filial=0101&produto=${product}&top=10&desc=true`
     )
 
-    const pcsFormatted = response.data.map((pc) => {
+    const filteredData = response.data.filter(
+      (pc) => !excludedCollaboratorSuppliers.includes(pc.FORN)
+    )
+
+    const pcsFormatted = filteredData.map((pc) => {
       return {
         ...pc,
         PRECO: new Intl.NumberFormat('pt-BR', {
