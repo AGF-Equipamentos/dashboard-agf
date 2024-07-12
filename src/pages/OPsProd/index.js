@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Spinner, Container, Button } from 'react-bootstrap'
+import { Row, Spinner, Container, Button } from 'react-bootstrap'
 import { ButtonBase } from '@material-ui/core'
 
 import { Table } from 'react-bootstrap'

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Spinner, Container, Button } from 'react-bootstrap'
+import { Row, Spinner, Container, Button } from 'react-bootstrap'
 import { Table } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
