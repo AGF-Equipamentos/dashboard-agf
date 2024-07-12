@@ -30,24 +30,19 @@ export default function OPsPP() {
   return (
     <Cont>
       <Container fluid className="justify-content-center">
-        <Row>
-          <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <ButtonBase onClick={() => history.go(-1)}>
-              <FiArrowLeft color="#999" />
-            </ButtonBase>
-          </Col>
+        <Row className="align-items-center justify-content-between px-3">
+          <ButtonBase onClick={() => history.go(-1)}>
+            <FiArrowLeft color="#999" />
+          </ButtonBase>
+          <h1>OPs por Ponto de Pedido</h1>
+          <Button
+            variant="warning"
+            onClick={() => exportToXlsx(OPs, 'OPs por Ponto de Pedido')}
+          >
+            Exportar
+          </Button>
         </Row>
-        <h1>OPs por Ponto de Pedido</h1>
-        <Row>
-          <Col align="right" style={{ marginBottom: -50, marginTop: -50 }}>
-            <Button
-              variant="warning"
-              onClick={() => exportToXlsx(OPs, 'OPs Ponto de Pedido')}
-            >
-              Exportar
-            </Button>
-          </Col>
-        </Row>
+
         <Table responsive striped bordered hover>
           <thead>
             <tr>

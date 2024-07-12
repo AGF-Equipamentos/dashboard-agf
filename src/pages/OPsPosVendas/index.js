@@ -30,23 +30,17 @@ export default function OPsPosVendas() {
   return (
     <Cont>
       <Container fluid className="justify-content-center">
-        <Row>
-          <Col align="left" style={{ marginBottom: -50, marginTop: 12 }}>
-            <ButtonBase onClick={() => history.go(-1)}>
-              <FiArrowLeft color="#999" />
-            </ButtonBase>
-          </Col>
-        </Row>
-        <h1>OPs para o Pós Vendas</h1>
-        <Row>
-          <Col align="right" style={{ marginBottom: -50, marginTop: -50 }}>
-            <Button
-              variant="warning"
-              onClick={() => exportToXlsx(OPs, 'OPs Pós-vendas')}
-            >
-              Exportar
-            </Button>
-          </Col>
+        <Row className="align-items-center justify-content-between px-3">
+          <ButtonBase onClick={() => history.go(-1)}>
+            <FiArrowLeft color="#999" />
+          </ButtonBase>
+          <h1>OPs para o Pós Vendas</h1>
+          <Button
+            variant="warning"
+            onClick={() => exportToXlsx(OPs, 'OPs Pós-vendas')}
+          >
+            Exportar
+          </Button>
         </Row>
 
         <Table responsive striped bordered hover>
