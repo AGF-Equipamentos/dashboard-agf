@@ -471,7 +471,8 @@ export default function PCs() {
               <th>QTD</th>
               <th>QTD_ENT</th>
               <th>SALDO</th>
-              <th>PREÇO</th>
+              <th>PREÇO_UNIT</th>
+              <th>PREÇO_TOTAL</th>
               <th>ULT_PCs</th>
               <th>NUM_SC</th>
               <th>OBS</th>
@@ -537,6 +538,12 @@ export default function PCs() {
                     )}
                   </td>
                   <td>
+                    {(pcs.PRECO * pcs.QTD).toLocaleString('pt-br', {
+                      style: 'currency',
+                      currency: 'BRL'
+                    })}
+                  </td>
+                  <td>
                     <Button
                       variant="outline-info"
                       size="sm"
@@ -573,7 +580,7 @@ export default function PCs() {
               ))
             ) : (
               <tr>
-                <td colSpan="15">{pcsPlaceholder}</td>
+                <td colSpan="16">{pcsPlaceholder}</td>
               </tr>
             )}
           </tbody>
