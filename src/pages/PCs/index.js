@@ -472,7 +472,7 @@ export default function PCs() {
               <th>QTD_ENT</th>
               <th>SALDO</th>
               <th>PREÇO_UNIT</th>
-              <th>PREÇO_TOTAL</th>
+              <th>VALOR_TOTAL</th>
               <th>ULT_PCs</th>
               <th>NUM_SC</th>
               <th>OBS</th>
