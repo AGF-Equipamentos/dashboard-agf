@@ -172,6 +172,18 @@ export default function PCs() {
     })
   }
 
+  //Calculate Value Despesas
+  const calculateValueCostsFooter = () => {
+    let valueCostsFooter = 0
+    dataPCs.forEach((pc) => {
+      valueCostsFooter += pc.DESPESAS
+    })
+    return valueCostsFooter.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+  }
+
   //Calculate Value Discounts
   const calculateValueDiscountsFooter = () => {
     let valueDiscountsFooter = 0
@@ -439,8 +451,9 @@ export default function PCs() {
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  <td>FORNECEDOR</td>
-                  <td>DESCRIÇÃO FORNECEDOR</td>
+                  <td>FORNEC.</td>
+                  <td>DESC. FORNEC.</td>
+                  <td>CNPJ FORNEC.</td>
                 </tr>
               </thead>
               <tbody>
@@ -448,10 +461,12 @@ export default function PCs() {
                   <tr>
                     <td>{dataPCs[0].FORN}</td>
                     <td>{dataPCs[0].DESC_FORN}</td>
+                    <td>{dataPCs[0].CNPJ}</td>
                   </tr>
                 ) : (
                   <tr>
                     <td>{supplierHeader}</td>
+                    <td>{supplierDescHeader}</td>
                     <td>{supplierDescHeader}</td>
                   </tr>
                 )}
@@ -590,6 +605,7 @@ export default function PCs() {
             <tr>
               <td>VALOR DA MERCADORIA</td>
               <td>FRETE</td>
+              <td>DESPESAS</td>
               <td>DESCONTOS</td>
               <td>TOTAL DO PEDIDO</td>
             </tr>
@@ -598,6 +614,7 @@ export default function PCs() {
             <tr>
               <td>{calculateValueItensFooter()}</td>
               <td>{calculateValueFreteFooter()}</td>
+              <td>{calculateValueCostsFooter()}</td>
               <td>{calculateValueDiscountsFooter()}</td>
               <td>
                 {sumPCs.toLocaleString('pt-br', {
