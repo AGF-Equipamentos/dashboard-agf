@@ -56,5 +56,6 @@ export const excludedCollaboratorSuppliers = [
   '008449',
   '003611',
   '008356',
-  '008859'
+  '008859',
+  '008904'
 ]
